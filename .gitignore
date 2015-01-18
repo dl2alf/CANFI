@@ -41,3 +41,10 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
+
+# bin & obj directories
+**/bin
+**/obj
+
+# rtlsdr library (copyright issues)
+rtlsdr*.*

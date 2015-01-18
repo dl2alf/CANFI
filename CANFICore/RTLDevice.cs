@@ -206,6 +206,8 @@ namespace CANFICore
                     {
                         // gain settings per stage were found --> assuming that special version of rtlsdr is loaded
                         // we can set special settings per stage by ourselves
+                        // save default gain settings to file to ensure that we have at least default settings on a file
+                        SaveDefaultGainSettings(_tunertype,_gainstages);
                         // try to read gain settings per stage from file
                         // set gain mode to gain per stage
                         _gainmode = RtlSdrGainMode.GAIN_MODE_PERSTAGE;
@@ -339,8 +341,6 @@ namespace CANFICore
                         GainStages = _gainstages,
                         TunerGains = _tunergains
                     };
-                    // save default gain settings to file
-                    SaveDefaultGainSettings(_result[i]);
                 }
                 finally
                 {
@@ -351,17 +351,17 @@ namespace CANFICore
             return _result;
         }
 
-        public static void SaveDefaultGainSettings(RTLDevice device)
+        public static void SaveDefaultGainSettings(RtlSdrTunerType tunertype, RTLGainStages gainstages)
         {
             // save gain stages and default values if available
             try
             {
-                using (StreamWriter sw = new StreamWriter(device.TunerType + ".tun.default"))
+                using (StreamWriter sw = new StreamWriter(tunertype + ".tun.default"))
                 {
                     // write file header with description
                     sw.WriteLine("// CANFI tuner gain settings file (c) 2015 by DL2ALF");
-                    sw.WriteLine("// Tuner type: " + device.TunerType);
-                    sw.WriteLine("// Tuner stages: " + device.GainStages.Count.ToString());
+                    sw.WriteLine("// Tuner type: " + tunertype);
+                    sw.WriteLine("// Tuner stages: " + gainstages.Count.ToString());
                     sw.WriteLine("// All stages and possible gains are listed below.");
                     sw.WriteLine("// Description of the following lines: // Stage name:  gain_0[1/10dB] ... gain_n[1/10dB]");
                     sw.WriteLine("//");
@@ -369,21 +369,21 @@ namespace CANFICore
                     int _maxindex = 0;
                     sw.Write("// ");
                     sw.Write("Stage name / Index".PadRight(20));
-                    for (int stage = 0; stage < device.GainStages.Count; stage++)
+                    for (int stage = 0; stage < gainstages.Count; stage++)
                     {
-                        string _desc = device.GainStages[stage];
-                        int[] gains = device.GainStages.GetGains(_desc);
+                        string _desc = gainstages[stage];
+                        int[] gains = gainstages.GetGains(_desc);
                         if (gains.Length > _maxindex)
                             _maxindex = gains.Length;
                     }
                     for (int i = 0; i < _maxindex; i++)
                         sw.Write(i.ToString().PadLeft(5));
                     sw.WriteLine();
-                    for (int stage = 0; stage < device.GainStages.Count; stage++)
+                    for (int stage = 0; stage < gainstages.Count; stage++)
                     {
                         sw.Write("// ");
-                        string _desc = device.GainStages[stage];
-                        int[] gains = device.GainStages.GetGains(_desc);
+                        string _desc = gainstages[stage];
+                        int[] gains = gainstages.GetGains(_desc);
                         sw.Write((_desc + ": ").PadRight(20));
                         foreach (int gain in gains)
                         {
@@ -399,7 +399,7 @@ namespace CANFICore
                     sw.WriteLine("// Each gain must be valid for the according stage.");
                     sw.WriteLine("//");
                     // append default values for known tuner types
-                    switch (device.TunerType)
+                    switch (tunertype)
                     {
                         case RtlSdrTunerType.E4000:
                             sw.WriteLine("// CANFI defaults (from DF9IC)");
@@ -414,8 +414,8 @@ namespace CANFICore
                     }
                 }
                 // copy over default to tuner file if not exists
-                if (!File.Exists(device.TunerType + ".tun"))
-                    File.Copy(device.TunerType + ".tun.default", device.TunerType + ".tun");
+                if (!File.Exists(tunertype + ".tun"))
+                    File.Copy(tunertype + ".tun.default", tunertype + ".tun");
             }
             catch
             {
