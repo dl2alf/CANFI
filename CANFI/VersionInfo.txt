@@ -1,0 +1,14 @@
+****** V2.4.0.0 2014-08-17 **********
+
+- initial version
+
+
+****** V2.4.1.0 not published **********
+
+- extended plausiblity check of measured value pairs (P_OFF > P_ON)
+- COM status line selection for Noise Source and DUT does not work --> fixed (tnx UA3AVR)
+- AGC is slowering measurement when activated --> fixed
+
+****** V2.5.0.0 xxxx-xx-xx **********
+
+

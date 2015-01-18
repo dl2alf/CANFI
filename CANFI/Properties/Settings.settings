@@ -1,0 +1,182 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="CANFI.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="RTL_Device" Type="System.String" Scope="User">
+      <Value Profile="(Default)">[none]</Value>
+    </Setting>
+    <Setting Name="RTL_RTLAGC" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="RTL_TunerAGC" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="RTL_TunerGain" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">250</Value>
+    </Setting>
+    <Setting Name="COM_Port" Type="System.String" Scope="User">
+      <Value Profile="(Default)">[none]</Value>
+    </Setting>
+    <Setting Name="COM_Noise" Type="System.String" Scope="User">
+      <Value Profile="(Default)">RTS</Value>
+    </Setting>
+    <Setting Name="COM_DUT" Type="System.String" Scope="User">
+      <Value Profile="(Default)">DTR</Value>
+    </Setting>
+    <Setting Name="RTL_SampleCount" Type="System.Decimal" Scope="User">
+      <Value Profile="(Default)">100000</Value>
+    </Setting>
+    <Setting Name="RTL_SampleRate" Type="System.Decimal" Scope="User">
+      <Value Profile="(Default)">2000000</Value>
+    </Setting>
+    <Setting Name="COM_Port_Use" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="COM_Noise_Use" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="COM_DUT_Use" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="P_ENR" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">15.4</Value>
+    </Setting>
+    <Setting Name="RTL_GainMode" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">3</Value>
+    </Setting>
+    <Setting Name="Smoothing" Type="System.Decimal" Scope="User">
+      <Value Profile="(Default)">4</Value>
+    </Setting>
+    <Setting Name="RTL_P_ENR" Type="System.Decimal" Scope="User">
+      <Value Profile="(Default)">15.45</Value>
+    </Setting>
+    <Setting Name="DUT_Frequency" Type="System.Decimal" Scope="User">
+      <Value Profile="(Default)">144</Value>
+    </Setting>
+    <Setting Name="DUT_P_ENR" Type="System.Decimal" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="Mode" Type="System.String" Scope="User">
+      <Value Profile="(Default)">A</Value>
+    </Setting>
+    <Setting Name="RTL_ClipValue_Max" Type="System.Decimal" Scope="User">
+      <Value Profile="(Default)">1275</Value>
+    </Setting>
+    <Setting Name="RTL_ClipValue_Min" Type="System.Decimal" Scope="User">
+      <Value Profile="(Default)">-1275</Value>
+    </Setting>
+    <Setting Name="RTL_MaxClipAllowed" Type="System.Decimal" Scope="User">
+      <Value Profile="(Default)">100</Value>
+    </Setting>
+    <Setting Name="Noise_File_Activate" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="Noise_FileName" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="RTL_Frequency_Min" Type="System.Decimal" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="RTL_Frequency_Max" Type="System.Decimal" Scope="User">
+      <Value Profile="(Default)">1000000</Value>
+    </Setting>
+    <Setting Name="DUT_Frequency_Min" Type="System.Decimal" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="DUT_Frequency_Max" Type="System.Decimal" Scope="User">
+      <Value Profile="(Default)">1000000</Value>
+    </Setting>
+    <Setting Name="Modes" Type="System.Collections.Specialized.StringCollection" Scope="User">
+      <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;ArrayOfString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;string&gt;A;Measuring of Amplifiers in Direct Mode&lt;/string&gt;
+  &lt;string&gt;B;Measuring of Converters in Coverter Mode&lt;/string&gt;
+  &lt;string&gt;C;Measuring of Amplifiers with Converter Mode&lt;/string&gt;
+&lt;/ArrayOfString&gt;</Value>
+    </Setting>
+    <Setting Name="CAL_SampleCount_Min" Type="System.Decimal" Scope="User">
+      <Value Profile="(Default)">10</Value>
+    </Setting>
+    <Setting Name="CAL_SampleCount_Max" Type="System.Decimal" Scope="User">
+      <Value Profile="(Default)">100</Value>
+    </Setting>
+    <Setting Name="RTL_AGC_Auto" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="RTL_P_Max" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">100000</Value>
+    </Setting>
+    <Setting Name="RTL_SampleCount_Min" Type="System.Decimal" Scope="User">
+      <Value Profile="(Default)">1000</Value>
+    </Setting>
+    <Setting Name="RTL_SampleCount_Max" Type="System.Decimal" Scope="User">
+      <Value Profile="(Default)">2000000</Value>
+    </Setting>
+    <Setting Name="COM_DUT_Inverse" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="COM_Noise_Inverse" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="CAL_Logging" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="RTL_Logging" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="FFT_RealtimeDisplay" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="Smoothing_Min" Type="System.Decimal" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="Smoothing_Max" Type="System.Decimal" Scope="User">
+      <Value Profile="(Default)">10</Value>
+    </Setting>
+    <Setting Name="FirstRun" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="RTL_Logging_FileName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Values.csv</Value>
+    </Setting>
+    <Setting Name="CAL_Logging_FileName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Calibration.csv</Value>
+    </Setting>
+    <Setting Name="Tamb" Type="System.Decimal" Scope="User">
+      <Value Profile="(Default)">290</Value>
+    </Setting>
+    <Setting Name="T0" Type="System.Decimal" Scope="User">
+      <Value Profile="(Default)">290</Value>
+    </Setting>
+    <Setting Name="COM_Delay" Type="System.Decimal" Scope="User">
+      <Value Profile="(Default)">10</Value>
+    </Setting>
+    <Setting Name="RTL_Frequency_Step" Type="System.Decimal" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="RTL_Frequency_Start" Type="System.Decimal" Scope="User">
+      <Value Profile="(Default)">144</Value>
+    </Setting>
+    <Setting Name="RTL_Frequency_Stop" Type="System.Decimal" Scope="User">
+      <Value Profile="(Default)">144</Value>
+    </Setting>
+    <Setting Name="FFT_Filter" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="RTL_Devices" Type="System.Object" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="RTL_DeviceIndex" Type="System.UInt32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="RTL_Frequency" Type="System.Decimal" Scope="User">
+      <Value Profile="(Default)">144</Value>
+    </Setting>
+    <Setting Name="FFT_Filter_Threshold" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">2</Value>
+    </Setting>
+    <Setting Name="FFT_Filter_NotchWidth" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">512</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
