@@ -823,7 +823,7 @@ namespace CANFICore
                 {
                     ReportProgress((int)PROGRESS.ERROR, "Error: " + ex.Message);
                 }
-                Thread.Sleep(100);
+                Thread.Sleep(1);
             }
             // close device
             RTLCloseDevice();
