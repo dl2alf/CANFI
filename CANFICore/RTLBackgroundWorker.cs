@@ -467,6 +467,8 @@ namespace CANFICore
             double _magsum = 0;
             double _meansum_real = 0;
             double _meansum_imag = 0;
+			// define arrays
+			double[] c = new double[Buf.Length / 2];
 
             int Clip_I_0 = 0;
             int Clip_I_255 = 0;
@@ -487,7 +489,8 @@ namespace CANFICore
                 }
                 double real = Buf[i];
                 double imag = Buf[i + 1];
-                _magsum += real * real + imag * imag;
+				c[i/2] = real * real + imag * imag;
+				_magsum += c [i / 2];
                 _meansum_real += real;
                 _meansum_imag += imag;
                 // detect clipping - see RtlDevice.cs: *buf++ * 10 - 1275
@@ -543,12 +546,10 @@ namespace CANFICore
             // report results to main thread if needed
             if (Params.FFT_RealtimeDisplay)
             {
-                // define arrays
-                double[] c = new double[Buf.Length / 2];
                 // calculate PSD
                 for (int i = 0; i < c.Length; i++)
                 {
-                    c[i] = 10 * Math.Log10(Buf[i * 2] * Buf[i * 2] + Buf[i * 2 + 1] * Buf[i * 2 + 1]);
+                    c[i] = 10 * Math.Log10(c[i]);
                 }
                 // fold the results in-place to get a +/- center frequency display
                 int _halflen = c.Length / 2;
