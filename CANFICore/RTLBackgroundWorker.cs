@@ -452,14 +452,23 @@ namespace CANFICore
             MeasureResults.Timestamp = DateTime.UtcNow;
 
             // read samples into Buf
+			DateTime tick, tock;
+			tick = System.DateTime.Now;
             RTLReadSamples();
+			tock = System.DateTime.Now;
+			Console.WriteLine ("READ: "+tock.Subtract (tick).Milliseconds);
 
             // perform an in-place FFT
             FFT();
+			tock = System.DateTime.Now;
+			Console.WriteLine ("FFT: "+tock.Subtract (tick).Milliseconds);
 
             // perform FFT filter only when activated and Noise = OFF
             if (Params.FFT_Filter && !Noise)
                 FFT_Filter();
+
+			tock = System.DateTime.Now;
+			Console.WriteLine ("FILT: "+tock.Subtract (tick).Milliseconds);
 
             // set number samples read
             MeasureResults.SampleCount = Buf.Length / 2;
@@ -505,6 +514,9 @@ namespace CANFICore
                 _samplecount++;
             }
             
+			tock = System.DateTime.Now;
+			Console.WriteLine ("CLIP: "+tock.Subtract (tick).Milliseconds);
+
             // calculate DC values
             double DC_I = _meansum_real / ((double)_samplecount);
             double DC_Q = _meansum_imag / ((double)_samplecount);
@@ -578,6 +590,8 @@ namespace CANFICore
                 if ((Params.State == STATE.IDLE) || (Noise))
                     ReportProgress((int)PROGRESS.FFT, c);
             }
+			tock = System.DateTime.Now;
+			Console.WriteLine ("DISP: "+tock.Subtract (tick).Milliseconds);
 
             // return measure results for local use
             return MeasureResults;
