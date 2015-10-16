@@ -805,6 +805,8 @@ namespace CANFICore
             // set initial frequeny and gain
             Frequency = Params.Frequency_Start;
             TunerGain = Params.TunerGain;
+            decimal Frequency_tuned = 0;
+
             // configure device
             RTLConfigureDevice();
             while (!CancellationPending)
@@ -813,7 +815,11 @@ namespace CANFICore
                 {
                     T_Start = DateTime.UtcNow;
                     // set tuner frequency
+                    if (Frequency != Frequency_tuned)
+                    {
                         RTLSetCenterFreq(System.Convert.ToUInt32(Frequency * 1000000));
+                        Frequency_tuned = Frequency;
+                    }
                     // measure power
                     RTLMeasurePower();
                     T_Stop = DateTime.UtcNow;
