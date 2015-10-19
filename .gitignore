@@ -48,3 +48,7 @@ Temporary Items
 
 # rtlsdr library (copyright issues)
 rtlsdr*.*
+
+# Visual Studio
+*.suo
+
