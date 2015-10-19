@@ -189,43 +189,58 @@ namespace CANFI
             }
             else
             {
-                // check if noise source calibration values are available
-                if (NoiseCal.Count > 0)
+                try
                 {
-                    // disable ENR input controls (they are not needed, values are taken from file)
-                    ud_RTL_P_ENR.Enabled = false;
-                    ud_DUT_P_ENR.Enabled = false;
-                    try
-                    {
-                        // calculate new ENR values from noise source calibration table and display them
-                        ud_RTL_P_ENR.Value = System.Convert.ToDecimal(NoiseCal_GetENR(System.Convert.ToDouble(Properties.Settings.Default.RTL_Frequency)));
-                        ud_DUT_P_ENR.Value = System.Convert.ToDecimal(NoiseCal_GetENR(System.Convert.ToDouble(Properties.Settings.Default.DUT_Frequency)));
-                    }
-                    catch (Exception ex)
-                    {
-                        // show error message if no noise source calibration values are available for the current frequencies
-                        Error(ex.Message + ": " + Properties.Settings.Default.RTL_Frequency.ToString() + "," + Properties.Settings.Default.DUT_Frequency.ToString());
-                    }
-                }
-                else
-                {
-                    // manual ENR input necessary
-                    // enable/disable ENR input controls according to current mode
                     switch (MMode)
                     {
                         case MMODE.A:
-                            ud_RTL_P_ENR.Enabled = true;
-                            ud_DUT_P_ENR.Enabled = false;
+                            if (Properties.Settings.Default.Noise_File_Activate)
+                            {
+                                // disable ENR input controls (they are not needed, values are taken from file)
+                                ud_RTL_P_ENR.Enabled = false;
+                                ud_DUT_P_ENR.Enabled = false;
+                                ud_RTL_P_ENR.Value = (decimal)NoiseCal_GetENR(System.Convert.ToDouble(Properties.Settings.Default.RTL_Frequency));
+                                ud_DUT_P_ENR.Value = (decimal)NoiseCal_GetENR(System.Convert.ToDouble(Properties.Settings.Default.RTL_Frequency));
+                            }
+                            else
+                            {
+                                ud_RTL_P_ENR.Enabled = true;
+                                ud_DUT_P_ENR.Enabled = false;
+                            }
                             break;
                         case MMODE.B:
-                            ud_RTL_P_ENR.Enabled = true;
-                            ud_DUT_P_ENR.Enabled = true;
+                            if (Properties.Settings.Default.Noise_File_Activate)
+                            {
+                                // disable ENR input controls (they are not needed, values are taken from file)
+                                ud_RTL_P_ENR.Enabled = false;
+                                ud_DUT_P_ENR.Enabled = false;
+                                ud_RTL_P_ENR.Value = (decimal)NoiseCal_GetENR(System.Convert.ToDouble(Properties.Settings.Default.RTL_Frequency));
+                                ud_DUT_P_ENR.Value = (decimal)NoiseCal_GetENR(System.Convert.ToDouble(Properties.Settings.Default.DUT_Frequency));
+                            }
+                            else
+                            {
+                                ud_RTL_P_ENR.Enabled = true;
+                                ud_DUT_P_ENR.Enabled = true;
+                            }
                             break;
                         case MMODE.C:
-                            ud_RTL_P_ENR.Enabled = true;
-                            ud_DUT_P_ENR.Enabled = true;
+                            if (Properties.Settings.Default.Noise_File_Activate)
+                            {
+                                ud_RTL_P_ENR.Value = (decimal)NoiseCal_GetENR(System.Convert.ToDouble(Properties.Settings.Default.DUT_Frequency));
+                                ud_DUT_P_ENR.Value = (decimal)NoiseCal_GetENR(System.Convert.ToDouble(Properties.Settings.Default.DUT_Frequency));
+                            }
+                            else
+                            {
+                                ud_RTL_P_ENR.Enabled = true;
+                                ud_DUT_P_ENR.Enabled = true;
+                            }
                             break;
                     }
+                }
+                catch (Exception ex)
+                {
+                    // show error message if no noise source calibration values are available for the current frequencies
+                    Error(ex.Message + ": " + Properties.Settings.Default.RTL_Frequency.ToString() + "," + Properties.Settings.Default.DUT_Frequency.ToString());
                 }
                 // update frequency up/down input controls according to mode
                 switch (MMode)
@@ -692,38 +707,7 @@ namespace CANFI
             entry.P_OFF.AddSample(P_OFF);
             entry.P_ON.AddSample(P_ON);
             // get proper ENR values according to MMode
-            double CAL_ENR = 0;
-            try
-            {
-                switch (MMode)
-                {
-                    case MMODE.A:
-                    case MMODE.B:
-                        if (Properties.Settings.Default.Noise_File_Activate)
-                        {
-                            CAL_ENR = NoiseCal_GetENR(System.Convert.ToDouble(Properties.Settings.Default.RTL_Frequency));
-                        }
-                        else
-                        {
-                            CAL_ENR = System.Convert.ToDouble(ud_RTL_P_ENR.Value);
-                        }
-                        break;
-                    case MMODE.C:
-                        if (Properties.Settings.Default.Noise_File_Activate)
-                        {
-                            CAL_ENR = NoiseCal_GetENR(System.Convert.ToDouble(Properties.Settings.Default.DUT_Frequency));
-                        }
-                        else
-                        {
-                            CAL_ENR = System.Convert.ToDouble(ud_DUT_P_ENR.Value);
-                        }
-                        break;
-                }
-            }
-            catch
-            {
-                // do nothing if failed
-            }
+            double CAL_ENR = SupportFunctions.ToLinear(System.Convert.ToDouble(ud_RTL_P_ENR.Value));
             entry.ENR = CAL_ENR;
             // try to calculate rest of values
             try
@@ -808,54 +792,8 @@ namespace CANFI
             }
 
             // get proper ENR values according to MMode
-            double P_ENR = 0;
-            double CAL_ENR = 0;
-            try
-            {
-                switch (MMode)
-                {
-                    case MMODE.A:
-                        if (Properties.Settings.Default.Noise_File_Activate)
-                        {
-                            P_ENR = SupportFunctions.ToLinear(NoiseCal_GetENR(System.Convert.ToDouble(Properties.Settings.Default.RTL_Frequency)));
-                            CAL_ENR = SupportFunctions.ToLinear(NoiseCal_GetENR(System.Convert.ToDouble(Properties.Settings.Default.RTL_Frequency)));
-                        }
-                        else
-                        {
-                            P_ENR = SupportFunctions.ToLinear(System.Convert.ToDouble(ud_RTL_P_ENR.Value));
-                            CAL_ENR = SupportFunctions.ToLinear(System.Convert.ToDouble(ud_RTL_P_ENR.Value));
-                        }
-                        break;
-                    case MMODE.B:
-                        if (Properties.Settings.Default.Noise_File_Activate)
-                        {
-                            P_ENR = SupportFunctions.ToLinear(NoiseCal_GetENR(System.Convert.ToDouble(Properties.Settings.Default.DUT_Frequency)));
-                            CAL_ENR = SupportFunctions.ToLinear(NoiseCal_GetENR(System.Convert.ToDouble(Properties.Settings.Default.RTL_Frequency)));
-                        }
-                        else
-                        {
-                            P_ENR = SupportFunctions.ToLinear(System.Convert.ToDouble(ud_DUT_P_ENR.Value));
-                            CAL_ENR = SupportFunctions.ToLinear(System.Convert.ToDouble(ud_RTL_P_ENR.Value));
-                        }
-                        break;
-                    case MMODE.C:
-                        if (Properties.Settings.Default.Noise_File_Activate)
-                        {
-                            P_ENR = SupportFunctions.ToLinear(NoiseCal_GetENR(System.Convert.ToDouble(Properties.Settings.Default.DUT_Frequency)));
-                            CAL_ENR = SupportFunctions.ToLinear(NoiseCal_GetENR(System.Convert.ToDouble(Properties.Settings.Default.DUT_Frequency)));
-                        }
-                        else
-                        {
-                            P_ENR = SupportFunctions.ToLinear(System.Convert.ToDouble(ud_DUT_P_ENR.Value));
-                            CAL_ENR = SupportFunctions.ToLinear(System.Convert.ToDouble(ud_DUT_P_ENR.Value));
-                        }
-                        break;
-                }
-            }
-            catch
-            {
-                // do nothing if failed
-            }
+            double P_ENR = SupportFunctions.ToLinear(System.Convert.ToDouble(ud_DUT_P_ENR.Value));
+            double CAL_ENR = SupportFunctions.ToLinear(System.Convert.ToDouble(ud_RTL_P_ENR.Value));
             // calculte and display gain and NF
             // temperature correction included 2014-09-01
             double F = 0;
@@ -875,7 +813,7 @@ namespace CANFI
                         Y = 0;
                         Y = P_ON / P_OFF;
 //                        nf = CAL_ENR / (Y - 1);
-                        F = CAL_ENR / (Y - 1) + 1 - T_amb / T_0;
+                        F = P_ENR / (Y - 1) + 1 - T_amb / T_0;
                         if ((double.IsNaN(F)) || double.IsInfinity(F))
                             F = 1;
                         // add NF to floating average
@@ -915,7 +853,7 @@ namespace CANFI
                         // add gain to average
                         Av_G.AddSample(G);
                         Y = P_ON / P_OFF;
-                        F = CAL_ENR / (Y - 1) - (P_ENR / (CAL_Y - 1) - T_amb/T_0) / G + 1 - T_amb/T_0;
+                        F = P_ENR / (Y - 1) - (CAL_ENR / (CAL_Y - 1) - T_amb/T_0) / G + 1 - T_amb/T_0;
                         if ((double.IsNaN(F)) || double.IsInfinity(F))
                             F = 1;
                         // add NF to average
@@ -1290,10 +1228,6 @@ namespace CANFI
             // reset state uncalibrated when frequency has changed
             Calibration.Clear();
             CalState = CALSTATE.NONE;
-            // get new noise value
-            decimal d  = (decimal)NoiseCal_GetENR((double)Properties.Settings.Default.RTL_Frequency);
-            if (d != 0)
-                ud_RTL_P_ENR.Value = d;
         }
 
         private void ud_DUT_Frequency_ValueChanged(object sender, EventArgs e)
@@ -1301,10 +1235,6 @@ namespace CANFI
             // reset state uncalibrated when frequency has changed
             Calibration.Clear();
             CalState = CALSTATE.NONE;
-            // get new noise value
-            decimal d = (decimal)NoiseCal_GetENR((double)Properties.Settings.Default.DUT_Frequency);
-            if (d != 0)
-                ud_DUT_P_ENR.Value = d;
         }
 
         private void ud_RTL_Frequency_KeyUp(object sender, KeyEventArgs e)
