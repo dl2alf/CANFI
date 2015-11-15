@@ -50,8 +50,6 @@ namespace CANFI
         private decimal F_OFF;
 
         // averaging objects for display
-        private SimpleMovingAverage Av_P_ON;
-        private SimpleMovingAverage Av_P_OFF;
         private SimpleMovingAverage Av_G;
         private SimpleMovingAverage Av_F;
 
@@ -127,16 +125,6 @@ namespace CANFI
                 }
             }
 
-            // set initial display
-
-            lbl_DUT_Frequency.Text = "-----.---";
-            lbl_Gain.Text = "--.--";
-            lbl_NF.Text = "--.--";
-
-            lbl_RTL_Gain.Text = "--.--";
-            lbl_RTL_P_ON.Text = "--.--";
-            lbl_RTL_P_OFF.Text = "--.--";
-
             // initialize Idle event handler
             Application.Idle += new EventHandler(Application_Idle);
 
@@ -164,37 +152,45 @@ namespace CANFI
         {
             // check if a rtlsdr.dll version is already in the program's directory
             // suggest automatic download
+            //
+            // TODO: modify for running under Linux (different file names)
+            //
             string DLLFileName = "rtlsdr.dll";
             string DLLZipFileName = "rtlsdr.zip";
+            // get major/minor version info as string "Vx.x"
             string version = "V" + Assembly.GetExecutingAssembly().GetName().Version.Major.ToString() + "." + Assembly.GetExecutingAssembly().GetName().Version.Minor.ToString();
+            // search for DLL on program's main directory
             string[] files = Directory.GetFiles(Application.StartupPath, DLLFileName);
             if (files.Length == 0)
             {
+                // show message box if not found
                 if (MessageBox.Show("The GPL-licensed <rtlsdr.dll> is not part of this distribution and is missing in the program's main directory (See http://www.canfi.eu for details). \n\nDo you want to download the file from the repository?", "DLL is missing", MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.Yes)
                 {
                     try
                     {
+                        // try to download from repository
                         using (WebClient client = new WebClient())
                         {
-                            // first, get the textfile with the download url
+                            // first, get the textfile with the download urls
                             string urls = client.DownloadString(Properties.Settings.Default.RTL_DLL_DownloadInfo_URL);
-                            // get download info for the main version
+                            // get download info (all versions)
                             string[] versions = urls.Split('\n');
+                            // iterate through versions 
                             for (int i = 0; i < versions.Length; i++)
                             {
                                 string[] url = versions[i].Split(';');
-                                // check version
+                                // check if version info matches current version
                                 if (url[0] == version)
                                 {
-                                    // download the file from url (zipped or unzipped)
+                                    // dowload file (zipped or unzipped)
                                     if (url[1].Contains(".zip"))
                                     {
+                                        // download the zip file from url
                                         client.DownloadFile(url[1], Application.StartupPath + Path.DirectorySeparatorChar + DLLZipFileName);
                                         // unzip the file automatically
                                         using (ZipFile zip = ZipFile.Read(Application.StartupPath + Path.DirectorySeparatorChar + DLLZipFileName))
                                         {
-                                            // here, we extract every entry, but we could extract conditionally
-                                            // based on entry name, size, date, checkbox status, etc.  
+                                            // extract every entry, should be only one
                                             foreach (ZipEntry ze in zip)
                                             {
                                                 ze.Extract(Application.StartupPath, ExtractExistingFileAction.OverwriteSilently);
@@ -214,14 +210,26 @@ namespace CANFI
                     }
                     catch (Exception ex)
                     {
+                        // something was going wrong --> show error message
                         MessageBox.Show(ex.Message, "Download of" + DLLFileName);
                     }
                 }
                 else
                 {
+                    // automatic download declined by user --> close application
                     this.Close();
                 }
             }
+
+            // set initial display
+
+            lbl_DUT_Frequency.Text = "-----.---";
+            lbl_Gain.Text = "--.--";
+            lbl_NF.Text = "--.--";
+
+            lbl_RTL_Gain.Text = "--.--";
+            lbl_RTL_P_ON.Text = "--.--";
+            lbl_RTL_P_OFF.Text = "--.--";
 
             // get basic RTL-Stick information
             Start();
@@ -799,8 +807,6 @@ namespace CANFI
         public void InitAverages()
         {
             // initialize averages for display
-            Av_P_ON = new SimpleMovingAverage((int)Math.Pow(2,(double) Properties.Settings.Default.Smoothing));
-            Av_P_OFF = new SimpleMovingAverage((int)Math.Pow(2, (double)Properties.Settings.Default.Smoothing));
             Av_G = new SimpleMovingAverage((int)Math.Pow(2, (double)Properties.Settings.Default.Smoothing));
             Av_F = new SimpleMovingAverage((int)Math.Pow(2, (double)Properties.Settings.Default.Smoothing));
         }
@@ -987,67 +993,79 @@ namespace CANFI
             }
             // update tuner display
             lbl_RTL_Gain.Text = (r.TunerGain / 10.0).ToString("F2", CultureInfo.InvariantCulture);
-            if (r.Noise_ON)
-            {
-                Av_P_ON.AddSample(r.Power);
-                lbl_RTL_P_ON.Text = SupportFunctions.TodB(r.Power).ToString("F2", CultureInfo.InvariantCulture);
-                lbl_RTL_Status.ForeColor = Color.Chartreuse;
-                lbl_RTL_Status.Text = "Valid";
-            }
-            else
-            {
-                P_OFF = r.Power;
-                G_OFF = r.TunerGain;
-                Av_P_OFF.AddSample(r.Power);
-                lbl_RTL_P_OFF.Text = SupportFunctions.TodB(r.Power).ToString("F2", CultureInfo.InvariantCulture);
-            }
-
+            lbl_RTL_P_ON.Text = SupportFunctions.TodB(P_ON).ToString("F2", CultureInfo.InvariantCulture);
+            lbl_RTL_P_OFF.Text = SupportFunctions.TodB(P_OFF).ToString("F2", CultureInfo.InvariantCulture);
+            lbl_RTL_Status.ForeColor = Color.Chartreuse;
+            lbl_RTL_Status.Text = "Valid";
             // get proper ENR values according to Properties.Settings.Default.Mode
+            // this should always be the ENR at DUT frequency
             double P_ENR = SupportFunctions.ToLinear(System.Convert.ToDouble(ud_DUT_P_ENR.Value));
-            // calculte and display gain and NF
-            // temperature correction included 2014-09-01
-            double F = 0;
-            double G = 0;
-            double Y = 0;
-            double T_amb = (double)Properties.Settings.Default.Tamb;
-            double T_0 = (double)Properties.Settings.Default.T0;
-            double yf = 0;
-            double yg = 0;
             try
             {
+                // calculte and display gain and NF
+                // temperature correction included 2014-09-01
+                double T_amb = (double)Properties.Settings.Default.Tamb;
+                double T_0 = (double)Properties.Settings.Default.T0;
+                double Y = 1;
+                double F = 1;
+                double G = 0;
+                double CAL_ON = 0;
+                double CAL_OFF = 0;
+                double CAL_Y = 0;
+                double CAL_F = 0;
+                double CAL_ENR = 0;
+                // calculate Y-factor
+                Y = P_ON / P_OFF;
+                // calculate F (including temperature correction)
+                F = P_ENR / (Y - 1) + 1 - T_amb / T_0;
+                // reset F to 1 if fails
+                if ((double.IsNaN(F)) || double.IsInfinity(F))
+                    F = 1;
+                // check calibration state and do corrections
+                if (CalState == CALSTATE.CALIBRATED)
+                {
+                    // try to get calibration values
+                    CalEntry entry = Calibration[r.Frequency, r.TunerGain];
+                    if (entry != null)
+                    {
+                        CAL_ON = entry.P_ON.Average;
+                        CAL_OFF = entry.P_OFF.Average;
+                        CAL_Y = entry.Y;
+                        CAL_F = entry.F;
+                        CAL_ENR = entry.ENR;
+                    }
+                    else
+                    {
+                        // set to default if failed
+                        CAL_ON = 0;
+                        CAL_OFF = 0;
+                        CAL_Y = 1;
+                        CAL_F = 1;
+                    }
+                    // calibrated mode --> calculate gain value too
+                    G = (P_ON - P_OFF) / (CAL_ON - CAL_OFF) * P_ENR / CAL_ENR;
+                    // add samples for average
+                    if ((double.IsNaN(G)) || (double.IsInfinity(G)))
+                        G = 1;
+                    // add gain to average
+                    Av_G.AddSample(G);
+                    // correct F according to CAL_F and calculated G
+                    F = F - (CAL_F - T_amb / T_0) / G;
+                    if ((double.IsNaN(F)) || double.IsInfinity(F))
+                        F = 1;
+                }
+                // add F to floating average
+                Av_F.AddSample(F);
+                // do other calibration state specific stuff
                 switch (CalState)
                 {
                     case CALSTATE.NONE:
-                        // calculate and show results if values available
-                        // not calibrated --> gain value is not available 
-                        F = 0;
-                        G = 0;
-                        Y = 0;
-                        Y = P_ON / P_OFF;
-                        F = P_ENR / (Y - 1) + 1 - T_amb / T_0;
-                        if ((double.IsNaN(F)) || double.IsInfinity(F))
-                            F = 1;
-                        // add NF to floating average
-                        Av_F.AddSample(F);
-                        // update main display
-                        switch (Properties.Settings.Default.Mode)
-                        {
-                            case MMODE.A: 
-                                lbl_DUT_Frequency.Text = r.Frequency.ToString("00000.000", Application.CurrentCulture);
-                                break;
-                            case MMODE.B:
-                            case MMODE.C:
-                                lbl_DUT_Frequency.Text = (r.Frequency + Properties.Settings.Default.DUT_Frequency-Properties.Settings.Default.RTL_Frequency).ToString("00000.000", Application.CurrentCulture);
-                                break;
-                        }
                         lbl_Gain.Text = "--.--";
-                        lbl_NF.Text = SupportFunctions.TodB(Av_F.Average).ToString("F2", CultureInfo.InvariantCulture);
-                        // update sweep tab when in sweep mode
-                        if (Properties.Settings.Default.SweepMode != SMODE.NONE)
+                        // update sweep tab only when in sweep mode and NOISE_ON and last measurement cycle
+                        if ((Properties.Settings.Default.SweepMode != SMODE.NONE) && r.Noise_ON && (r.Cycle == (int)Properties.Settings.Default.Smoothing - 1))
                         {
                             lbl_Sweep_Gain.Text = "--.--";
-                            lbl_Sweep_NF.Text = SupportFunctions.TodB(Av_F.Average).ToString("F2", CultureInfo.InvariantCulture);
-                            yf = SupportFunctions.TodB(Av_F.Average);
+                            double yf = SupportFunctions.TodB(Av_F.Average);
                             if (!Double.IsNaN(yf))
                             {
                                 // try to find and update a point with the same X-value
@@ -1068,68 +1086,13 @@ namespace CANFI
                         }
                         break;
                     case CALSTATE.CALIBRATED:
-                        //  calculate and show results if values available
-                        // calibrated mode --> calculate gain value too
-                        double CAL_ON = 0;
-                        double CAL_OFF = 0;
-                        double CAL_Y = 0;
-                        double CAL_F = 0;
-                        double CAL_ENR = 0;
-                        // try to get calibration values
-                        CalEntry entry = Calibration[r.Frequency, r.TunerGain];
-                        if (entry != null)
-                        {
-                            CAL_ON = entry.P_ON.Average;
-                            CAL_OFF = entry.P_OFF.Average;
-                            CAL_Y = entry.Y;
-                            CAL_F = entry.F;
-                            CAL_ENR = entry.ENR;
-                        }
-                        else
-                        {
-                            // set to default if failed
-                            CAL_ON = 0;
-                            CAL_OFF = 0;
-                            CAL_Y = 1;
-                            CAL_F = 1;
-                        }
-                        // calculate and show results if values available
-                        F = 0;
-                        G = 0;
-                        Y = 0;
-                        G = (P_ON - P_OFF) / (CAL_ON - CAL_OFF) * P_ENR / CAL_ENR;
-                        // add samples for average
-                        if ((double.IsNaN(G)) || (double.IsInfinity(G)))
-                            G = 1;
-                        // add gain to average
-                        Av_G.AddSample(G);
-                        Y = P_ON / P_OFF;
-                        // F = P_ENR / (Y - 1) - (CAL_ENR / (CAL_Y - 1) - T_amb/T_0) / G + 1 - T_amb/T_0;
-                        F = P_ENR / (Y - 1) - (CAL_F - T_amb/T_0) / G + 1 - T_amb/T_0;
-                        if ((double.IsNaN(F)) || double.IsInfinity(F))
-                            F = 1;
-                        // add NF to average
-                        Av_F.AddSample(F);
-                        // update main display 
-                        switch (Properties.Settings.Default.Mode)
-                        {
-                            case MMODE.A: 
-                                lbl_DUT_Frequency.Text = r.Frequency.ToString("00000.000", Application.CurrentCulture);
-                                break;
-                            case MMODE.B:
-                            case MMODE.C:
-                                lbl_DUT_Frequency.Text = (r.Frequency + Properties.Settings.Default.DUT_Frequency-Properties.Settings.Default.RTL_Frequency).ToString("00000.000", Application.CurrentCulture);
-                                break;
-                        }
                         lbl_Gain.Text = SupportFunctions.TodB(Av_G.Average).ToString("F2", CultureInfo.InvariantCulture);
-                        lbl_NF.Text = SupportFunctions.TodB(Av_F.Average).ToString("F2", CultureInfo.InvariantCulture);
-                        // update sweep tab when in sweep mode
-                        if (Properties.Settings.Default.SweepMode != SMODE.NONE)
+                        // update sweep tab only when in sweep mode and NOISE_ON and last measurement cycle
+                        if ((Properties.Settings.Default.SweepMode != SMODE.NONE) && r.Noise_ON && (r.Cycle == (int)Properties.Settings.Default.Smoothing - 1))
                         {
-                            lbl_Sweep_NF.Text = SupportFunctions.TodB(Av_F.Average).ToString("F2", CultureInfo.InvariantCulture);
                             lbl_Sweep_Gain.Text = SupportFunctions.TodB(Av_G.Average).ToString("F2", CultureInfo.InvariantCulture);
-                            yf = SupportFunctions.TodB(Av_F.Average);
-                            yg = SupportFunctions.TodB(Av_G.Average);
+                            double yf = SupportFunctions.TodB(Av_F.Average);
+                            double yg = SupportFunctions.TodB(Av_G.Average);
                             // add or update values to sweep chart
                             if (!Double.IsNaN(yf))
                             {
@@ -1171,37 +1134,51 @@ namespace CANFI
                         break;
 
                 }
+                // update rest of main display
+                switch (Properties.Settings.Default.Mode)
+                {
+                    case MMODE.A:
+                        lbl_DUT_Frequency.Text = r.Frequency.ToString("00000.000", Application.CurrentCulture);
+                        break;
+                    case MMODE.B:
+                    case MMODE.C:
+                        lbl_DUT_Frequency.Text = (r.Frequency + Properties.Settings.Default.DUT_Frequency - Properties.Settings.Default.RTL_Frequency).ToString("00000.000", Application.CurrentCulture);
+                        break;
+                }
+                lbl_NF.Text = SupportFunctions.TodB(Av_F.Average).ToString("F2", CultureInfo.InvariantCulture);
+                lbl_Sweep_NF.Text = SupportFunctions.TodB(Av_F.Average).ToString("F2", CultureInfo.InvariantCulture);
+
+                // write values to file if enabled
+                if (Properties.Settings.Default.RTL_Logging)
+                {
+                    // get measure frequency
+                    double f = 0;
+                    switch (Properties.Settings.Default.Mode)
+                    {
+                        case MMODE.A:
+                            f = Decimal.ToDouble(r.Frequency);
+                            break;
+                        case MMODE.B:
+                            f = Decimal.ToDouble(Properties.Settings.Default.DUT_Frequency);
+                            break;
+                        case MMODE.C:
+                            f = Decimal.ToDouble(Properties.Settings.Default.DUT_Frequency);
+                            break;
+                    }
+                    Values.WriteLine(DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss,fff") + ";" +
+                        SupportFunctions.TodB(P_ON).ToString("F2", LocalCulture) + ";" +
+                        SupportFunctions.TodB(P_OFF).ToString("F2", LocalCulture) + ";" +
+                        SupportFunctions.TodB(G).ToString("F2", LocalCulture) + ";" +
+                        SupportFunctions.TodB(F).ToString("F2", LocalCulture) + ";" +
+                        (Properties.Settings.Default.RTL_TunerGain / 10).ToString("F2", LocalCulture) + ";" +
+                        f.ToString("F3", LocalCulture) + ";" +
+                        SupportFunctions.TodB(P_ENR).ToString("F2", LocalCulture));
+                    Values.Flush();
+                }
             }
             catch
             {
                 // do nothing if failed
-            }
-            // write values to file if enabled
-            if (Properties.Settings.Default.RTL_Logging)
-            {
-                // get measure frequency
-                double f = 0;
-                switch (Properties.Settings.Default.Mode)
-                {
-                    case MMODE.A:
-                        f = Decimal.ToDouble(r.Frequency);
-                        break;
-                    case MMODE.B:
-                        f = Decimal.ToDouble(Properties.Settings.Default.DUT_Frequency);
-                        break;
-                    case MMODE.C:
-                        f = Decimal.ToDouble(Properties.Settings.Default.DUT_Frequency);
-                        break;
-                }
-                Values.WriteLine(DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss,fff") + ";" +
-                    SupportFunctions.TodB(P_ON).ToString("F2", LocalCulture) + ";" +
-                    SupportFunctions.TodB(P_OFF).ToString("F2", LocalCulture) + ";" +
-                    SupportFunctions.TodB(G).ToString("F2", LocalCulture) + ";" +
-                    SupportFunctions.TodB(F).ToString("F2", LocalCulture) + ";" +
-                    (Properties.Settings.Default.RTL_TunerGain/10).ToString("F2", LocalCulture) + ";" +
-                    f.ToString("F3", LocalCulture) + ";" +
-                    SupportFunctions.TodB(P_ENR).ToString("F2", LocalCulture));
-                Values.Flush();
             }
         }
 

@@ -29,7 +29,7 @@ namespace CANFICore
         public decimal Frequency_Stop;
         public decimal Frequency_Step;
 
-        // cycles until frequency change is performed (relevant in sweep mode only)
+        // number of cycles until frequency change is performed (relevant in sweep mode only)
         public decimal Cycles;
 
         // usage of RTL automatic gain control (legacy, should be OFF)
@@ -131,6 +131,8 @@ namespace CANFICore
         // current tuner gain
         public int TunerGain;
 
+        // current measurement cycle
+        public int Cycle;
     }
 
     // used to report status messages from RTLWorker to MainDlg
@@ -222,8 +224,12 @@ namespace CANFICore
 
         private bool SupportsOffsetTuning = false;
 
+        // timestamps for runtime measurement
         private DateTime T_Start;
         private DateTime T_Stop;
+
+        // current measurement cycle;
+        private int Cycle;
 
         public RTLWorker()
             : base()
@@ -231,6 +237,7 @@ namespace CANFICore
             this.WorkerReportsProgress = true;
             this.WorkerSupportsCancellation = true;
             this.Buf = null;
+            Cycle = 0;
         }
 
         #region RTL functions
@@ -574,6 +581,9 @@ namespace CANFICore
 
             // set tuner gain
             MeasureResults.TunerGain = TunerGain;
+
+            // set measurement cycle info
+            MeasureResults.Cycle = Cycle;
 
             // check count of clipped values > allowed --> set status to clipped and invalidate measure results
             // also: if measured power > maxpower allowed for the device (without detected clipping)
@@ -1135,7 +1145,8 @@ namespace CANFICore
                 Frequency = Params.Frequency_Start;
                 do
                 {
-                    decimal i = 0;
+                    // reset measurement cycle
+                    Cycle = 0;
                     do
                     {
                         try
@@ -1161,9 +1172,9 @@ namespace CANFICore
                             // report error to main thread
                             ReportProgress((int)PROGRESS.ERROR, "Error: " + ex.Message);
                         }
-                        i++;
+                        Cycle++;
                     }
-                    while (!CancellationPending && (i < Params.Cycles));
+                    while (!CancellationPending && (Cycle < Params.Cycles));
                     Frequency += Params.Frequency_Step;
                 }
                 while (!CancellationPending && (Frequency < Params.Frequency_Stop));
