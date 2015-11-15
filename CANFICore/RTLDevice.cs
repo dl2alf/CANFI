@@ -86,16 +86,20 @@ namespace CANFICore
         public int GainSumE4000(int[] gains)
         {
             // sum up and correct gain values for E4000
+            // 2015-11-15: do not modify gain settings table while summarizing
             int _sum = 0;
+            int g = 0;
             for (int i = 0; i < gains.Length; i++)
             {
+                // get gain by default
+                g = gains[i];
                 // correct LNA gain 30 >> 25dB
-                if ((i == 0) && (gains[i] == 300))
-                    gains[i] = 250;
+                if ((i == 0) && (g == 300))
+                    g = 250;
                 // correct Mixer gain 4 >> 5dB
-                if ((i == 1) && (gains[i] == 40))
-                    gains[i] = 50;
-                _sum += gains[i];
+                if ((i == 1) && (g == 40))
+                    g = 50;
+                _sum += g;
             }
             _sum -= 420;
             return _sum;
@@ -150,6 +154,7 @@ namespace CANFICore
         public RtlSdrGainMode GainMode { get; private set; }
         public RTLGainStages GainStages { get; private set; }
         public RTLTunerGains TunerGains { get; private set; }
+        public double MaxPower { get; private set; }
 
         public static RTLDevice[] GetActiveDevices()
         {
@@ -177,6 +182,7 @@ namespace CANFICore
                     RTLGainStages _gainstages = new RTLGainStages();
                     RTLTunerGains _tunergains = new RTLTunerGains();
                     RtlSdrGainMode _gainmode = RtlSdrGainMode.GAIN_MODE_MANUAL;
+                    double _maxpower = 0;
                     // try to get all possible gain settings for all stages
                     // requires special version of rtlsdr.dll
                     try
@@ -248,7 +254,7 @@ namespace CANFICore
                                                 if (!_gainstages.ValidateGain(_gainstages[index], gains[index]))
                                                     throw (new InvalidOperationException("Tuner type: " + _tunertype + "\n" + "Filename: " + filename + "\n" + "Gain entry is not valid for this stage[ " + _gainstages[index] + "] in line: " + s));
                                             }
-                                            // add them to TunerGains object
+                                            // sum up and correct tuner gains
                                             int _gainsum = 0;
                                             switch (_tunertype)
                                             {
@@ -262,7 +268,7 @@ namespace CANFICore
                                                     _gainsum = _gainstages.GainSumDefault(gains);
                                                     break;
                                             }
-
+                                            // add them to TunerGains object
                                             _tunergains.AddGains(_gainsum, gains);
                                         }
                                         catch (Exception ex)
@@ -328,6 +334,19 @@ namespace CANFICore
                             _gainmode = RtlSdrGainMode.GAIN_MODE_MANUAL;
                         }
                     }
+                    // set MaxGain according to tuner type
+                    switch (_tunertype)
+                    {
+                        case RtlSdrTunerType.E4000:
+                            _maxpower = SupportFunctions.ToLinear(50);
+                            break;
+                        case RtlSdrTunerType.R820T:
+                            _maxpower = SupportFunctions.ToLinear(45);
+                            break;
+                        default:
+                            _maxpower = SupportFunctions.ToLinear(50);
+                            break;
+                    }
                     // initialize new RTLDevice entry
                     _result[i] = new RTLDevice
                     {
@@ -339,7 +358,8 @@ namespace CANFICore
                         Serial = _serial.ToString(),
                         GainMode = _gainmode,
                         GainStages = _gainstages,
-                        TunerGains = _tunergains
+                        TunerGains = _tunergains,
+                        MaxPower = _maxpower
                     };
                 }
                 finally

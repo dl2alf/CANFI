@@ -9,8 +9,10 @@ using System.Globalization;
 using System.Drawing;
 using System.Collections;
 using System.Collections.Generic;
+using System.Net;
 using Clifton.Tools.Data;
 using CANFICore;
+using Ionic.Zip;
 
 namespace CANFI
 {
@@ -18,8 +20,6 @@ namespace CANFI
 
     public unsafe partial class MainForm : Form
     {
-        // CANFI's mode
-        public MMODE MMode;
 
         // CANFI's current state
         public STATE State;
@@ -53,7 +53,7 @@ namespace CANFI
         private SimpleMovingAverage Av_P_ON;
         private SimpleMovingAverage Av_P_OFF;
         private SimpleMovingAverage Av_G;
-        private SimpleMovingAverage Av_NF;
+        private SimpleMovingAverage Av_F;
 
         // dictonary for noise source calibration values
         private Dictionary<double, double> NoiseCal = new Dictionary<double, double>();
@@ -92,10 +92,25 @@ namespace CANFI
                 MessageBox.Show("Exception: " + ex.Message + "\nInner:" + ex.InnerException.Message, "Init");
             }
 
-            
-            // initialize MMode combobox
-            cbb_MMode.Items.AddRange(Enum.GetNames(typeof(MMODE)));
+            // reset sweep mode to NONE and save settings
+            Properties.Settings.Default.SweepMode = SMODE.NONE;
+            Properties.Settings.Default.Save();
+
+            // set initial mode and state
+            State = STATE.INIT;
+            CalState = CALSTATE.NONE;
+
+            // initialize Properties.Settings.Default.Mode combobox
+            cbb_MMode.Items.Add(MMODE.A);
+            cbb_MMode.Items.Add(MMODE.B);
+            cbb_MMode.Items.Add(MMODE.C);
             cbb_MMode.SelectedItem = Properties.Settings.Default.Mode;
+
+            // initialize Properties.Settings.Default.SweepMode combobox
+            cbb_SMode.Items.Add(SMODE.NONE);
+            cbb_SMode.Items.Add(SMODE.SINGLE);
+            cbb_SMode.Items.Add(SMODE.CONTINUOS);
+            cbb_SMode.SelectedItem = Properties.Settings.Default.SweepMode;
 
             // initialize mode descriptors
             foreach (string item in Properties.Settings.Default.Modes)
@@ -143,21 +158,80 @@ namespace CANFI
             {
                 // do nothing if failed
             }
-            // set initial mode and state
-            MMode = (MMODE)Enum.Parse(typeof(MMODE), Properties.Settings.Default.Mode);
-            State = STATE.INIT;
-            CalState = CALSTATE.NONE;
+        }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            // check if a rtlsdr.dll version is already in the program's directory
+            // suggest automatic download
+            string DLLFileName = "rtlsdr.dll";
+            string DLLZipFileName = "rtlsdr.zip";
+            string version = "V" + Assembly.GetExecutingAssembly().GetName().Version.Major.ToString() + "." + Assembly.GetExecutingAssembly().GetName().Version.Minor.ToString();
+            string[] files = Directory.GetFiles(Application.StartupPath, DLLFileName);
+            if (files.Length == 0)
+            {
+                if (MessageBox.Show("The GPL-licensed <rtlsdr.dll> is not part of this distribution and is missing in the program's main directory (See http://www.canfi.eu for details). \n\nDo you want to download the file from the repository?", "DLL is missing", MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.Yes)
+                {
+                    try
+                    {
+                        using (WebClient client = new WebClient())
+                        {
+                            // first, get the textfile with the download url
+                            string urls = client.DownloadString(Properties.Settings.Default.RTL_DLL_DownloadInfo_URL);
+                            // get download info for the main version
+                            string[] versions = urls.Split('\n');
+                            for (int i = 0; i < versions.Length; i++)
+                            {
+                                string[] url = versions[i].Split(';');
+                                // check version
+                                if (url[0] == version)
+                                {
+                                    // download the file from url (zipped or unzipped)
+                                    if (url[1].Contains(".zip"))
+                                    {
+                                        client.DownloadFile(url[1], Application.StartupPath + Path.DirectorySeparatorChar + DLLZipFileName);
+                                        // unzip the file automatically
+                                        using (ZipFile zip = ZipFile.Read(Application.StartupPath + Path.DirectorySeparatorChar + DLLZipFileName))
+                                        {
+                                            // here, we extract every entry, but we could extract conditionally
+                                            // based on entry name, size, date, checkbox status, etc.  
+                                            foreach (ZipEntry ze in zip)
+                                            {
+                                                ze.Extract(Application.StartupPath, ExtractExistingFileAction.OverwriteSilently);
+                                            }
+                                        }
+                                        // delete the zip file
+                                        File.Delete(Application.StartupPath + Path.DirectorySeparatorChar + DLLZipFileName);
+                                    }
+                                    else
+                                    {
+                                        // direct download of DLL
+                                        client.DownloadFile(url[1], Application.StartupPath + Path.DirectorySeparatorChar + DLLFileName);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message, "Download of" + DLLFileName);
+                    }
+                }
+                else
+                {
+                    this.Close();
+                }
+            }
 
             // get basic RTL-Stick information
             Start();
             Status("Ready.");
-
         }
 
         private void Application_Idle(Object sender, EventArgs e)
         {
             // start RTLWorker according to state if necessary
-            if (!RTLWorker.IsBusy)
+            if ((State != STATE.SETTING) && !RTLWorker.IsBusy)
             {
                 Application.DoEvents();
                 Start();
@@ -166,7 +240,7 @@ namespace CANFI
             // set window text according to mode
             try
             {
-                Text = "CANFI v" + Assembly.GetExecutingAssembly().GetName().Version + " - " + ModeDesc[Enum.GetName(typeof(MMODE), MMode)];
+                Text = "CANFI v" + Assembly.GetExecutingAssembly().GetName().Version + " - " + ModeDesc[Enum.GetName(typeof(MMODE), Properties.Settings.Default.Mode)];
             }
             catch
             {
@@ -174,24 +248,51 @@ namespace CANFI
                 Text = "CANFI v" + Assembly.GetExecutingAssembly().GetName().Version;
             }
 
-            // update frequency display 
-            lbl_DUT_Frequency.Text = ud_DUT_Frequency.Value.ToString("00000.000", Application.CurrentCulture);
-            // update noise and frequency up/downs
+            // update frequency and ENR up/downs
+            switch (Properties.Settings.Default.Mode)
+            {
+                case MMODE.A:
+                    if (ud_DUT_Frequency.Value != ud_RTL_Frequency.Value)
+                        ud_DUT_Frequency.Value = ud_RTL_Frequency.Value;
+                    if (ud_DUT_Sweep_Start.Value != ud_RTL_Sweep_Start.Value)
+                        ud_DUT_Sweep_Start.Value = ud_RTL_Sweep_Start.Value;
+                    if (ud_DUT_P_ENR.Value != ud_RTL_P_ENR.Value)
+                        ud_DUT_P_ENR.Value = ud_RTL_P_ENR.Value;
+                    break;
+                case MMODE.B:
+                case MMODE.C:
+                    break;
+            }
+            
+            // calculate new DUT frequency
+            ud_DUT_Sweep_Start.Value = ud_RTL_Sweep_Start.Value + Properties.Settings.Default.DUT_Frequency - Properties.Settings.Default.RTL_Frequency;
+            ud_DUT_Sweep_Stop.Value = ud_RTL_Sweep_Stop.Value + Properties.Settings.Default.DUT_Frequency - Properties.Settings.Default.RTL_Frequency;
+            ud_DUT_Sweep_Step.Value = ud_RTL_Sweep_Step.Value;
+
+            // enable noise and frequency up/downs
             if ((RTLWorker.IsBusy) && (State != STATE.IDLE))
             {
                 // disable controls if not idling
                 {
+                    // main display
                     ud_RTL_P_ENR.Enabled = false;
                     ud_DUT_P_ENR.Enabled = false;
                     ud_RTL_Frequency.Enabled = false;
                     ud_DUT_Frequency.Enabled = false;
+                    // sweep display
+                    ud_RTL_Sweep_Start.Enabled = false;
+                    ud_RTL_Sweep_Stop.Enabled = false;
+                    ud_RTL_Sweep_Step.Enabled = false;
+                    ud_DUT_Sweep_Start.Enabled = false;
+                    ud_DUT_Sweep_Stop.Enabled = false;
+                    ud_DUT_Sweep_Step.Enabled = false;
                 }
             }
             else
             {
                 try
                 {
-                    switch (MMode)
+                    switch (Properties.Settings.Default.Mode)
                     {
                         case MMODE.A:
                             if (Properties.Settings.Default.Noise_File_Activate)
@@ -243,22 +344,28 @@ namespace CANFI
                     Error(ex.Message + ": " + Properties.Settings.Default.RTL_Frequency.ToString() + "," + Properties.Settings.Default.DUT_Frequency.ToString());
                 }
                 // update frequency up/down input controls according to mode
-                switch (MMode)
+                switch (Properties.Settings.Default.Mode)
                 {
                     case MMODE.A:
                         ud_RTL_Frequency.Enabled = true;
                         ud_DUT_Frequency.Enabled = false;
-                        // set DUT frequency synchronous to RTL frequency in mode A 
-                        if (ud_DUT_Frequency.Value != ud_RTL_Frequency.Value)
-                            ud_DUT_Frequency.Value = ud_RTL_Frequency.Value;
+                        ud_RTL_Sweep_Start.Enabled = true;
+                        ud_RTL_Sweep_Stop.Enabled = true;
+                        ud_RTL_Sweep_Step.Enabled = true;
+                        ud_DUT_Sweep_Start.Enabled = false;
+                        ud_DUT_Sweep_Stop.Enabled = false;
+                        ud_DUT_Sweep_Step.Enabled = false;
                         break;
                     case MMODE.B:
-                        ud_RTL_Frequency.Enabled = true;
-                        ud_DUT_Frequency.Enabled = true;
-                        break;
                     case MMODE.C:
                         ud_RTL_Frequency.Enabled = true;
                         ud_DUT_Frequency.Enabled = true;
+                        ud_RTL_Sweep_Start.Enabled = true;
+                        ud_RTL_Sweep_Stop.Enabled = true;
+                        ud_RTL_Sweep_Step.Enabled = true;
+                        ud_DUT_Sweep_Start.Enabled = false;
+                        ud_DUT_Sweep_Stop.Enabled = false;
+                        ud_DUT_Sweep_Step.Enabled = false;
                         break;
                 }
             }
@@ -271,6 +378,7 @@ namespace CANFI
                 case STATE.INIT:
                     cbb_MMode.Enabled = true;
                     btn_Settings.Enabled = false;
+                    btn_Sweep_Settings.Enabled = false;
                     btn_Calibrate.Text = "Calibrate";
                     btn_Calibrate.Enabled = false;
                     if (btn_Calibrate.BackColor != SystemColors.Control)
@@ -279,7 +387,19 @@ namespace CANFI
                     btn_Measure.Enabled = false;
                     if (btn_Measure.BackColor != SystemColors.Control)
                         btn_Measure.BackColor = SystemColors.Control;
+                    lbl_Gain.Text = "--.--";
                     lbl_NF.Text = "--.--";
+                    cbb_SMode.Enabled = true;
+                    btn_Sweep_Calibrate.Text = "Calibrate";
+                    btn_Sweep_Calibrate.Enabled = false;
+                    if (btn_Sweep_Calibrate.BackColor != SystemColors.Control)
+                        btn_Sweep_Calibrate.BackColor = SystemColors.Control;
+                    btn_Sweep_Measure.Text = "Measure";
+                    btn_Sweep_Measure.Enabled = false;
+                    if (btn_Sweep_Measure.BackColor != SystemColors.Control)
+                        btn_Sweep_Measure.BackColor = SystemColors.Control;
+                    lbl_Sweep_Gain.Text = "--.--";
+                    lbl_Sweep_NF.Text = "--.--";
                     break;
                 case STATE.IDLE:
                     cbb_MMode.Enabled = true;
@@ -288,6 +408,12 @@ namespace CANFI
                     btn_Measure.Enabled = true;
                     if (btn_Measure.BackColor != Color.PaleGreen)
                         btn_Measure.BackColor = Color.PaleGreen;
+                    cbb_SMode.Enabled = true;
+                    btn_Sweep_Settings.Enabled = true;
+                    btn_Sweep_Measure.Text = "Measure";
+                    btn_Sweep_Measure.Enabled = true;
+                    if (btn_Sweep_Measure.BackColor != Color.PaleGreen)
+                        btn_Sweep_Measure.BackColor = Color.PaleGreen;
                     // set Calibrate button according to CALSTATE
                     switch (CalState)
                     {
@@ -297,6 +423,11 @@ namespace CANFI
                             if (btn_Calibrate.BackColor != Color.MistyRose)
                                 btn_Calibrate.BackColor = Color.MistyRose;
                             lbl_Gain.Text = "--.--";
+                            btn_Sweep_Calibrate.Text = "Calibrate";
+                            btn_Sweep_Calibrate.Enabled = true;
+                            if (btn_Sweep_Calibrate.BackColor != Color.MistyRose)
+                                btn_Sweep_Calibrate.BackColor = Color.MistyRose;
+                            lbl_Sweep_Gain.Text = "--.--";
                             break;
                         case CALSTATE.CALIBRATED:
                             btn_Calibrate.Text = "Calibrated";
@@ -304,9 +435,15 @@ namespace CANFI
                             if (btn_Calibrate.BackColor != Color.Coral)
                                 btn_Calibrate.BackColor = Color.Coral;
                             lbl_Gain.Text = "00.00";
+                            btn_Sweep_Calibrate.Text = "Calibrated";
+                            btn_Sweep_Calibrate.Enabled = true;
+                            if (btn_Sweep_Calibrate.BackColor != Color.Coral)
+                                btn_Sweep_Calibrate.BackColor = Color.Coral;
+                            lbl_Sweep_Gain.Text = "00.00";
                             break;
                     }
-                    lbl_NF.Text = "00.00";
+                    lbl_Sweep_Gain.Text = "--.--";
+                    lbl_Sweep_NF.Text = "--.--";
                     break;
                 case STATE.CALIBRATING:
                     cbb_MMode.Enabled = false;
@@ -319,7 +456,16 @@ namespace CANFI
                     btn_Measure.Enabled = false;
                     if (btn_Measure.BackColor != SystemColors.Control)
                         btn_Measure.BackColor = SystemColors.Control;
-//                    Status("Calibrating...");
+                    cbb_SMode.Enabled = false;
+                    btn_Sweep_Settings.Enabled = false;
+                    btn_Sweep_Calibrate.Text = "Stop";
+                    btn_Sweep_Calibrate.Enabled = true;
+                    if (btn_Sweep_Calibrate.BackColor != Color.Coral)
+                        btn_Sweep_Calibrate.BackColor = Color.Coral;
+                    btn_Sweep_Measure.Text = "Measure";
+                    btn_Sweep_Measure.Enabled = false;
+                    if (btn_Sweep_Measure.BackColor != SystemColors.Control)
+                        btn_Sweep_Measure.BackColor = SystemColors.Control;
                     break;
                 case STATE.MEASURING:
                     cbb_MMode.Enabled = false;
@@ -332,7 +478,16 @@ namespace CANFI
                     btn_Measure.Enabled = true;
                     if (btn_Measure.BackColor != Color.PaleGreen)
                         btn_Measure.BackColor = Color.PaleGreen;
-//                    Status("Measuring...");
+                    cbb_SMode.Enabled = false;
+                    btn_Sweep_Settings.Enabled = false;
+                    btn_Sweep_Calibrate.Text = "Calibrate";
+                    btn_Sweep_Calibrate.Enabled = false;
+                    if (btn_Sweep_Calibrate.BackColor != SystemColors.Control)
+                        btn_Sweep_Calibrate.BackColor = SystemColors.Control;
+                    btn_Sweep_Measure.Text = "Stop";
+                    btn_Sweep_Measure.Enabled = true;
+                    if (btn_Sweep_Measure.BackColor != Color.PaleGreen)
+                        btn_Sweep_Measure.BackColor = Color.PaleGreen;
                     break;
             }
             // set FFT status
@@ -347,6 +502,7 @@ namespace CANFI
                 tb_FFT_Filter_Threshold.Enabled = false;
                 tb_FFT_Filter_NotchWidth.Enabled = false;
             }
+
             // this is for Linux Mono compatibility only
 
             // setting control's fore color according to enabled/disabled state
@@ -354,6 +510,12 @@ namespace CANFI
             ud_DUT_Frequency.ForeColor = ud_DUT_Frequency.Enabled ? Color.Chartreuse : Color.DarkGray;
             ud_RTL_P_ENR.ForeColor = ud_RTL_P_ENR.Enabled ? Color.Chartreuse : Color.DarkGray;
             ud_DUT_P_ENR.ForeColor = ud_DUT_P_ENR.Enabled ? Color.Chartreuse : Color.DarkGray;
+            ud_RTL_Sweep_Start.ForeColor = ud_RTL_Sweep_Start.Enabled ? Color.Chartreuse : Color.DarkGray;
+            ud_RTL_Sweep_Stop.ForeColor = ud_RTL_Sweep_Stop.Enabled ? Color.Chartreuse : Color.DarkGray;
+            ud_RTL_Sweep_Step.ForeColor = ud_RTL_Sweep_Step.Enabled ? Color.Chartreuse : Color.DarkGray;
+            ud_DUT_Sweep_Start.ForeColor = ud_DUT_Sweep_Start.Enabled ? Color.Chartreuse : Color.DarkGray;
+            ud_DUT_Sweep_Stop.ForeColor = ud_DUT_Sweep_Stop.Enabled ? Color.Chartreuse : Color.DarkGray;
+            ud_DUT_Sweep_Step.ForeColor = ud_DUT_Sweep_Step.Enabled ? Color.Chartreuse : Color.DarkGray;
 
             // end of Linux Mono compatibility
         }
@@ -375,18 +537,26 @@ namespace CANFI
             {
                 // set all parameters
                 _rtlParams.State = State;
+                _rtlParams.SweepMode = Properties.Settings.Default.SweepMode;
 
-                // set sweep to single frequency
-                _rtlParams.Frequency_Start = Properties.Settings.Default.RTL_Frequency;
-                _rtlParams.Frequency_Stop = Properties.Settings.Default.RTL_Frequency;
-                _rtlParams.Frequency_Step = 0;
-
+                if (Properties.Settings.Default.SweepMode == SMODE.NONE)
+                {
+                    _rtlParams.Frequency_Start = Properties.Settings.Default.RTL_Frequency;
+                    _rtlParams.Frequency_Stop = Properties.Settings.Default.RTL_Frequency;
+                    _rtlParams.Frequency_Step = 0;
+                }
+                else
+                {
+                    _rtlParams.Frequency_Start = Properties.Settings.Default.RTL_Frequency_Start;
+                    _rtlParams.Frequency_Stop = Properties.Settings.Default.RTL_Frequency_Stop;
+                    _rtlParams.Frequency_Step = Properties.Settings.Default.RTL_Frequency_Step;
+                }
+                _rtlParams.Cycles = Properties.Settings.Default.Smoothing;
                 _rtlParams.UseRTLAGC = Properties.Settings.Default.RTL_RTLAGC;
                 _rtlParams.UseTunerAGC = Properties.Settings.Default.RTL_TunerAGC;
                 _rtlParams.TunerGain = Properties.Settings.Default.RTL_TunerGain;
                 _rtlParams.GainMode = Properties.Settings.Default.RTL_GainMode;
                 _rtlParams.AGC = Properties.Settings.Default.RTL_AGC_Auto;
-                _rtlParams.P_Max = Properties.Settings.Default.RTL_P_Max;
 
                 _rtlParams.SampleRate = Decimal.ToUInt32(Properties.Settings.Default.RTL_SampleRate);
                 _rtlParams.MaxSampleCount = Decimal.ToInt32(Properties.Settings.Default.RTL_SampleCount);
@@ -419,6 +589,7 @@ namespace CANFI
 
                 _rtlParams.FFT_RealtimeDisplay = Properties.Settings.Default.FFT_RealtimeDisplay;
                 _rtlParams.FFT_Filter = Properties.Settings.Default.FFT_Filter;
+                _rtlParams.FFT_Algorithm = Properties.Settings.Default.FFT_Algorithm;
                 _rtlParams.FFT_Filter_Threshold = Properties.Settings.Default.FFT_Filter_Threshold;
                 _rtlParams.FFT_Filter_NotchWidth = Properties.Settings.Default.FFT_Filter_NotchWidth;
 
@@ -449,7 +620,7 @@ namespace CANFI
             {
                 RTLWorker.CancelAsync();
                 Status("Waiting for measure thread to close...");
-                while (State != STATE.IDLE)
+                while (RTLWorker.IsBusy)
                     Application.DoEvents();
             }
             catch
@@ -476,6 +647,22 @@ namespace CANFI
             State = STATE.MEASURING;
         }
 
+        public void Setting()
+        {
+            // stop measure thread
+            try
+            {
+                RTLWorker.CancelAsync();
+                Status("Waiting for measure thread to close...");
+                while (RTLWorker.IsBusy)
+                    Application.DoEvents();
+            }
+            catch
+            {
+                // do nothing
+            }
+            State = STATE.SETTING;
+        }
 
         # region Noise functions
 
@@ -615,7 +802,7 @@ namespace CANFI
             Av_P_ON = new SimpleMovingAverage((int)Math.Pow(2,(double) Properties.Settings.Default.Smoothing));
             Av_P_OFF = new SimpleMovingAverage((int)Math.Pow(2, (double)Properties.Settings.Default.Smoothing));
             Av_G = new SimpleMovingAverage((int)Math.Pow(2, (double)Properties.Settings.Default.Smoothing));
-            Av_NF = new SimpleMovingAverage((int)Math.Pow(2, (double)Properties.Settings.Default.Smoothing));
+            Av_F = new SimpleMovingAverage((int)Math.Pow(2, (double)Properties.Settings.Default.Smoothing));
         }
 
         public void Status(string msg)
@@ -673,6 +860,7 @@ namespace CANFI
             // check for frequency mismatch
             if (F_ON != F_OFF)
             {
+                InitAverages();
                 return;
             }
             // return on P_OFF > P_ON (this is physically impossible)
@@ -699,32 +887,54 @@ namespace CANFI
             lbl_RTL_Status.ForeColor = Color.Chartreuse;
             lbl_RTL_Status.Text = "Valid";
 
-            // update calibration
+            // generate new calibration entry and update calibration
             CalEntry entry = new CalEntry((int)Properties.Settings.Default.CAL_SampleCount_Max);
             entry.Invalid = false;
             entry.Frequency = r.Frequency;
             entry.TunerGain = r.TunerGain;
             entry.P_OFF.AddSample(P_OFF);
             entry.P_ON.AddSample(P_ON);
-            // get proper ENR values according to MMode
-            double CAL_ENR = SupportFunctions.ToLinear(System.Convert.ToDouble(ud_RTL_P_ENR.Value));
-            entry.ENR = CAL_ENR;
+
+            // get proper ENR values according to Properties.Settings.Default.Mode
+            switch (Properties.Settings.Default.Mode)
+            {
+                case MMODE.A:
+                case MMODE.B:
+                    entry.ENR = SupportFunctions.ToLinear(System.Convert.ToDouble(ud_RTL_P_ENR.Value));
+                    break;
+                case MMODE.C:
+                    entry.ENR = SupportFunctions.ToLinear(System.Convert.ToDouble(ud_DUT_P_ENR.Value));
+                    break;
+            }
+
             // try to calculate rest of values
             try
             {
                 entry.Y = entry.P_ON.Average / entry.P_OFF.Average;
-                entry.F = SupportFunctions.ToLinear(entry.ENR) / (entry.Y - 1);
-                entry.NF = SupportFunctions.TodB(entry.F);
+                entry.F = entry.ENR / (entry.Y - 1);
             }
             catch
             {
                 entry.Y = 1;
                 entry.F = 1;
-                entry.NF = 0;
             }
+
+            // store calibration entry
             Calibration[entry.Frequency, entry.TunerGain] = entry;
-            if (!double.IsNaN(entry.NF))
-                lbl_NF.Text = entry.NF.ToString("F2", CultureInfo.InvariantCulture);
+
+            // update main display
+            switch (Properties.Settings.Default.Mode)
+            {
+                case MMODE.A:
+                case MMODE.B:
+                    lbl_DUT_Frequency.Text = r.Frequency.ToString("00000.000", Application.CurrentCulture);
+                    break;
+                case MMODE.C:
+                    lbl_DUT_Frequency.Text = (r.Frequency + Properties.Settings.Default.DUT_Frequency-Properties.Settings.Default.RTL_Frequency).ToString("00000.000", Application.CurrentCulture);
+                    break;
+            }
+            if (!double.IsNaN(entry.F))
+                lbl_NF.Text = SupportFunctions.TodB(entry.F).ToString("F2", CultureInfo.InvariantCulture);
         }
 
         public void ReportMeasuring(RTLMeasureResults r)
@@ -756,6 +966,7 @@ namespace CANFI
             // check for frequency mismatch
             if (F_ON != F_OFF)
             {
+                InitAverages();
                 return;
             }
             // return on P_OFF > P_ON (this is physically impossible)
@@ -791,9 +1002,8 @@ namespace CANFI
                 lbl_RTL_P_OFF.Text = SupportFunctions.TodB(r.Power).ToString("F2", CultureInfo.InvariantCulture);
             }
 
-            // get proper ENR values according to MMode
+            // get proper ENR values according to Properties.Settings.Default.Mode
             double P_ENR = SupportFunctions.ToLinear(System.Convert.ToDouble(ud_DUT_P_ENR.Value));
-            double CAL_ENR = SupportFunctions.ToLinear(System.Convert.ToDouble(ud_RTL_P_ENR.Value));
             // calculte and display gain and NF
             // temperature correction included 2014-09-01
             double F = 0;
@@ -801,6 +1011,8 @@ namespace CANFI
             double Y = 0;
             double T_amb = (double)Properties.Settings.Default.Tamb;
             double T_0 = (double)Properties.Settings.Default.T0;
+            double yf = 0;
+            double yg = 0;
             try
             {
                 switch (CalState)
@@ -812,14 +1024,48 @@ namespace CANFI
                         G = 0;
                         Y = 0;
                         Y = P_ON / P_OFF;
-//                        nf = CAL_ENR / (Y - 1);
                         F = P_ENR / (Y - 1) + 1 - T_amb / T_0;
                         if ((double.IsNaN(F)) || double.IsInfinity(F))
                             F = 1;
                         // add NF to floating average
-                        Av_NF.AddSample(F);
+                        Av_F.AddSample(F);
+                        // update main display
+                        switch (Properties.Settings.Default.Mode)
+                        {
+                            case MMODE.A: 
+                                lbl_DUT_Frequency.Text = r.Frequency.ToString("00000.000", Application.CurrentCulture);
+                                break;
+                            case MMODE.B:
+                            case MMODE.C:
+                                lbl_DUT_Frequency.Text = (r.Frequency + Properties.Settings.Default.DUT_Frequency-Properties.Settings.Default.RTL_Frequency).ToString("00000.000", Application.CurrentCulture);
+                                break;
+                        }
                         lbl_Gain.Text = "--.--";
-                        lbl_NF.Text = SupportFunctions.TodB(Av_NF.Average).ToString("F2", CultureInfo.InvariantCulture);
+                        lbl_NF.Text = SupportFunctions.TodB(Av_F.Average).ToString("F2", CultureInfo.InvariantCulture);
+                        // update sweep tab when in sweep mode
+                        if (Properties.Settings.Default.SweepMode != SMODE.NONE)
+                        {
+                            lbl_Sweep_Gain.Text = "--.--";
+                            lbl_Sweep_NF.Text = SupportFunctions.TodB(Av_F.Average).ToString("F2", CultureInfo.InvariantCulture);
+                            yf = SupportFunctions.TodB(Av_F.Average);
+                            if (!Double.IsNaN(yf))
+                            {
+                                // try to find and update a point with the same X-value
+                                // add a new one if not found
+                                try
+                                {
+                                    System.Windows.Forms.DataVisualization.Charting.DataPoint p = ch_Sweep.Series["NF"].Points.FindByValue(System.Convert.ToDouble(r.Frequency), "X", 0);
+                                    p.SetValueY(yf);
+                                }
+                                catch
+                                {
+                                    ch_Sweep.Series["NF"].Points.AddXY(r.Frequency, yf);
+                                }
+                                // set X-axis span and update chart
+                                ch_Sweep.ChartAreas["Sweep"].AxisX.Minimum = System.Convert.ToDouble(Properties.Settings.Default.RTL_Frequency_Start);
+                                ch_Sweep.ChartAreas["Sweep"].AxisX.Maximum = System.Convert.ToDouble(Properties.Settings.Default.RTL_Frequency_Stop);
+                            }
+                        }
                         break;
                     case CALSTATE.CALIBRATED:
                         //  calculate and show results if values available
@@ -827,6 +1073,8 @@ namespace CANFI
                         double CAL_ON = 0;
                         double CAL_OFF = 0;
                         double CAL_Y = 0;
+                        double CAL_F = 0;
+                        double CAL_ENR = 0;
                         // try to get calibration values
                         CalEntry entry = Calibration[r.Frequency, r.TunerGain];
                         if (entry != null)
@@ -834,6 +1082,8 @@ namespace CANFI
                             CAL_ON = entry.P_ON.Average;
                             CAL_OFF = entry.P_OFF.Average;
                             CAL_Y = entry.Y;
+                            CAL_F = entry.F;
+                            CAL_ENR = entry.ENR;
                         }
                         else
                         {
@@ -841,6 +1091,7 @@ namespace CANFI
                             CAL_ON = 0;
                             CAL_OFF = 0;
                             CAL_Y = 1;
+                            CAL_F = 1;
                         }
                         // calculate and show results if values available
                         F = 0;
@@ -853,13 +1104,65 @@ namespace CANFI
                         // add gain to average
                         Av_G.AddSample(G);
                         Y = P_ON / P_OFF;
-                        F = P_ENR / (Y - 1) - (CAL_ENR / (CAL_Y - 1) - T_amb/T_0) / G + 1 - T_amb/T_0;
+                        // F = P_ENR / (Y - 1) - (CAL_ENR / (CAL_Y - 1) - T_amb/T_0) / G + 1 - T_amb/T_0;
+                        F = P_ENR / (Y - 1) - (CAL_F - T_amb/T_0) / G + 1 - T_amb/T_0;
                         if ((double.IsNaN(F)) || double.IsInfinity(F))
                             F = 1;
                         // add NF to average
-                        Av_NF.AddSample(F);
+                        Av_F.AddSample(F);
+                        // update main display 
+                        switch (Properties.Settings.Default.Mode)
+                        {
+                            case MMODE.A: 
+                                lbl_DUT_Frequency.Text = r.Frequency.ToString("00000.000", Application.CurrentCulture);
+                                break;
+                            case MMODE.B:
+                            case MMODE.C:
+                                lbl_DUT_Frequency.Text = (r.Frequency + Properties.Settings.Default.DUT_Frequency-Properties.Settings.Default.RTL_Frequency).ToString("00000.000", Application.CurrentCulture);
+                                break;
+                        }
                         lbl_Gain.Text = SupportFunctions.TodB(Av_G.Average).ToString("F2", CultureInfo.InvariantCulture);
-                        lbl_NF.Text = SupportFunctions.TodB(Av_NF.Average).ToString("F2", CultureInfo.InvariantCulture);
+                        lbl_NF.Text = SupportFunctions.TodB(Av_F.Average).ToString("F2", CultureInfo.InvariantCulture);
+                        // update sweep tab when in sweep mode
+                        if (Properties.Settings.Default.SweepMode != SMODE.NONE)
+                        {
+                            lbl_Sweep_NF.Text = SupportFunctions.TodB(Av_F.Average).ToString("F2", CultureInfo.InvariantCulture);
+                            lbl_Sweep_Gain.Text = SupportFunctions.TodB(Av_G.Average).ToString("F2", CultureInfo.InvariantCulture);
+                            yf = SupportFunctions.TodB(Av_F.Average);
+                            yg = SupportFunctions.TodB(Av_G.Average);
+                            // add or update values to sweep chart
+                            if (!Double.IsNaN(yf))
+                            {
+                                // try to find and update a point with the same X-value
+                                // add a new one if not found
+                                try
+                                {
+                                    System.Windows.Forms.DataVisualization.Charting.DataPoint p = ch_Sweep.Series["NF"].Points.FindByValue(System.Convert.ToDouble(r.Frequency), "X", 0);
+                                    p.SetValueY(yf);
+                                }
+                                catch
+                                {
+                                    ch_Sweep.Series["NF"].Points.AddXY(r.Frequency, yf);
+                                }
+                            }
+                            if (!Double.IsNaN(yg))
+                            {
+                                // try to find and update a point with the same X-value
+                                // add a new one if not found
+                                try
+                                {
+                                    System.Windows.Forms.DataVisualization.Charting.DataPoint p = ch_Sweep.Series["Gain"].Points.FindByValue(System.Convert.ToDouble(r.Frequency), "X", 0);
+                                    p.SetValueY(yg);
+                                }
+                                catch
+                                {
+                                    ch_Sweep.Series["Gain"].Points.AddXY(r.Frequency, yg);
+                                }
+                            }
+                            // set X-axis span and update chart
+                            ch_Sweep.ChartAreas["Sweep"].AxisX.Minimum = System.Convert.ToDouble(Properties.Settings.Default.RTL_Frequency_Start);
+                            ch_Sweep.ChartAreas["Sweep"].AxisX.Maximum = System.Convert.ToDouble(Properties.Settings.Default.RTL_Frequency_Stop);
+                        }
                         break;
                     default:
                         // show nothing if an invalid calibration state is detected
@@ -878,7 +1181,7 @@ namespace CANFI
             {
                 // get measure frequency
                 double f = 0;
-                switch (MMode)
+                switch (Properties.Settings.Default.Mode)
                 {
                     case MMODE.A:
                         f = Decimal.ToDouble(r.Frequency);
@@ -929,18 +1232,24 @@ namespace CANFI
                     if (double.IsNaN(c[i]))
                         c[i] = 0;
                 }
+                // set display value range
+                int disp_min = 0;
+                int disp_max = 60;
+                // set basic appearance of display
+                ch_FFT.ChartAreas["Main"].AxisY.Minimum = disp_min;
+                ch_FFT.ChartAreas["Main"].AxisY.Maximum = disp_max;
+                ch_FFT.ChartAreas["Main"].AxisX.MajorGrid.Interval = c.Length / 2;
                 // clear the FFT series
                 ch_FFT.Series["FFT"].Points.Clear();
                 // add new points
                 for (int i = 0; i < c.Length; i++)
                 {
+                    // clip FFT values to avoid display exceptions
+                    c[i] = Math.Min(disp_max,c[i]);
+                    c[i] = Math.Max(disp_min, c[i]);
                     ch_FFT.Series["FFT"].Points.Add(c[i]);
+
                 }
-                // set basic appearance of display
-//                ch_FFT.Series["FFT"].BorderWidth = 1;
-                ch_FFT.ChartAreas["Main"].AxisY.Minimum = 0;
-                ch_FFT.ChartAreas["Main"].AxisY.Maximum = 60;
-                ch_FFT.ChartAreas["Main"].AxisX.MajorGrid.Interval = c.Length / 2;
             }
             catch
             {
@@ -1038,9 +1347,36 @@ namespace CANFI
                 case STATE.CALIBRATING:
                     // finishing calibration
                      // save calibration results to file if enabled
+                    // use local culture info 
                     if (Properties.Settings.Default.CAL_Logging)
                     {
-                        Calibration.ExportToCSV(Properties.Settings.Default.CAL_Logging_FileName);
+                        try
+                        {
+                            using (StreamWriter sw = new StreamWriter(Properties.Settings.Default.CAL_Logging_FileName))
+                            {
+                                sw.WriteLine("Invalid[Bool];Frequency[MHz];TunerGain[dB];P_ON[dB];P_OFF[dB];Y[Units];NF[dB];ENR[dB]");
+                                foreach (KeyValuePair<decimal, CalGains> gains in Calibration.GetAllEntries())
+                                {
+                                    foreach (KeyValuePair<int, CalEntry> c in gains.Value)
+                                    {
+                                        sw.WriteLine(
+                                            c.Value.Invalid.ToString(LocalCulture) + ";" +
+                                            c.Value.Frequency.ToString("F3", LocalCulture) + ";" +
+                                            (c.Value.TunerGain / 10.0).ToString("F2", LocalCulture) + ";" +
+                                            SupportFunctions.TodB(c.Value.P_ON.Average).ToString(LocalCulture) + ";" +
+                                            SupportFunctions.TodB(c.Value.P_OFF.Average).ToString(LocalCulture) + ";" +
+                                            c.Value.Y.ToString(LocalCulture) + ";" +
+                                            SupportFunctions.TodB(c.Value.F).ToString(LocalCulture) + ";" +
+                                            SupportFunctions.TodB(c.Value.ENR).ToString(LocalCulture));
+                                    }
+                                }
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.Message, "Error while writing calibration file");
+                        }
+
                     }
                     // set CalState to calibrated
                     CalState = CALSTATE.CALIBRATED;
@@ -1065,6 +1401,7 @@ namespace CANFI
             {
                 // stop any running measurement
                 Stop();
+                InitAverages();
                 // clear calibration values
                 Calibration.Clear();
                 CalState = CALSTATE.NONE;
@@ -1081,18 +1418,16 @@ namespace CANFI
 
         }
 
-        private void btn_Measure_Click(object sender, EventArgs e)
+        public void btn_Measure_Click(object sender, EventArgs e)
         {
             if (State != STATE.MEASURING)
             {
                 // stop any running measurement
                 Stop();
-                P_ON = 0;
-                P_OFF = 0;
-                Av_P_OFF.ClearSamples();
-                Av_P_ON.ClearSamples();
-                Av_G.ClearSamples();
-                Av_NF.ClearSamples();
+                InitAverages();
+                // clear sweep chart
+                ch_Sweep.Series["NF"].Points.Clear();
+                ch_Sweep.Series["Gain"].Points.Clear();
                 Measure();
             }
             else
@@ -1106,8 +1441,8 @@ namespace CANFI
         {
             // save all settings first
             Properties.Settings.Default.Save();
-            // stop any running measurement
-            Stop();
+            // stop any running measurement and change to Setting state
+            Setting();
             // open settings dialog
             SettingsDlg Dlg = new SettingsDlg();
             try
@@ -1165,6 +1500,8 @@ namespace CANFI
                 {
                     // restore settings
                     Properties.Settings.Default.Reload();
+                    State = STATE.INIT;
+                    Start();
                 }
             }
             catch (Exception ex)
@@ -1175,12 +1512,12 @@ namespace CANFI
 
         private void cbb_MMode_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Properties.Settings.Default.Mode = (string) cbb_MMode.SelectedItem;
-            MMode = (MMODE)Enum.Parse(typeof(MMODE), Properties.Settings.Default.Mode);
-            // set Mode Tooltip according to MMode
+            Properties.Settings.Default.Mode = (MMODE) cbb_MMode.SelectedItem;
+            Properties.Settings.Default.Mode = Properties.Settings.Default.Mode;
+            // set Mode Tooltip according to Properties.Settings.Default.Mode
             try
             {
-                tt_Main.SetToolTip(cbb_MMode, ModeDesc[Enum.GetName(typeof(MMODE), MMode)]);
+                tt_Main.SetToolTip(cbb_MMode, ModeDesc[Enum.GetName(typeof(MMODE), Properties.Settings.Default.Mode)]);
             }
             catch
             {
@@ -1191,7 +1528,7 @@ namespace CANFI
 
         private void cbb_MMode_DropDown(object sender, EventArgs e)
         {
-            // set Mode Tooltip according to MMode
+            // set Mode Tooltip according to Properties.Settings.Default.Mode
             try
             {
                 string text = "Chose Measure mode:\n\n";
@@ -1211,10 +1548,10 @@ namespace CANFI
 
         private void cbb_MMode_DropDownClosed(object sender, EventArgs e)
         {
-            // set Mode Tooltip according to MMode
+            // set Mode Tooltip according to Properties.Settings.Default.Mode
             try
             {
-                tt_Main.SetToolTip(cbb_MMode, ModeDesc[Enum.GetName(typeof(MMODE), MMode)]);
+                tt_Main.SetToolTip(cbb_MMode, ModeDesc[Enum.GetName(typeof(MMODE), Properties.Settings.Default.Mode)]);
             }
             catch
             {
@@ -1228,6 +1565,8 @@ namespace CANFI
             // reset state uncalibrated when frequency has changed
             Calibration.Clear();
             CalState = CALSTATE.NONE;
+            // reset sweep mode and frequencies if any
+            cbb_SMode.SelectedItem = SMODE.NONE;
         }
 
         private void ud_DUT_Frequency_ValueChanged(object sender, EventArgs e)
@@ -1235,6 +1574,8 @@ namespace CANFI
             // reset state uncalibrated when frequency has changed
             Calibration.Clear();
             CalState = CALSTATE.NONE;
+            // reset sweep mode and frequencies if any
+            cbb_SMode.SelectedItem = SMODE.NONE;
         }
 
         private void ud_RTL_Frequency_KeyUp(object sender, KeyEventArgs e)
@@ -1257,12 +1598,6 @@ namespace CANFI
         private void ud_Smoothing_ValueChanged(object sender, EventArgs e)
         {
             InitAverages();
-        }
-
-        private void lbl_RTL_Frequency_Click(object sender, EventArgs e)
-        {
-            SweepDlg Dlg = new SweepDlg();
-            Dlg.ShowDialog();
         }
 
         private void lbl_FFT_Click(object sender, EventArgs e)
@@ -1298,7 +1633,68 @@ namespace CANFI
             }
         }
 
-     }
+        private void cbb_SMode_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cbb_SMode.SelectedItem != null)
+            {
+                // reset calibration state if 
+                if (Properties.Settings.Default.SweepMode == SMODE.NONE)
+                {
+                    Calibration.Clear();
+                    CalState = CALSTATE.NONE;
+                }
+                Properties.Settings.Default.SweepMode = (SMODE)cbb_SMode.SelectedItem;
+            }
+        }
+
+        private void tc_Main_SizeChanged(object sender, EventArgs e)
+        {
+        }
+
+        private void tp_Sweep_SizeChanged(object sender, EventArgs e)
+        {
+            // adjust chart area
+            gb_Sweep_Chart.Width = tp_Sweep.Width;
+            gb_Sweep_Chart.Height = tp_Sweep.Height - gb_Sweep.Height - 10;
+            if (this.WindowState == FormWindowState.Maximized)
+                ch_Sweep.ChartAreas["Sweep"].AxisY.MinorGrid.Enabled = true;
+            else
+                ch_Sweep.ChartAreas["Sweep"].AxisY.MinorGrid.Enabled = false;
+        }
+
+        private void ud_RTL_Sweep_Start_ValueChanged(object sender, EventArgs e)
+        {
+            // reset state uncalibrated when frequency has changed
+            Calibration.Clear();
+            CalState = CALSTATE.NONE;
+        }
+
+        private void ud_RTL_Sweep_Stop_ValueChanged(object sender, EventArgs e)
+        {
+            // reset state uncalibrated when frequency has changed
+            Calibration.Clear();
+            CalState = CALSTATE.NONE;
+        }
+
+        private void ud_RTL_Sweep_Step_ValueChanged(object sender, EventArgs e)
+        {
+        }
+
+        private void tp_Meter_Enter(object sender, EventArgs e)
+        {
+            // reset window state to normal size 
+            WindowState = FormWindowState.Normal;
+            // disable maximize box
+            MaximizeBox = false;
+        }
+
+        private void tp_Sweep_Enter(object sender, EventArgs e)
+        {
+            // enable maximize box
+            MaximizeBox = true;
+        }
+
+    }
 
     #endregion
 

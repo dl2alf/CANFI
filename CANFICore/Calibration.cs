@@ -124,7 +124,7 @@ namespace CANFICore
                 if (value.Invalid)
                     return;
                 // set the value by a separate method
-                this.SetValue(f,g,value);
+                this.SetValue(f, g, value);
             }
         }
 
@@ -174,14 +174,12 @@ namespace CANFICore
                     try
                     {
                         e.Y = e.P_ON.Average / e.P_OFF.Average;
-                        e.F = SupportFunctions.ToLinear(value.ENR) / (e.Y - 1);
-                        e.NF = SupportFunctions.TodB(e.F);
+                        e.F = value.ENR / (e.Y - 1);
                     }
                     catch
                     {
                         e.Y = 1;
                         e.F = 1;
-                        e.NF = 0;
                     }
                 }
                 else
@@ -198,14 +196,12 @@ namespace CANFICore
                     try
                     {
                         e.Y = e.P_ON.Average / e.P_OFF.Average;
-                        e.F = SupportFunctions.ToLinear(value.ENR) / (e.Y - 1);
-                        e.NF = SupportFunctions.TodB(e.F);
+                        e.F = value.ENR / (e.Y - 1);
                     }
                     catch
                     {
                         e.Y = 1;
                         e.F = 1;
-                        e.NF = 0;
                     }
                     gains.Add(g, e);
                     // maintain properties
@@ -236,14 +232,12 @@ namespace CANFICore
                 try
                 {
                     e.Y = e.P_ON.Average / e.P_OFF.Average;
-                    e.F = SupportFunctions.ToLinear(e.ENR) / (e.Y - 1);
-                    e.NF = SupportFunctions.TodB(e.F);
+                    e.F = e.ENR / (e.Y - 1);
                 }
                 catch
                 {
                     e.Y = 1;
                     e.F = 1;
-                    e.NF = 0;
                 }
                 gains.Add(g, e);
                 // maintain properties
@@ -258,6 +252,11 @@ namespace CANFICore
                 // add CalGains to list
                 cf.Add(f, gains);
             }
+        }
+
+        public CalFrequencies GetAllEntries()
+        {
+            return cf;
         }
 
         public void Clear()
@@ -275,32 +274,7 @@ namespace CANFICore
             _mingain = 0;
             _maxgain = 0;
         }
-
-        public void ExportToCSV(string filename)
-        {
-            using (StreamWriter sw = new StreamWriter(filename))
-            {
-                sw.WriteLine("Invalid;Frequency;TunerGain;P_ON;P_OFF;Y;F;NF;ENR");
-                foreach (KeyValuePair<decimal, CalGains> gains in cf)
-                {
-                    foreach (KeyValuePair<int, CalEntry> e in gains.Value)
-                    {
-                        sw.WriteLine(
-                            e.Value.Invalid.ToString() + ";" +
-                            e.Value.Frequency.ToString("F3") + ";" +
-                            (e.Value.TunerGain/10).ToString() + ";" +
-                            e.Value.P_ON.Average.ToString() + ";" +
-                            e.Value.P_OFF.Average.ToString() + ";" +
-                            e.Value.Y.ToString() + ";" +
-                            e.Value.F.ToString() + ";" +
-                            e.Value.NF.ToString() + ";" +
-                            e.Value.ENR.ToString());
-                    }
-                }
-            }
-        }
     }
-
     
     public class CalFrequencies : SortedList<decimal,CalGains>
     {
@@ -319,16 +293,14 @@ namespace CANFICore
         public decimal Frequency;
         // RTL tuner gain
         public int TunerGain;
-        // moving average for P_ON values
+        // moving average for P_ON values(linear)
         public SimpleMovingAverage P_ON;
-        // moving average for P_OFF values
+        // moving average for P_OFF values(linear)
         public SimpleMovingAverage P_OFF;
         // Y factor
         public double Y;
         // noise figure (linear), calculated from average P_ON and P_OFF values
         public double F;
-        // noise figure (dB), calculated from average P_ON and P_OFF values
-        public double NF;
         // ENR value used for calibration
         public double ENR;
 
@@ -342,7 +314,6 @@ namespace CANFICore
             P_OFF = new SimpleMovingAverage(averaging);
             Y = 1;
             F = 1;
-            NF = 0;
             ENR = 0;
         }
     }

@@ -77,7 +77,6 @@
             this.cb_RTL_Logging = new System.Windows.Forms.CheckBox();
             this.cb_CAL_Logging = new System.Windows.Forms.CheckBox();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
-            this.cb_FFT_Filter = new System.Windows.Forms.CheckBox();
             this.cb_FFT_Display_Realtime = new System.Windows.Forms.CheckBox();
             this.label11 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
@@ -86,6 +85,8 @@
             this.groupBox9 = new System.Windows.Forms.GroupBox();
             this.ud_Tamb = new System.Windows.Forms.NumericUpDown();
             this.label14 = new System.Windows.Forms.Label();
+            this.cbb_FFT_Filter = new System.Windows.Forms.ComboBox();
+            this.label16 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ud_COM_Delay)).BeginInit();
@@ -748,7 +749,8 @@
             // 
             // groupBox8
             // 
-            this.groupBox8.Controls.Add(this.cb_FFT_Filter);
+            this.groupBox8.Controls.Add(this.label16);
+            this.groupBox8.Controls.Add(this.cbb_FFT_Filter);
             this.groupBox8.Controls.Add(this.cb_FFT_Display_Realtime);
             this.groupBox8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox8.Location = new System.Drawing.Point(248, 284);
@@ -758,32 +760,19 @@
             this.groupBox8.TabStop = false;
             this.groupBox8.Text = "FFT Settings";
             // 
-            // cb_FFT_Filter
-            // 
-            this.cb_FFT_Filter.AutoSize = true;
-            this.cb_FFT_Filter.Checked = global::CANFI.Properties.Settings.Default.FFT_Filter;
-            this.cb_FFT_Filter.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cb_FFT_Filter.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::CANFI.Properties.Settings.Default, "FFT_Filter", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.cb_FFT_Filter.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cb_FFT_Filter.Location = new System.Drawing.Point(9, 40);
-            this.cb_FFT_Filter.Name = "cb_FFT_Filter";
-            this.cb_FFT_Filter.Size = new System.Drawing.Size(138, 17);
-            this.cb_FFT_Filter.TabIndex = 41;
-            this.cb_FFT_Filter.Text = "Use FFT Filter Algorithm";
-            this.cb_FFT_Filter.UseVisualStyleBackColor = true;
-            // 
             // cb_FFT_Display_Realtime
             // 
             this.cb_FFT_Display_Realtime.AutoSize = true;
+            this.cb_FFT_Display_Realtime.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.cb_FFT_Display_Realtime.Checked = global::CANFI.Properties.Settings.Default.FFT_RealtimeDisplay;
             this.cb_FFT_Display_Realtime.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cb_FFT_Display_Realtime.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::CANFI.Properties.Settings.Default, "FFT_RealtimeDisplay", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.cb_FFT_Display_Realtime.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cb_FFT_Display_Realtime.Location = new System.Drawing.Point(9, 17);
+            this.cb_FFT_Display_Realtime.Location = new System.Drawing.Point(15, 13);
             this.cb_FFT_Display_Realtime.Name = "cb_FFT_Display_Realtime";
-            this.cb_FFT_Display_Realtime.Size = new System.Drawing.Size(163, 17);
+            this.cb_FFT_Display_Realtime.Size = new System.Drawing.Size(205, 17);
             this.cb_FFT_Display_Realtime.TabIndex = 40;
-            this.cb_FFT_Display_Realtime.Text = "Display Spectrum in Realtime";
+            this.cb_FFT_Display_Realtime.Text = "Display Spectrum in Realtime:             ";
             this.cb_FFT_Display_Realtime.UseVisualStyleBackColor = true;
             // 
             // label11
@@ -873,6 +862,27 @@
             this.label14.Size = new System.Drawing.Size(127, 13);
             this.label14.TabIndex = 53;
             this.label14.Text = "Ambient Temperature [K]:";
+            // 
+            // cbb_FFT_Filter
+            // 
+            this.cbb_FFT_Filter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbb_FFT_Filter.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbb_FFT_Filter.FormattingEnabled = true;
+            this.cbb_FFT_Filter.Location = new System.Drawing.Point(120, 36);
+            this.cbb_FFT_Filter.Name = "cbb_FFT_Filter";
+            this.cbb_FFT_Filter.Size = new System.Drawing.Size(104, 21);
+            this.cbb_FFT_Filter.TabIndex = 41;
+            this.cbb_FFT_Filter.SelectedIndexChanged += new System.EventHandler(this.cbb_FFT_Filter_SelectedIndexChanged);
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label16.Location = new System.Drawing.Point(16, 41);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(54, 13);
+            this.label16.TabIndex = 42;
+            this.label16.Text = "FFT-Filter:\r\n";
             // 
             // SettingsDlg
             // 
@@ -989,6 +999,7 @@
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.NumericUpDown ud_COM_Delay;
         private System.Windows.Forms.Label label15;
-        private System.Windows.Forms.CheckBox cb_FFT_Filter;
+        private System.Windows.Forms.ComboBox cbb_FFT_Filter;
+        private System.Windows.Forms.Label label16;
     }
 }

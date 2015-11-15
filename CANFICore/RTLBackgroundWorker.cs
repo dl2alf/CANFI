@@ -18,6 +18,9 @@ namespace CANFICore
         // CANFI's current state
         public STATE State;
 
+        // CANFI's sweep mode
+        public SMODE SweepMode;
+
         // RTL device
         public RTLDevice Device;
 
@@ -25,6 +28,9 @@ namespace CANFICore
         public decimal Frequency_Start;
         public decimal Frequency_Stop;
         public decimal Frequency_Step;
+
+        // cycles until frequency change is performed (relevant in sweep mode only)
+        public decimal Cycles;
 
         // usage of RTL automatic gain control (legacy, should be OFF)
         public bool UseRTLAGC;
@@ -37,8 +43,6 @@ namespace CANFICore
         public int GainMode;    
         // usage of soft AGC
         public bool AGC;
-        // RTL maximum processable power level [linear units] 
-        public double P_Max;
 
         // RTL sample rate [samples/sec]
         public uint SampleRate;
@@ -81,6 +85,8 @@ namespace CANFICore
 
         // usage of FFT filter
         public bool FFT_Filter;
+        // FFT algorithm
+        public FFTALGORITHM FFT_Algorithm;
         // threshold for FFT filter
         public double FFT_Filter_Threshold;
         // notch width in FFT-bins
@@ -186,6 +192,9 @@ namespace CANFICore
         // Raw values: I[0];Q[0];I[1];Q[1];.....I[n];Q[n]
         // FFT values: Real[0];Imag[0];Real[1];Imag[1];.....Real[n];Imag[n]
         private double[] Buf;
+        // handles and pointer for FFTW
+        GCHandle hin, hout;
+		IntPtr fftplan;
 
         // Block out status of values
         // used to filter out carrieres with FFT and filter while Noise if OFF
@@ -205,6 +214,8 @@ namespace CANFICore
 
         // Tuner frequency
         private decimal Frequency;
+        // keep the last frequency tuned
+        private decimal Frequency_tuned = 0;
 
         // Tuner gain
         private int TunerGain;
@@ -219,6 +230,7 @@ namespace CANFICore
         {
             this.WorkerReportsProgress = true;
             this.WorkerSupportsCancellation = true;
+            this.Buf = null;
         }
 
         #region RTL functions
@@ -261,6 +273,8 @@ namespace CANFICore
             catch
             {
             }
+            // reset frequency tuned
+            Frequency_tuned = 0;
         }
 
         public void RTLConfigureDevice()
@@ -289,6 +303,8 @@ namespace CANFICore
                 throw new InvalidOperationException("Cannot set agc mode: " + Params.UseRTLAGC.ToString());
             // set tuner gain to inital value taken from the parameters
             RTLSetTunerGain(TunerGain);
+            // reset frequency tuned
+            Frequency_tuned = 0;
         }
 
         private void RTLResetBuffer()
@@ -301,8 +317,13 @@ namespace CANFICore
         private void RTLSetCenterFreq(uint frequency)
         {
             // set tuner center frequency [Hz]
-            if (NativeMethods.rtlsdr_set_center_freq(DevicePtr, frequency) != 0)
-                throw new InvalidOperationException("Cannot set center frequency: " + (frequency).ToString());
+            // do not set the same frequency again --> save time!
+            if (frequency != Frequency_tuned)
+            {
+                if (NativeMethods.rtlsdr_set_center_freq(DevicePtr, frequency) != 0)
+                    throw new InvalidOperationException("Cannot set center frequency: " + (frequency).ToString());
+                Frequency_tuned = frequency;
+            }
         }
 
         private static void e4k_setLNA_MixerGain(IntPtr dev, int LNAGain, int MixerGain)
@@ -337,7 +358,8 @@ namespace CANFICore
                     for (byte i = 0; i < _gains.Length; i++)
                     {
                         // TODO: check return code!!
-                        NativeMethods.rtlsdr_set_tuner_stage_gain(DevicePtr, i, _gains[i]);
+                        if (NativeMethods.rtlsdr_set_tuner_stage_gain(DevicePtr, i, _gains[i]) < 0)
+                            throw new InvalidOperationException("Cannot set tuner stage gain[" + i + "]: " + _gains[i].ToString());
                     }
                     break;                                    
                 case RtlSdrGainMode.GAIN_MODE_SENSITIVITY:
@@ -410,8 +432,26 @@ namespace CANFICore
             // get new buffer for raw values ONLY when Noise = OFF
             if (!Noise)
             {
-                Buf = new double[_len];
-                BlockedOut = new bool[_len];
+				if ((Buf == null) || (_len != Buf.Length)) 
+                {
+					if (Params.FFT_Algorithm == FFTALGORITHM.FFTW) 
+                    {
+						if (Buf != null) 
+                        {
+							FFTWSharp.fftw.destroy_plan (fftplan);
+							hout.Free ();
+							hin.Free ();
+						}
+					}
+					Buf = new double[_len];
+                    BlockedOut = new bool[_len];
+                    if (Params.FFT_Algorithm == FFTALGORITHM.FFTW)
+                    {
+						hin = GCHandle.Alloc (Buf, GCHandleType.Pinned);
+						hout = GCHandle.Alloc (Buf, GCHandleType.Pinned);
+						fftplan = FFTWSharp.fftw.dft_1d (_len / 2, hin.AddrOfPinnedObject (), hout.AddrOfPinnedObject (), FFTWSharp.fftw_direction.Forward, FFTWSharp.fftw_flags.Estimate);
+					}
+				}
             }
             byte[] _buf = new byte[Buf.Length];
             // pin the array to get an IntPtr for an unmanaged call
@@ -498,7 +538,7 @@ namespace CANFICore
                 }
                 double real = Buf[i];
                 double imag = Buf[i + 1];
-				c[i/2] = real * real + imag * imag;
+                c[i / 2] = real * real + imag * imag;
 				_magsum += c [i / 2];
                 _meansum_real += real;
                 _meansum_imag += imag;
@@ -536,10 +576,12 @@ namespace CANFICore
             MeasureResults.TunerGain = TunerGain;
 
             // check count of clipped values > allowed --> set status to clipped and invalidate measure results
+            // also: if measured power > maxpower allowed for the device (without detected clipping)
             if ((Clip_I_0 > Params.Clip_MaxClipAllowed) ||
                 (Clip_I_255 > Params.Clip_MaxClipAllowed) ||
                 (Clip_Q_0 > Params.Clip_MaxClipAllowed) ||
-                (Clip_Q_255 > Params.Clip_MaxClipAllowed))
+                (Clip_Q_255 > Params.Clip_MaxClipAllowed) ||
+                (MeasureResults.Power > Params.Device.MaxPower))
             {
                 MeasureResults.Clipped = true;
                 MeasureResults.Invalid = true;
@@ -805,7 +847,6 @@ namespace CANFICore
             // set initial frequeny and gain
             Frequency = Params.Frequency_Start;
             TunerGain = Params.TunerGain;
-            decimal Frequency_tuned = 0;
 
             // configure device
             RTLConfigureDevice();
@@ -815,11 +856,7 @@ namespace CANFICore
                 {
                     T_Start = DateTime.UtcNow;
                     // set tuner frequency
-                    if (Frequency != Frequency_tuned)
-                    {
-                        RTLSetCenterFreq(System.Convert.ToUInt32(Frequency * 1000000));
-                        Frequency_tuned = Frequency;
-                    }
+                    RTLSetCenterFreq(System.Convert.ToUInt32(Frequency * 1000000));
                     // measure power
                     RTLMeasurePower();
                     T_Stop = DateTime.UtcNow;
@@ -964,7 +1001,7 @@ namespace CANFICore
             if (!Params.AGC)
                 return;
             // check clipping status
-            if (r.Clipped)
+            if (r.Clipped || (r.Power > Params.Device.MaxPower))
             {
                 int newgain = MeasureResults.TunerGain;
                 // reduce tuner gain to next lower value
@@ -999,13 +1036,13 @@ namespace CANFICore
                 // increase gain to a higher value
                 // skip gain steps if possible to save reaction time
                 int newgain = MeasureResults.TunerGain;
-                // calculate the headroom space to in dB (if any) and set the ClipGain as int [in 10th of dB]
-                double headroom = 0;
-                if (Params.P_Max > MeasureResults.Power)
-                    headroom = 10.0 * Math.Log10(Params.P_Max - MeasureResults.Power);
-                ClipGain = TunerGain + (int) (headroom * 10.0);
+                // calculate the headroom space in 10th of dB (if any) and set the ClipGain as maximum allowed gain
+                int headroom = 0;
+                if (Params.Device.MaxPower > MeasureResults.Power)
+                    headroom = (int)((SupportFunctions.TodB(Params.Device.MaxPower) - SupportFunctions.TodB(MeasureResults.Power)) * 10.0);
+                ClipGain = TunerGain + headroom;
                 // starting from ClipGain --> find next lower tuner gain level
-                if (ClipGain - TunerGain > 5)
+                if (ClipGain - TunerGain > 30)
                 {
                     // if calibrated: use highest possible calibrated gain level which is just below ClipGain
                     if (Params.Calibration.Count > 0)
@@ -1014,7 +1051,7 @@ namespace CANFICore
                         {
                             if (!entry.Value.Invalid)
                             {
-                                if (entry.Key < ClipGain - 50)
+                                if (entry.Key < ClipGain - 30)
                                 {
                                     newgain = entry.Key;
                                 }
@@ -1026,7 +1063,7 @@ namespace CANFICore
                         // if not calibrated: use highest possible tuner gain level which is just below ClipGain
                         for (int i = 0; i < Params.Device.TunerGains.Count; i++ )
                         {
-                            if (Params.Device.TunerGains[i] < ClipGain - 50)
+                            if (Params.Device.TunerGains[i] < ClipGain - 30)
                             {
                                 newgain = Params.Device.TunerGains[i];
                             }
@@ -1059,8 +1096,7 @@ namespace CANFICore
                     COMDUTON();
                     COMNoiseOFF();
                 }
-                // set initial frequeny and gain
-                Frequency = Params.Frequency_Start;
+                // set initial gain
                 TunerGain = Params.TunerGain;
                 // set tuner gain to minimum availble calibrated value, if AGC is on
                 if (Params.AGC)
@@ -1093,37 +1129,46 @@ namespace CANFICore
                 // report error to main thread
                 ReportProgress((int)PROGRESS.ERROR, "Error: " + ex.Message);
             }
-            while (!CancellationPending)
+            do
             {
+                // set initial frequency
+                Frequency = Params.Frequency_Start;
                 do
                 {
-                    try
+                    decimal i = 0;
+                    do
                     {
-                        T_Start = DateTime.UtcNow;
-                        // set tuner frequency
-                        RTLSetCenterFreq(System.Convert.ToUInt32(Frequency * 1000000));
-                        COMNoiseOFF();
-                        Thread.Sleep(Params.COMDelay);
-                        // measure power
-                        RTLMeasurePower();
-                        COMNoiseON();
-                        Thread.Sleep(Params.COMDelay);
-                        RTLMeasurePower();
-                        // do AGC if necessary, but only if noise source is on
-                        AGC(MeasureResults);
-                        T_Stop = DateTime.UtcNow;
-                        // report current cycle
-                        ReportProgress((int)PROGRESS.MESSAGE, "[" + Params.Device.Name + "] " + "Measuring at: " + Frequency.ToString("F3") + " MHz and " + (TunerGain / 10).ToString() + " dB [" + (T_Stop - T_Start).Milliseconds.ToString() + "ms].");
+                        try
+                        {
+                            T_Start = DateTime.UtcNow;
+                            // set tuner frequency
+                            RTLSetCenterFreq(System.Convert.ToUInt32(Frequency * 1000000));
+                            COMNoiseOFF();
+                            Thread.Sleep(Params.COMDelay);
+                            // measure power
+                            RTLMeasurePower();
+                            COMNoiseON();
+                            // Thread.Sleep(Params.COMDelay);
+                            RTLMeasurePower();
+                            // do AGC if necessary, but only if noise source is on
+                            AGC(MeasureResults);
+                            T_Stop = DateTime.UtcNow;
+                            // report current cycle
+                            ReportProgress((int)PROGRESS.MESSAGE, "[" + Params.Device.Name + "] " + "Measuring at: " + Frequency.ToString("F3") + " MHz and " + (TunerGain / 10).ToString() + " dB [" + (T_Stop - T_Start).Milliseconds.ToString() + "ms].");
+                        }
+                        catch (Exception ex)
+                        {
+                            // report error to main thread
+                            ReportProgress((int)PROGRESS.ERROR, "Error: " + ex.Message);
+                        }
+                        i++;
                     }
-                    catch (Exception ex)
-                    {
-                        // report error to main thread
-                        ReportProgress((int)PROGRESS.ERROR, "Error: " + ex.Message);
-                    }
+                    while (!CancellationPending && (i < Params.Cycles));
                     Frequency += Params.Frequency_Step;
                 }
                 while (!CancellationPending && (Frequency < Params.Frequency_Stop));
             }
+            while (!CancellationPending && (Params.SweepMode != SMODE.SINGLE));
             // close device
             RTLCloseDevice();
             // close COM
@@ -1138,8 +1183,28 @@ namespace CANFICore
         public void FFT()
         {
             // perform an in-place FFT with Buf
-            Lomont.LomontFFT fft = new Lomont.LomontFFT();
-            fft.FFT(Buf, true);                       
+			if (Params.FFT_Algorithm == FFTALGORITHM.FFTW) {
+				int i = 0;
+				FFTWSharp.fftw.execute (fftplan);
+				//Scale and revert order
+                for (i = 0; i < Buf.Length / 2; i += 2)
+                {
+                    // keep value of Buf[i]
+                    double d = Buf[i] / Math.Sqrt(Buf.Length / 2);
+                    Buf[i] = Buf[(Buf.Length - i) % Buf.Length] / Math.Sqrt(Buf.Length / 2);
+                    Buf[(Buf.Length - i) % Buf.Length] = d;
+                    // keep value of Buf[i+1]
+                    d = Buf[i + 1] / Math.Sqrt(Buf.Length / 2);
+                    Buf[i + 1] = Buf[(Buf.Length - i + 1) % Buf.Length] / Math.Sqrt(Buf.Length / 2);
+                    Buf[(Buf.Length - i + 1) % Buf.Length] = d;
+                }
+            }
+            else
+            {
+				// perform an in-place FFT with Buf
+	            Lomont.LomontFFT fft = new Lomont.LomontFFT();
+				fft.FFT (Buf, true);
+			}
         }
 
         public void FFT_Filter()
