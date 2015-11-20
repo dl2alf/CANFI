@@ -1264,6 +1264,21 @@ namespace CANFI
                 Devices = (RTLDevice[])e.UserState;
                 // store result in settings
                 Properties.Settings.Default.RTL_Devices = Devices;
+                // check if previously selected RTLDevice is empty (on 1st run) or does not match by name --> select first one available from the list
+                try
+                {
+                    if (Devices[Properties.Settings.Default.RTL_DeviceIndex].Name != Properties.Settings.Default.RTL_Device)
+                    {
+                        Properties.Settings.Default.RTL_Device = Devices[0].Name;
+                    }
+                }
+                catch
+                {
+                    if (Devices.Length > 0)
+                    {
+                        Properties.Settings.Default.RTL_Device = Devices[0].Name;
+                    }
+                }
             }
             else if (e.ProgressPercentage == (int)PROGRESS.MESSAGE)
             {
