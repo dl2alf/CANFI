@@ -56,7 +56,7 @@
     <Setting Name="DUT_P_ENR" Type="System.Decimal" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
-    <Setting Name="Mode" Type="System.String" Scope="User">
+    <Setting Name="Mode" Type="CANFICore.MMODE" Scope="User">
       <Value Profile="(Default)">A</Value>
     </Setting>
     <Setting Name="RTL_ClipValue_Max" Type="System.Decimal" Scope="User">
@@ -102,9 +102,6 @@
     </Setting>
     <Setting Name="RTL_AGC_Auto" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
-    </Setting>
-    <Setting Name="RTL_P_Max" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">100000</Value>
     </Setting>
     <Setting Name="RTL_SampleCount_Min" Type="System.Decimal" Scope="User">
       <Value Profile="(Default)">1000</Value>
@@ -177,6 +174,24 @@
     </Setting>
     <Setting Name="FFT_Filter_NotchWidth" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">512</Value>
+    </Setting>
+    <Setting Name="SweepMode" Type="CANFICore.SMODE" Scope="User">
+      <Value Profile="(Default)">NONE</Value>
+    </Setting>
+    <Setting Name="DUT_Frequency_Start" Type="System.Decimal" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="DUT_Frequency_Stop" Type="System.Decimal" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="DUT_Frequency_Step" Type="System.Decimal" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="FFT_Algorithm" Type="CANFICore.FFTALGORITHM" Scope="User">
+      <Value Profile="(Default)">FFTW</Value>
+    </Setting>
+    <Setting Name="RTL_DLL_DownloadInfo_URL" Type="System.String" Scope="User">
+      <Value Profile="(Default)">http://www.canfi.eu/downloads/rtlsdr.txt</Value>
     </Setting>
   </Settings>
 </SettingsFile>

@@ -24,5 +24,14 @@ namespace CANFICore
             // calculate linear value from dB
             return Math.Pow(10, value / 10.0f);
         }
+
+        public static bool IsLinux
+        {
+            get
+            {
+                int p = (int)Environment.OSVersion.Platform;
+                return (p == 4) || (p == 6) || (p == 128);
+            }
+        }
     }
 }

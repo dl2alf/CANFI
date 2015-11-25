@@ -79,6 +79,19 @@ namespace CANFI
                 rb_Noise_Cal_Man.Checked = true;
             }
             InvalidateCalibration = false;
+
+            // setup FFT filter combo box
+            cbb_FFT_Filter.Items.Add(FFTALGORITHM.NONE);
+            cbb_FFT_Filter.Items.Add(FFTALGORITHM.LOMONT);
+            cbb_FFT_Filter.Items.Add(FFTALGORITHM.FFTW);
+            try
+            {
+                cbb_FFT_Filter.SelectedItem = Properties.Settings.Default.FFT_Algorithm;
+            }
+            catch
+            {
+                cbb_FFT_Filter.SelectedItem = FFTALGORITHM.NONE;
+            }
         }
 
         private void SettingsDlg_FormClosing(object sender, FormClosingEventArgs e)
@@ -234,6 +247,18 @@ namespace CANFI
             {
                 // change COM Noise selection if necessary
                 cbb_COM_Noise.SelectedItem = COMSTAT.RTS.ToString();
+            }
+        }
+
+        private void cbb_FFT_Filter_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cbb_FFT_Filter.SelectedItem != null)
+            {
+                Properties.Settings.Default.FFT_Algorithm = (FFTALGORITHM)cbb_FFT_Filter.SelectedItem;
+                if (Properties.Settings.Default.FFT_Algorithm == FFTALGORITHM.NONE)
+                    Properties.Settings.Default.FFT_Filter = false;
+                else
+                    Properties.Settings.Default.FFT_Filter = true;
             }
         }
 

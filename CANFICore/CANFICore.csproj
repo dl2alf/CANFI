@@ -82,9 +82,8 @@
     <Content Include="msvcr100.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="rtlsdr.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Content Include="rtlsdr.dll" />
+    <Content Include="rtlsdr.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="HP346A_DL2ALF.cal">
@@ -96,6 +95,12 @@
     <None Include="LICENSE">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FFTWSharp\FFTWSharp.csproj">
+      <Project>{BEA875B8-E28A-49C5-8E7E-6512DA65F7E1}</Project>
+      <Name>FFTWSharp</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
