@@ -83,6 +83,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="rtlsdr.dll" />
+    <Content Include="rtlsdr.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="HP346A_DL2ALF.cal">

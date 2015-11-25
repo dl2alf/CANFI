@@ -1159,7 +1159,7 @@ namespace CANFICore
                             // measure power
                             RTLMeasurePower();
                             COMNoiseON();
-                            // Thread.Sleep(Params.COMDelay);
+                            Thread.Sleep(Params.COMDelay);
                             RTLMeasurePower();
                             // do AGC if necessary, but only if noise source is on
                             AGC(MeasureResults);
