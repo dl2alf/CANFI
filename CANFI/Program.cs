@@ -21,10 +21,10 @@ namespace CANFI
                 process.PriorityClass = ProcessPriorityClass.High;
             }
             */
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
             try
             {
+                Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(false);
                 Application.Run(new MainForm());
             }
             catch (Exception e1)
