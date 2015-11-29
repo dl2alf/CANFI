@@ -193,5 +193,17 @@
     <Setting Name="RTL_DLL_DownloadInfo_URL" Type="System.String" Scope="User">
       <Value Profile="(Default)">http://www.canfi.eu/downloads/rtlsdr.txt</Value>
     </Setting>
+    <Setting Name="Info_FileName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">LICENSE</Value>
+    </Setting>
+    <Setting Name="RTL_DLL_Win_FileName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">rtlsdr.dll</Value>
+    </Setting>
+    <Setting Name="RTL_DLL_Lin_FileName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">librtlsdr.so</Value>
+    </Setting>
+    <Setting Name="RTL_DLL_DirName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">rtlsdr</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

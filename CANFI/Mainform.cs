@@ -10,6 +10,7 @@ using System.Drawing;
 using System.Collections;
 using System.Collections.Generic;
 using System.Net;
+using System.Diagnostics;
 using Clifton.Tools.Data;
 using CANFICore;
 using Ionic.Zip;
@@ -1685,6 +1686,45 @@ namespace CANFI
             // enable maximize box
             MaximizeBox = true;
         }
+
+        private void tp_Info_Enter(object sender, EventArgs e)
+        {
+            // reset window state to normal size 
+            WindowState = FormWindowState.Normal;
+            // disable maximize box
+            MaximizeBox = false;
+            // get basic CANFI version information
+            try
+            {
+                tb_Info_OS.Text = Environment.OSVersion.VersionString;
+                FileVersionInfo info = FileVersionInfo.GetVersionInfo(System.Reflection.Assembly.GetEntryAssembly().Location);
+                tb_Info_AssemblyVersion.Text = info.ProductVersion;
+                tb_Info_Copyright.Text = info.CompanyName + ", " + info.LegalCopyright;
+            }
+            catch (Exception ex)
+            {
+            }
+            // get basic rtlsdr.dll information
+            try
+            {
+                FileVersionInfo info = FileVersionInfo.GetVersionInfo(Application.StartupPath + Path.DirectorySeparatorChar + Properties.Settings.Default.RTL_DLL_DirName + Path.DirectorySeparatorChar + Properties.Settings.Default.RTL_DLL_Win_FileName);
+                tb_Info_RTL_Version.Text = info.ProductVersion;
+                tb_Info_RTL_Copyright.Text = info.CompanyName + ", " + info.LegalCopyright;
+            }
+            catch (Exception ex)
+            {
+            }
+            // get license information from file
+            try
+            {
+                rtb_Info.LoadFile(Application.StartupPath + Path.DirectorySeparatorChar + Properties.Settings.Default.Info_FileName, RichTextBoxStreamType.PlainText);
+            }
+            catch (Exception ex)
+            {
+                // do nothing if failed
+            }
+        }
+
 
     }
 

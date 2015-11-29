@@ -770,5 +770,53 @@ namespace CANFI.Properties {
                 this["RTL_DLL_DownloadInfo_URL"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("LICENSE")]
+        public string Info_FileName {
+            get {
+                return ((string)(this["Info_FileName"]));
+            }
+            set {
+                this["Info_FileName"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("rtlsdr.dll")]
+        public string RTL_DLL_Win_FileName {
+            get {
+                return ((string)(this["RTL_DLL_Win_FileName"]));
+            }
+            set {
+                this["RTL_DLL_Win_FileName"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("librtlsdr.so")]
+        public string RTL_DLL_Lin_FileName {
+            get {
+                return ((string)(this["RTL_DLL_Lin_FileName"]));
+            }
+            set {
+                this["RTL_DLL_Lin_FileName"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("rtlsdr")]
+        public string RTL_DLL_DirName {
+            get {
+                return ((string)(this["RTL_DLL_DirName"]));
+            }
+            set {
+                this["RTL_DLL_DirName"] = value;
+            }
+        }
     }
 }
