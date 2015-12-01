@@ -818,5 +818,17 @@ namespace CANFI.Properties {
                 this["RTL_DLL_DirName"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("rtlsdr.zip")]
+        public string RTL_DLL_Zip_FileName {
+            get {
+                return ((string)(this["RTL_DLL_Zip_FileName"]));
+            }
+            set {
+                this["RTL_DLL_Zip_FileName"] = value;
+            }
+        }
     }
 }

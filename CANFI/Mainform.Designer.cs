@@ -109,19 +109,31 @@
             this.gb_Sweep_Chart = new System.Windows.Forms.GroupBox();
             this.ch_Sweep = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.tp_Info = new System.Windows.Forms.TabPage();
-            this.groupBox11 = new System.Windows.Forms.GroupBox();
-            this.groupBox12 = new System.Windows.Forms.GroupBox();
             this.groupBox13 = new System.Windows.Forms.GroupBox();
             this.rtb_Info = new System.Windows.Forms.RichTextBox();
-            this.label18 = new System.Windows.Forms.Label();
-            this.label19 = new System.Windows.Forms.Label();
-            this.tb_Info_OS = new System.Windows.Forms.TextBox();
-            this.tb_Info_AssemblyVersion = new System.Windows.Forms.TextBox();
-            this.tb_Info_Copyright = new System.Windows.Forms.TextBox();
+            this.groupBox12 = new System.Windows.Forms.GroupBox();
+            this.tb_Info_RTL_Library = new System.Windows.Forms.TextBox();
+            this.label30 = new System.Windows.Forms.Label();
+            this.label28 = new System.Windows.Forms.Label();
+            this.tb_Info_RTL_Copyright = new System.Windows.Forms.TextBox();
+            this.tb_Info_RTL_Version = new System.Windows.Forms.TextBox();
+            this.label29 = new System.Windows.Forms.Label();
+            this.groupBox11 = new System.Windows.Forms.GroupBox();
             this.label27 = new System.Windows.Forms.Label();
+            this.tb_Info_Copyright = new System.Windows.Forms.TextBox();
+            this.tb_Info_AssemblyVersion = new System.Windows.Forms.TextBox();
+            this.tb_Info_OS = new System.Windows.Forms.TextBox();
+            this.label19 = new System.Windows.Forms.Label();
+            this.label18 = new System.Windows.Forms.Label();
+            this.tp_RTLSDR = new System.Windows.Forms.TabPage();
+            this.rtb_RTLSDR = new System.Windows.Forms.RichTextBox();
+            this.btn_RTLSDR_YES = new System.Windows.Forms.Button();
+            this.btn_RTLSDR_NO = new System.Windows.Forms.Button();
             this.tb_FFT_Filter_NotchWidth = new System.Windows.Forms.TrackBar();
             this.tb_FFT_Filter_Threshold = new System.Windows.Forms.TrackBar();
             this.ud_Smoothing = new System.Windows.Forms.NumericUpDown();
+            this.pb_NOGPL = new System.Windows.Forms.PictureBox();
+            this.label31 = new System.Windows.Forms.Label();
             this.ud_DUT_P_ENR = new CANFI.CANFIUpDown();
             this.ud_DUT_Frequency = new CANFI.CANFIUpDown();
             this.ud_RTL_P_ENR = new CANFI.CANFIUpDown();
@@ -132,10 +144,6 @@
             this.ud_RTL_Sweep_Step = new CANFI.CANFIUpDown();
             this.ud_RTL_Sweep_Stop = new CANFI.CANFIUpDown();
             this.ud_RTL_Sweep_Start = new CANFI.CANFIUpDown();
-            this.label28 = new System.Windows.Forms.Label();
-            this.tb_Info_RTL_Copyright = new System.Windows.Forms.TextBox();
-            this.tb_Info_RTL_Version = new System.Windows.Forms.TextBox();
-            this.label29 = new System.Windows.Forms.Label();
             this.ss_main.SuspendLayout();
             this.groupBox7.SuspendLayout();
             this.groupBox10.SuspendLayout();
@@ -158,12 +166,14 @@
             this.gb_Sweep_Chart.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ch_Sweep)).BeginInit();
             this.tp_Info.SuspendLayout();
-            this.groupBox11.SuspendLayout();
-            this.groupBox12.SuspendLayout();
             this.groupBox13.SuspendLayout();
+            this.groupBox12.SuspendLayout();
+            this.groupBox11.SuspendLayout();
+            this.tp_RTLSDR.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tb_FFT_Filter_NotchWidth)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tb_FFT_Filter_Threshold)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ud_Smoothing)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pb_NOGPL)).BeginInit();
             this.SuspendLayout();
             // 
             // bw_Measure
@@ -321,6 +331,7 @@
             this.tc_Main.Controls.Add(this.tp_Meter);
             this.tc_Main.Controls.Add(this.tp_Sweep);
             this.tc_Main.Controls.Add(this.tp_Info);
+            this.tc_Main.Controls.Add(this.tp_RTLSDR);
             this.tc_Main.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tc_Main.Location = new System.Drawing.Point(0, 0);
             this.tc_Main.Name = "tc_Main";
@@ -1094,34 +1105,6 @@
             this.tp_Info.Text = "Info";
             this.tp_Info.Enter += new System.EventHandler(this.tp_Info_Enter);
             // 
-            // groupBox11
-            // 
-            this.groupBox11.Controls.Add(this.label27);
-            this.groupBox11.Controls.Add(this.tb_Info_Copyright);
-            this.groupBox11.Controls.Add(this.tb_Info_AssemblyVersion);
-            this.groupBox11.Controls.Add(this.tb_Info_OS);
-            this.groupBox11.Controls.Add(this.label19);
-            this.groupBox11.Controls.Add(this.label18);
-            this.groupBox11.Location = new System.Drawing.Point(8, 6);
-            this.groupBox11.Name = "groupBox11";
-            this.groupBox11.Size = new System.Drawing.Size(445, 100);
-            this.groupBox11.TabIndex = 1;
-            this.groupBox11.TabStop = false;
-            this.groupBox11.Text = "Program Information";
-            // 
-            // groupBox12
-            // 
-            this.groupBox12.Controls.Add(this.label28);
-            this.groupBox12.Controls.Add(this.tb_Info_RTL_Copyright);
-            this.groupBox12.Controls.Add(this.tb_Info_RTL_Version);
-            this.groupBox12.Controls.Add(this.label29);
-            this.groupBox12.Location = new System.Drawing.Point(459, 6);
-            this.groupBox12.Name = "groupBox12";
-            this.groupBox12.Size = new System.Drawing.Size(319, 100);
-            this.groupBox12.TabIndex = 2;
-            this.groupBox12.TabStop = false;
-            this.groupBox12.Text = "rtlsdr Information";
-            // 
             // groupBox13
             // 
             this.groupBox13.Controls.Add(this.rtb_Info);
@@ -1144,14 +1127,119 @@
             this.rtb_Info.TabIndex = 1;
             this.rtb_Info.Text = "";
             // 
-            // label18
+            // groupBox12
             // 
-            this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(11, 45);
-            this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(64, 13);
-            this.label18.TabIndex = 0;
-            this.label18.Text = "File Version:";
+            this.groupBox12.Controls.Add(this.tb_Info_RTL_Library);
+            this.groupBox12.Controls.Add(this.label30);
+            this.groupBox12.Controls.Add(this.label28);
+            this.groupBox12.Controls.Add(this.tb_Info_RTL_Copyright);
+            this.groupBox12.Controls.Add(this.tb_Info_RTL_Version);
+            this.groupBox12.Controls.Add(this.label29);
+            this.groupBox12.Location = new System.Drawing.Point(459, 6);
+            this.groupBox12.Name = "groupBox12";
+            this.groupBox12.Size = new System.Drawing.Size(319, 100);
+            this.groupBox12.TabIndex = 2;
+            this.groupBox12.TabStop = false;
+            this.groupBox12.Text = "rtlsdr Information";
+            // 
+            // tb_Info_RTL_Library
+            // 
+            this.tb_Info_RTL_Library.Location = new System.Drawing.Point(77, 16);
+            this.tb_Info_RTL_Library.Name = "tb_Info_RTL_Library";
+            this.tb_Info_RTL_Library.ReadOnly = true;
+            this.tb_Info_RTL_Library.Size = new System.Drawing.Size(236, 20);
+            this.tb_Info_RTL_Library.TabIndex = 11;
+            // 
+            // label30
+            // 
+            this.label30.AutoSize = true;
+            this.label30.Location = new System.Drawing.Point(12, 19);
+            this.label30.Name = "label30";
+            this.label30.Size = new System.Drawing.Size(41, 13);
+            this.label30.TabIndex = 10;
+            this.label30.Text = "Library:";
+            // 
+            // label28
+            // 
+            this.label28.AutoSize = true;
+            this.label28.Location = new System.Drawing.Point(12, 71);
+            this.label28.Name = "label28";
+            this.label28.Size = new System.Drawing.Size(54, 13);
+            this.label28.TabIndex = 9;
+            this.label28.Text = "Copyright:";
+            // 
+            // tb_Info_RTL_Copyright
+            // 
+            this.tb_Info_RTL_Copyright.Location = new System.Drawing.Point(77, 68);
+            this.tb_Info_RTL_Copyright.Name = "tb_Info_RTL_Copyright";
+            this.tb_Info_RTL_Copyright.ReadOnly = true;
+            this.tb_Info_RTL_Copyright.Size = new System.Drawing.Size(236, 20);
+            this.tb_Info_RTL_Copyright.TabIndex = 8;
+            // 
+            // tb_Info_RTL_Version
+            // 
+            this.tb_Info_RTL_Version.Location = new System.Drawing.Point(77, 42);
+            this.tb_Info_RTL_Version.Name = "tb_Info_RTL_Version";
+            this.tb_Info_RTL_Version.ReadOnly = true;
+            this.tb_Info_RTL_Version.Size = new System.Drawing.Size(236, 20);
+            this.tb_Info_RTL_Version.TabIndex = 7;
+            // 
+            // label29
+            // 
+            this.label29.AutoSize = true;
+            this.label29.Location = new System.Drawing.Point(12, 45);
+            this.label29.Name = "label29";
+            this.label29.Size = new System.Drawing.Size(45, 13);
+            this.label29.TabIndex = 6;
+            this.label29.Text = "Version:";
+            // 
+            // groupBox11
+            // 
+            this.groupBox11.Controls.Add(this.label27);
+            this.groupBox11.Controls.Add(this.tb_Info_Copyright);
+            this.groupBox11.Controls.Add(this.tb_Info_AssemblyVersion);
+            this.groupBox11.Controls.Add(this.tb_Info_OS);
+            this.groupBox11.Controls.Add(this.label19);
+            this.groupBox11.Controls.Add(this.label18);
+            this.groupBox11.Location = new System.Drawing.Point(8, 6);
+            this.groupBox11.Name = "groupBox11";
+            this.groupBox11.Size = new System.Drawing.Size(445, 100);
+            this.groupBox11.TabIndex = 1;
+            this.groupBox11.TabStop = false;
+            this.groupBox11.Text = "Program Information";
+            // 
+            // label27
+            // 
+            this.label27.AutoSize = true;
+            this.label27.Location = new System.Drawing.Point(11, 71);
+            this.label27.Name = "label27";
+            this.label27.Size = new System.Drawing.Size(54, 13);
+            this.label27.TabIndex = 5;
+            this.label27.Text = "Copyright:";
+            // 
+            // tb_Info_Copyright
+            // 
+            this.tb_Info_Copyright.Location = new System.Drawing.Point(76, 68);
+            this.tb_Info_Copyright.Name = "tb_Info_Copyright";
+            this.tb_Info_Copyright.ReadOnly = true;
+            this.tb_Info_Copyright.Size = new System.Drawing.Size(363, 20);
+            this.tb_Info_Copyright.TabIndex = 4;
+            // 
+            // tb_Info_AssemblyVersion
+            // 
+            this.tb_Info_AssemblyVersion.Location = new System.Drawing.Point(76, 42);
+            this.tb_Info_AssemblyVersion.Name = "tb_Info_AssemblyVersion";
+            this.tb_Info_AssemblyVersion.ReadOnly = true;
+            this.tb_Info_AssemblyVersion.Size = new System.Drawing.Size(363, 20);
+            this.tb_Info_AssemblyVersion.TabIndex = 3;
+            // 
+            // tb_Info_OS
+            // 
+            this.tb_Info_OS.Location = new System.Drawing.Point(76, 16);
+            this.tb_Info_OS.Name = "tb_Info_OS";
+            this.tb_Info_OS.ReadOnly = true;
+            this.tb_Info_OS.Size = new System.Drawing.Size(363, 20);
+            this.tb_Info_OS.TabIndex = 2;
             // 
             // label19
             // 
@@ -1162,38 +1250,66 @@
             this.label19.TabIndex = 1;
             this.label19.Text = "OS Info:";
             // 
-            // tb_Info_OS
+            // label18
             // 
-            this.tb_Info_OS.Location = new System.Drawing.Point(76, 16);
-            this.tb_Info_OS.Name = "tb_Info_OS";
-            this.tb_Info_OS.ReadOnly = true;
-            this.tb_Info_OS.Size = new System.Drawing.Size(363, 20);
-            this.tb_Info_OS.TabIndex = 2;
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(11, 45);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(45, 13);
+            this.label18.TabIndex = 0;
+            this.label18.Text = "Version:";
             // 
-            // tb_Info_AssemblyVersion
+            // tp_RTLSDR
             // 
-            this.tb_Info_AssemblyVersion.Location = new System.Drawing.Point(76, 42);
-            this.tb_Info_AssemblyVersion.Name = "tb_Info_AssemblyVersion";
-            this.tb_Info_AssemblyVersion.ReadOnly = true;
-            this.tb_Info_AssemblyVersion.Size = new System.Drawing.Size(363, 20);
-            this.tb_Info_AssemblyVersion.TabIndex = 3;
+            this.tp_RTLSDR.BackColor = System.Drawing.SystemColors.Control;
+            this.tp_RTLSDR.Controls.Add(this.label31);
+            this.tp_RTLSDR.Controls.Add(this.pb_NOGPL);
+            this.tp_RTLSDR.Controls.Add(this.btn_RTLSDR_NO);
+            this.tp_RTLSDR.Controls.Add(this.btn_RTLSDR_YES);
+            this.tp_RTLSDR.Controls.Add(this.rtb_RTLSDR);
+            this.tp_RTLSDR.Location = new System.Drawing.Point(4, 22);
+            this.tp_RTLSDR.Name = "tp_RTLSDR";
+            this.tp_RTLSDR.Padding = new System.Windows.Forms.Padding(3);
+            this.tp_RTLSDR.Size = new System.Drawing.Size(786, 324);
+            this.tp_RTLSDR.TabIndex = 3;
+            this.tp_RTLSDR.Text = "rtlsdr";
             // 
-            // tb_Info_Copyright
+            // rtb_RTLSDR
             // 
-            this.tb_Info_Copyright.Location = new System.Drawing.Point(76, 68);
-            this.tb_Info_Copyright.Name = "tb_Info_Copyright";
-            this.tb_Info_Copyright.ReadOnly = true;
-            this.tb_Info_Copyright.Size = new System.Drawing.Size(363, 20);
-            this.tb_Info_Copyright.TabIndex = 4;
+            this.rtb_RTLSDR.BackColor = System.Drawing.Color.White;
+            this.rtb_RTLSDR.Font = new System.Drawing.Font("Courier New", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rtb_RTLSDR.Location = new System.Drawing.Point(264, 6);
+            this.rtb_RTLSDR.Name = "rtb_RTLSDR";
+            this.rtb_RTLSDR.ReadOnly = true;
+            this.rtb_RTLSDR.Size = new System.Drawing.Size(488, 242);
+            this.rtb_RTLSDR.TabIndex = 0;
+            this.rtb_RTLSDR.Text = resources.GetString("rtb_RTLSDR.Text");
             // 
-            // label27
+            // btn_RTLSDR_YES
             // 
-            this.label27.AutoSize = true;
-            this.label27.Location = new System.Drawing.Point(11, 71);
-            this.label27.Name = "label27";
-            this.label27.Size = new System.Drawing.Size(54, 13);
-            this.label27.TabIndex = 5;
-            this.label27.Text = "Copyright:";
+            this.btn_RTLSDR_YES.DialogResult = System.Windows.Forms.DialogResult.Yes;
+            this.btn_RTLSDR_YES.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_RTLSDR_YES.ForeColor = System.Drawing.Color.Green;
+            this.btn_RTLSDR_YES.Location = new System.Drawing.Point(264, 264);
+            this.btn_RTLSDR_YES.Name = "btn_RTLSDR_YES";
+            this.btn_RTLSDR_YES.Size = new System.Drawing.Size(240, 39);
+            this.btn_RTLSDR_YES.TabIndex = 1;
+            this.btn_RTLSDR_YES.Text = "YES, download please!";
+            this.btn_RTLSDR_YES.UseVisualStyleBackColor = true;
+            this.btn_RTLSDR_YES.Click += new System.EventHandler(this.btn_RTLSDR_YES_Click);
+            // 
+            // btn_RTLSDR_NO
+            // 
+            this.btn_RTLSDR_NO.DialogResult = System.Windows.Forms.DialogResult.No;
+            this.btn_RTLSDR_NO.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_RTLSDR_NO.ForeColor = System.Drawing.Color.Tomato;
+            this.btn_RTLSDR_NO.Location = new System.Drawing.Point(525, 264);
+            this.btn_RTLSDR_NO.Name = "btn_RTLSDR_NO";
+            this.btn_RTLSDR_NO.Size = new System.Drawing.Size(227, 39);
+            this.btn_RTLSDR_NO.TabIndex = 2;
+            this.btn_RTLSDR_NO.Text = "NO, CANFI will close.";
+            this.btn_RTLSDR_NO.UseVisualStyleBackColor = true;
+            this.btn_RTLSDR_NO.Click += new System.EventHandler(this.btn_RTLSDR_NO_Click);
             // 
             // tb_FFT_Filter_NotchWidth
             // 
@@ -1239,6 +1355,28 @@
         "othing Level] values.");
             this.ud_Smoothing.Value = global::CANFI.Properties.Settings.Default.Smoothing;
             this.ud_Smoothing.ValueChanged += new System.EventHandler(this.ud_Smoothing_ValueChanged);
+            // 
+            // pb_NOGPL
+            // 
+            this.pb_NOGPL.Image = global::CANFI.Properties.Resources.GPL;
+            this.pb_NOGPL.Location = new System.Drawing.Point(6, 6);
+            this.pb_NOGPL.Name = "pb_NOGPL";
+            this.pb_NOGPL.Size = new System.Drawing.Size(236, 242);
+            this.pb_NOGPL.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pb_NOGPL.TabIndex = 3;
+            this.pb_NOGPL.TabStop = false;
+            // 
+            // label31
+            // 
+            this.label31.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.label31.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.label31.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label31.Location = new System.Drawing.Point(8, 264);
+            this.label31.Name = "label31";
+            this.label31.Size = new System.Drawing.Size(234, 39);
+            this.label31.TabIndex = 4;
+            this.label31.Text = "rtlsdr.dll";
+            this.label31.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // ud_DUT_P_ENR
             // 
@@ -1427,40 +1565,6 @@
             this.ud_RTL_Sweep_Start.Value = global::CANFI.Properties.Settings.Default.RTL_Frequency_Start;
             this.ud_RTL_Sweep_Start.ValueChanged += new System.EventHandler(this.ud_RTL_Sweep_Start_ValueChanged);
             // 
-            // label28
-            // 
-            this.label28.AutoSize = true;
-            this.label28.Location = new System.Drawing.Point(12, 71);
-            this.label28.Name = "label28";
-            this.label28.Size = new System.Drawing.Size(54, 13);
-            this.label28.TabIndex = 9;
-            this.label28.Text = "Copyright:";
-            // 
-            // tb_Info_RTL_Copyright
-            // 
-            this.tb_Info_RTL_Copyright.Location = new System.Drawing.Point(77, 68);
-            this.tb_Info_RTL_Copyright.Name = "tb_Info_RTL_Copyright";
-            this.tb_Info_RTL_Copyright.ReadOnly = true;
-            this.tb_Info_RTL_Copyright.Size = new System.Drawing.Size(236, 20);
-            this.tb_Info_RTL_Copyright.TabIndex = 8;
-            // 
-            // tb_Info_RTL_Version
-            // 
-            this.tb_Info_RTL_Version.Location = new System.Drawing.Point(77, 42);
-            this.tb_Info_RTL_Version.Name = "tb_Info_RTL_Version";
-            this.tb_Info_RTL_Version.ReadOnly = true;
-            this.tb_Info_RTL_Version.Size = new System.Drawing.Size(236, 20);
-            this.tb_Info_RTL_Version.TabIndex = 7;
-            // 
-            // label29
-            // 
-            this.label29.AutoSize = true;
-            this.label29.Location = new System.Drawing.Point(12, 45);
-            this.label29.Name = "label29";
-            this.label29.Size = new System.Drawing.Size(64, 13);
-            this.label29.TabIndex = 6;
-            this.label29.Text = "File Version:";
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1507,14 +1611,16 @@
             this.gb_Sweep_Chart.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.ch_Sweep)).EndInit();
             this.tp_Info.ResumeLayout(false);
-            this.groupBox11.ResumeLayout(false);
-            this.groupBox11.PerformLayout();
+            this.groupBox13.ResumeLayout(false);
             this.groupBox12.ResumeLayout(false);
             this.groupBox12.PerformLayout();
-            this.groupBox13.ResumeLayout(false);
+            this.groupBox11.ResumeLayout(false);
+            this.groupBox11.PerformLayout();
+            this.tp_RTLSDR.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.tb_FFT_Filter_NotchWidth)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tb_FFT_Filter_Threshold)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ud_Smoothing)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pb_NOGPL)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1623,6 +1729,14 @@
         private System.Windows.Forms.TextBox tb_Info_RTL_Copyright;
         private System.Windows.Forms.TextBox tb_Info_RTL_Version;
         private System.Windows.Forms.Label label29;
+        private System.Windows.Forms.TextBox tb_Info_RTL_Library;
+        private System.Windows.Forms.Label label30;
+        private System.Windows.Forms.TabPage tp_RTLSDR;
+        private System.Windows.Forms.RichTextBox rtb_RTLSDR;
+        private System.Windows.Forms.Button btn_RTLSDR_NO;
+        private System.Windows.Forms.Button btn_RTLSDR_YES;
+        private System.Windows.Forms.PictureBox pb_NOGPL;
+        private System.Windows.Forms.Label label31;
     }
 }
 

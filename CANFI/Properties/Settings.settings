@@ -205,5 +205,8 @@
     <Setting Name="RTL_DLL_DirName" Type="System.String" Scope="User">
       <Value Profile="(Default)">rtlsdr</Value>
     </Setting>
+    <Setting Name="RTL_DLL_Zip_FileName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">rtlsdr.zip</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

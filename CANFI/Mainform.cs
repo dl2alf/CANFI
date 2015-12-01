@@ -66,6 +66,8 @@ namespace CANFI
         // temp variable for local culture
         private CultureInfo LocalCulture;
 
+        private string rtlsdr_dir;
+
         public MainForm()
         {
             try
@@ -91,12 +93,15 @@ namespace CANFI
                 MessageBox.Show("Exception: " + ex.Message + "\nInner:" + ex.InnerException.Message, "Init");
             }
 
+            // set rtlsdr directory
+             rtlsdr_dir = Application.StartupPath + Path.DirectorySeparatorChar + Properties.Settings.Default.RTL_DLL_DirName;
+
             // reset sweep mode to NONE and save settings
             Properties.Settings.Default.SweepMode = SMODE.NONE;
             Properties.Settings.Default.Save();
 
             // set initial mode and state
-            State = STATE.INIT;
+            State = STATE.NONE;
             CalState = CALSTATE.NONE;
 
             // initialize Properties.Settings.Default.Mode combobox
@@ -151,77 +156,6 @@ namespace CANFI
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            // check if a rtlsdr.dll version is already in the program's directory
-            // suggest automatic download
-            //
-            // TODO: modify for running under Linux (different file names)
-            //
-            string DLLFileName = "rtlsdr.dll";
-            string DLLZipFileName = "rtlsdr.zip";
-            // get major/minor version info as string "Vx.x"
-            string version = "V" + Assembly.GetExecutingAssembly().GetName().Version.Major.ToString() + "." + Assembly.GetExecutingAssembly().GetName().Version.Minor.ToString();
-            // search for DLL on program's main directory
-            string[] files = Directory.GetFiles(Application.StartupPath, DLLFileName);
-            if (files.Length == 0)
-            {
-                // show message box if not found
-                if (MessageBox.Show("The GPL-licensed <rtlsdr.dll> is not part of this distribution and is missing in the program's main directory (See http://www.canfi.eu for details). \n\nDo you want to download the file from the repository?", "DLL is missing", MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.Yes)
-                {
-                    try
-                    {
-                        // try to download from repository
-                        using (WebClient client = new WebClient())
-                        {
-                            // first, get the textfile with the download urls
-                            string urls = client.DownloadString(Properties.Settings.Default.RTL_DLL_DownloadInfo_URL);
-                            // get download info (all versions)
-                            string[] versions = urls.Split('\n');
-                            // iterate through versions 
-                            for (int i = 0; i < versions.Length; i++)
-                            {
-                                string[] url = versions[i].Split(';');
-                                // check if version info matches current version
-                                if (url[0] == version)
-                                {
-                                    // dowload file (zipped or unzipped)
-                                    if (url[1].Contains(".zip"))
-                                    {
-                                        // download the zip file from url
-                                        client.DownloadFile(url[1], Application.StartupPath + Path.DirectorySeparatorChar + DLLZipFileName);
-                                        // unzip the file automatically
-                                        using (ZipFile zip = ZipFile.Read(Application.StartupPath + Path.DirectorySeparatorChar + DLLZipFileName))
-                                        {
-                                            // extract every entry, should be only one
-                                            foreach (ZipEntry ze in zip)
-                                            {
-                                                ze.Extract(Application.StartupPath, ExtractExistingFileAction.OverwriteSilently);
-                                            }
-                                        }
-                                        // delete the zip file
-                                        File.Delete(Application.StartupPath + Path.DirectorySeparatorChar + DLLZipFileName);
-                                    }
-                                    else
-                                    {
-                                        // direct download of DLL
-                                        client.DownloadFile(url[1], Application.StartupPath + Path.DirectorySeparatorChar + DLLFileName);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        // something was going wrong --> show error message
-                        MessageBox.Show(ex.Message, "Download of" + DLLFileName);
-                    }
-                }
-                else
-                {
-                    // automatic download declined by user --> close application
-                    this.Close();
-                }
-            }
-
             // set initial display
 
             lbl_DUT_Frequency.Text = "-----.---";
@@ -232,15 +166,45 @@ namespace CANFI
             lbl_RTL_P_ON.Text = "--.--";
             lbl_RTL_P_OFF.Text = "--.--";
 
-            // get basic RTL-Stick information
-            Start();
-            Status("Ready.");
+            // check if a rtlsdr.dll version is already in the program's directory
+            // suggest automatic download
+            //
+            // TODO: modify for running under Linux (different file names)
+            //
+            // check if all subdirs are present --> create them if not
+            if (!Directory.Exists(rtlsdr_dir))
+            {
+                // create it
+                Directory.CreateDirectory(rtlsdr_dir);
+            }
+            // append DLL search path
+            Environment.SetEnvironmentVariable("PATH", Environment.GetEnvironmentVariable("PATH") + ";" + rtlsdr_dir);
+            // search for DLL on program's rtlsdr directory
+            string[] files = Directory.GetFiles(rtlsdr_dir, Properties.Settings.Default.RTL_DLL_Win_FileName);
+            if (files.Length == 0)
+            {
+                // DLL not found --> show rtlsdr download tab only
+                // remove all tabs
+                tc_Main.TabPages.Clear();
+                // add rtlsdr tab only
+                tc_Main.TabPages.Add(tp_RTLSDR);
+            }
+            else
+            {
+                // DLL found --> startup application
+                tc_Main.TabPages.Remove(tp_RTLSDR);
+                // set State to INIT
+                State = STATE.INIT;
+                // startup application
+                Start();
+                Status("Ready.");
+            }
         }
 
         private void Application_Idle(Object sender, EventArgs e)
         {
             // start RTLWorker according to state if necessary
-            if ((State != STATE.SETTING) && !RTLWorker.IsBusy)
+            if ((State != STATE.NONE) && (State != STATE.SETTING) && !RTLWorker.IsBusy)
             {
                 Application.DoEvents();
                 Start();
@@ -1708,6 +1672,7 @@ namespace CANFI
             try
             {
                 FileVersionInfo info = FileVersionInfo.GetVersionInfo(Application.StartupPath + Path.DirectorySeparatorChar + Properties.Settings.Default.RTL_DLL_DirName + Path.DirectorySeparatorChar + Properties.Settings.Default.RTL_DLL_Win_FileName);
+                tb_Info_RTL_Library.Text = info.FileName;
                 tb_Info_RTL_Version.Text = info.ProductVersion;
                 tb_Info_RTL_Copyright.Text = info.CompanyName + ", " + info.LegalCopyright;
             }
@@ -1723,6 +1688,78 @@ namespace CANFI
             {
                 // do nothing if failed
             }
+        }
+
+        private void btn_RTLSDR_YES_Click(object sender, EventArgs e)
+        {
+            // automatic download initiated by the user
+            try
+            {
+                // get major/minor version info as string "Vx.x"
+                string version = "V" + Assembly.GetExecutingAssembly().GetName().Version.Major.ToString() + "." + Assembly.GetExecutingAssembly().GetName().Version.Minor.ToString();
+                // try to download from repository
+                using (WebClient client = new WebClient())
+                {
+                    // first, get the textfile with the download urls
+                    string urls = client.DownloadString(Properties.Settings.Default.RTL_DLL_DownloadInfo_URL);
+                    // get download info (all versions)
+                    string[] versions = urls.Split('\n');
+                    // iterate through versions 
+                    for (int i = 0; i < versions.Length; i++)
+                    {
+                        string[] url = versions[i].Split(';');
+                        // check if version info matches current version
+                        if (url[0] == version)
+                        {
+                            // dowload file (zipped or unzipped)
+                            if (url[1].Contains(".zip"))
+                            {
+                                // download the zip file from url
+                                client.DownloadFile(url[1], rtlsdr_dir + Path.DirectorySeparatorChar +  Properties.Settings.Default.RTL_DLL_Zip_FileName);
+                                // unzip the file automatically
+                                using (ZipFile zip = ZipFile.Read(rtlsdr_dir + Path.DirectorySeparatorChar + Properties.Settings.Default.RTL_DLL_Zip_FileName))
+                                {
+                                    // extract every entry
+                                    foreach (ZipEntry ze in zip)
+                                    {
+                                        ze.Extract(rtlsdr_dir, ExtractExistingFileAction.OverwriteSilently);
+                                    }
+                                }
+                                // delete the zip file
+                                File.Delete(rtlsdr_dir + Path.DirectorySeparatorChar + Properties.Settings.Default.RTL_DLL_Zip_FileName);
+                            }
+                            else
+                            {
+                                // direct download of DLL
+                                client.DownloadFile(url[1], rtlsdr_dir + Path.DirectorySeparatorChar + Properties.Settings.Default.RTL_DLL_Win_FileName);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // something was going wrong --> show error message
+                MessageBox.Show(ex.Message, "Download of" + Properties.Settings.Default.RTL_DLL_Win_FileName);
+            }
+
+            // activate all tabs expect rtlsdr
+            tc_Main.TabPages.Clear();
+            tc_Main.TabPages.Add(tp_Meter);
+            tc_Main.TabPages.Add(tp_Sweep);
+            tc_Main.TabPages.Add(tp_Info);
+            // set State to INIT
+            State = STATE.INIT;
+            // startup application
+            Start();
+            Status("Ready.");
+
+        }
+
+        private void btn_RTLSDR_NO_Click(object sender, EventArgs e)
+        {
+            // automatic download declined by user --> close application
+            this.Close();
         }
 
 
