@@ -86,7 +86,10 @@ namespace CANFI
             cbb_FFT_Filter.Items.Add(FFTALGORITHM.FFTW);
             try
             {
-                cbb_FFT_Filter.SelectedItem = Properties.Settings.Default.FFT_Algorithm;
+                if (Properties.Settings.Default.FFT_Filter)
+                    cbb_FFT_Filter.SelectedItem = Properties.Settings.Default.FFT_Algorithm;
+                else
+                    cbb_FFT_Filter.SelectedItem = FFTALGORITHM.NONE;
             }
             catch
             {
