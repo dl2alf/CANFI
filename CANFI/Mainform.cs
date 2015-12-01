@@ -1524,6 +1524,18 @@ namespace CANFI
             CalState = CALSTATE.NONE;
             // reset sweep mode and frequencies if any
             cbb_SMode.SelectedItem = SMODE.NONE;
+            // allow continious manual frequency change of RTL frequency if in Idle state --> kind of SDR radio!
+            if (State == STATE.IDLE)
+            {
+                // change RTLWorkers' parameters online
+                // CAUTION: Do not forget to lock the variables first!
+                lock (RTLWorker.Params)
+                {
+                    RTLWorker.Params.Frequency_Start = ud_RTL_Frequency.Value;
+                    RTLWorker.Params.Frequency_Stop = ud_RTL_Frequency.Value;
+                    RTLWorker.Params.Frequency_Step = 0;
+                }
+            }
         }
 
         private void ud_DUT_Frequency_ValueChanged(object sender, EventArgs e)

@@ -854,8 +854,7 @@ namespace CANFICore
             // CAUTION: always start measurement with Noise=OFF to initialize blocked out status!
             // open device
             RTLOpenDevice();
-            // set initial frequeny and gain
-            Frequency = Params.Frequency_Start;
+            // set initial gain
             TunerGain = Params.TunerGain;
 
             // configure device
@@ -866,11 +865,11 @@ namespace CANFICore
                 {
                     T_Start = DateTime.UtcNow;
                     // set tuner frequency
-                    RTLSetCenterFreq(System.Convert.ToUInt32(Frequency * 1000000));
+                    RTLSetCenterFreq(System.Convert.ToUInt32(Params.Frequency_Start * 1000000));
                     // measure power
                     RTLMeasurePower();
                     T_Stop = DateTime.UtcNow;
-                    ReportProgress((int)PROGRESS.MESSAGE, "[" + Params.Device.Name + "] " + "Idling at: " + Frequency.ToString("F3") + " MHz and " + (TunerGain / 10).ToString() + " dB [" + (T_Stop - T_Start).Milliseconds.ToString() + "ms].");
+                    ReportProgress((int)PROGRESS.MESSAGE, "[" + Params.Device.Name + "] " + "Idling at: " + Params.Frequency_Start.ToString("F3") + " MHz and " + (TunerGain / 10).ToString() + " dB [" + (T_Stop - T_Start).Milliseconds.ToString() + "ms].");
                 }
                 catch (Exception ex)
                 {
