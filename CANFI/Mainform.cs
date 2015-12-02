@@ -857,15 +857,20 @@ namespace CANFI
             lbl_RTL_P_OFF.Text = SupportFunctions.TodB(P_OFF).ToString("F2", CultureInfo.InvariantCulture);
             lbl_RTL_Status.ForeColor = Color.Chartreuse;
             lbl_RTL_Status.Text = "Valid";
-
-            // generate new calibration entry and update calibration
-            CalEntry entry = new CalEntry((int)Properties.Settings.Default.CAL_SampleCount_Max);
-            entry.Invalid = false;
-            entry.Frequency = r.Frequency;
-            entry.TunerGain = r.TunerGain;
+            // try to get an existing calibration entry
+            // if not found --> add a new one
+            CalEntry entry = Calibration[r.Frequency,r.TunerGain];
+            if (entry == null)
+            {
+                // generate new calibration entry and fill in initial values
+                entry = new CalEntry((int)Properties.Settings.Default.CAL_SampleCount_Max);
+                entry.Invalid = false;
+                entry.Frequency = r.Frequency;
+                entry.TunerGain = r.TunerGain;
+            }
+            // add power values
             entry.P_OFF.AddSample(P_OFF);
             entry.P_ON.AddSample(P_ON);
-
             // get proper ENR values according to Properties.Settings.Default.Mode
             switch (Properties.Settings.Default.Mode)
             {
