@@ -1,4 +1,23 @@
-﻿using System;
+﻿//
+// CANFI (C)heap (A)utomatic (N)oise (F)igure (I)ndicator 
+// Copyright (C) 2015 DL2ALF
+//
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License
+// as published by the Free Software Foundation; either version 2
+// of the License, or (at your option) any later version.
+
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.using System;
+//
+
+using System;
 using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
@@ -1732,7 +1751,7 @@ namespace CANFI
                             if (url[1].Contains(".zip"))
                             {
                                 // download the zip file from url
-                                client.DownloadFile(url[1], rtlsdr_dir + Path.DirectorySeparatorChar +  Properties.Settings.Default.RTL_DLL_Zip_FileName);
+                                client.DownloadFile(url[1], rtlsdr_dir + Path.DirectorySeparatorChar + Properties.Settings.Default.RTL_DLL_Zip_FileName);
                                 // unzip the file automatically
                                 using (ZipFile zip = ZipFile.Read(rtlsdr_dir + Path.DirectorySeparatorChar + Properties.Settings.Default.RTL_DLL_Zip_FileName))
                                 {
@@ -1757,7 +1776,7 @@ namespace CANFI
             catch (Exception ex)
             {
                 // something was going wrong --> show error message
-                MessageBox.Show(ex.Message, "Download of" + Properties.Settings.Default.RTL_DLL_Win_FileName);
+                MessageBox.Show(ex.Message, "Download of " + Properties.Settings.Default.RTL_DLL_Win_FileName);
             }
 
             // activate all tabs expect rtlsdr
