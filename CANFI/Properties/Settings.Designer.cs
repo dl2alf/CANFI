@@ -677,7 +677,7 @@ namespace CANFI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("2")]
+        [global::System.Configuration.DefaultSettingValueAttribute("20")]
         public int FFT_Filter_Threshold {
             get {
                 return ((int)(this["FFT_Filter_Threshold"]));
@@ -689,7 +689,7 @@ namespace CANFI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("512")]
+        [global::System.Configuration.DefaultSettingValueAttribute("2000")]
         public int FFT_Filter_NotchWidth {
             get {
                 return ((int)(this["FFT_Filter_NotchWidth"]));

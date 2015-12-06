@@ -170,10 +170,10 @@
       <Value Profile="(Default)">144</Value>
     </Setting>
     <Setting Name="FFT_Filter_Threshold" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">2</Value>
+      <Value Profile="(Default)">20</Value>
     </Setting>
     <Setting Name="FFT_Filter_NotchWidth" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">512</Value>
+      <Value Profile="(Default)">2000</Value>
     </Setting>
     <Setting Name="SweepMode" Type="CANFICore.SMODE" Scope="User">
       <Value Profile="(Default)">NONE</Value>

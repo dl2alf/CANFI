@@ -127,9 +127,8 @@
     <value>432, 17</value>
   </metadata>
   <data name="rtb_RTLSDR.Text" xml:space="preserve">
-    <value>The GPL-licensed &lt;rtlsdr.dll&gt; is not 
-part of this distribution - but is 
-necessary to get this software working 
+    <value>The GPL-licensed &lt;rtlsdr.dll&gt; is not found in the directory 
+- but is necessary to get this software working 
 
 CANFI will not start without this file.
 See http://www.canfi.eu for details.

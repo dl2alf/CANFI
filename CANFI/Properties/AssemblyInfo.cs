@@ -11,7 +11,7 @@ using System.Resources;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("DL2ALF")]
 [assembly: AssemblyProduct("CANFI")]
-[assembly: AssemblyCopyright("based on ADSR# Copyright © 2012 Youssef Touil, Ian Gilmour")]
+[assembly: AssemblyCopyright("DL2ALF")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

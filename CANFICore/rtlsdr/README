@@ -1,0 +1,15 @@
+rtl-sdr
+turns your Realtek RTL2832 based DVB dongle into a SDR receiver
+======================================================================
+
+For more information see:
+http://sdr.osmocom.org/trac/wiki/rtl-sdr
+
+
+dl8aau (Nov. 20 2015):
+https://github.com/dl8aau/librtlsdr/tree/devel1
+
+- rebased to current master
+- merged patches and fixes
+- some new bug fixes
+- R820T filtering: use code from master

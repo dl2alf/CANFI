@@ -82,8 +82,10 @@
     <Content Include="msvcr100.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="rtlsdr.dll" />
     <Content Include="rtlsdr.txt" />
+    <Content Include="rtlsdr\rtlsdr.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <None Include="HP346A_DL2ALF.cal">
@@ -92,8 +94,11 @@
     <None Include="HP346B_DL2ALF.cal">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="LICENSE">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <None Include="rtlsdr\COPYING">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="rtlsdr\README">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
