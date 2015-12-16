@@ -32,7 +32,6 @@ using System.Net;
 using System.Diagnostics;
 using Clifton.Tools.Data;
 using CANFICore;
-using Ionic.Zip;
 
 namespace CANFI
 {
@@ -185,39 +184,13 @@ namespace CANFI
             lbl_RTL_P_ON.Text = "--.--";
             lbl_RTL_P_OFF.Text = "--.--";
 
-            // check if a rtlsdr.dll version is already in the program's directory
-            // suggest automatic download
-            //
-            // TODO: modify for running under Linux (different file names)
-            //
-            // check if all subdirs are present --> create them if not
-            if (!Directory.Exists(rtlsdr_dir))
-            {
-                // create it
-                Directory.CreateDirectory(rtlsdr_dir);
-            }
             // append DLL search path
             Environment.SetEnvironmentVariable("PATH", Environment.GetEnvironmentVariable("PATH") + ";" + rtlsdr_dir);
-            // search for DLL on program's rtlsdr directory
-            string[] files = Directory.GetFiles(rtlsdr_dir, Properties.Settings.Default.RTL_DLL_Win_FileName);
-            if (files.Length == 0)
-            {
-                // DLL not found --> show rtlsdr download tab only
-                // remove all tabs
-                tc_Main.TabPages.Clear();
-                // add rtlsdr tab only
-                tc_Main.TabPages.Add(tp_RTLSDR);
-            }
-            else
-            {
-                // DLL found --> startup application
-                tc_Main.TabPages.Remove(tp_RTLSDR);
-                // set State to INIT
-                State = STATE.INIT;
-                // startup application
-                Start();
-                Status("Ready.");
-            }
+            // set State to INIT
+            State = STATE.INIT;
+            // startup application
+            Start();
+            Status("Ready.");
         }
 
         private void Application_Idle(Object sender, EventArgs e)
@@ -1725,80 +1698,6 @@ namespace CANFI
                 // do nothing if failed
             }
         }
-
-        private void btn_RTLSDR_YES_Click(object sender, EventArgs e)
-        {
-            // automatic download initiated by the user
-            try
-            {
-                // get major/minor version info as string "Vx.x"
-                string version = "V" + Assembly.GetExecutingAssembly().GetName().Version.Major.ToString() + "." + Assembly.GetExecutingAssembly().GetName().Version.Minor.ToString();
-                // try to download from repository
-                using (WebClient client = new WebClient())
-                {
-                    // first, get the textfile with the download urls
-                    string urls = client.DownloadString(Properties.Settings.Default.RTL_DLL_DownloadInfo_URL);
-                    // get download info (all versions)
-                    string[] versions = urls.Split('\n');
-                    // iterate through versions 
-                    for (int i = 0; i < versions.Length; i++)
-                    {
-                        string[] url = versions[i].Split(';');
-                        // check if version info matches current version
-                        if (url[0] == version)
-                        {
-                            // dowload file (zipped or unzipped)
-                            if (url[1].Contains(".zip"))
-                            {
-                                // download the zip file from url
-                                client.DownloadFile(url[1], rtlsdr_dir + Path.DirectorySeparatorChar + Properties.Settings.Default.RTL_DLL_Zip_FileName);
-                                // unzip the file automatically
-                                using (ZipFile zip = ZipFile.Read(rtlsdr_dir + Path.DirectorySeparatorChar + Properties.Settings.Default.RTL_DLL_Zip_FileName))
-                                {
-                                    // extract every entry
-                                    foreach (ZipEntry ze in zip)
-                                    {
-                                        ze.Extract(rtlsdr_dir, ExtractExistingFileAction.OverwriteSilently);
-                                    }
-                                }
-                                // delete the zip file
-                                File.Delete(rtlsdr_dir + Path.DirectorySeparatorChar + Properties.Settings.Default.RTL_DLL_Zip_FileName);
-                            }
-                            else
-                            {
-                                // direct download of DLL
-                                client.DownloadFile(url[1], rtlsdr_dir + Path.DirectorySeparatorChar + Properties.Settings.Default.RTL_DLL_Win_FileName);
-                            }
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                // something was going wrong --> show error message
-                MessageBox.Show(ex.Message, "Download of " + Properties.Settings.Default.RTL_DLL_Win_FileName);
-            }
-
-            // activate all tabs expect rtlsdr
-            tc_Main.TabPages.Clear();
-            tc_Main.TabPages.Add(tp_Meter);
-            tc_Main.TabPages.Add(tp_Sweep);
-            tc_Main.TabPages.Add(tp_Info);
-            // set State to INIT
-            State = STATE.INIT;
-            // startup application
-            Start();
-            Status("Ready.");
-
-        }
-
-        private void btn_RTLSDR_NO_Click(object sender, EventArgs e)
-        {
-            // automatic download declined by user --> close application
-            this.Close();
-        }
-
-
     }
 
     #endregion

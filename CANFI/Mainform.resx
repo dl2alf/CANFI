@@ -126,16 +126,6 @@
   <metadata name="tt_Main.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>432, 17</value>
   </metadata>
-  <data name="rtb_RTLSDR.Text" xml:space="preserve">
-    <value>The GPL-licensed &lt;rtlsdr.dll&gt; is not found in the directory 
-- but is necessary to get this software working 
-
-CANFI will not start without this file.
-See http://www.canfi.eu for details.
-
-Do you want to download the DLL from the repository?
-</value>
-  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
