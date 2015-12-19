@@ -48,10 +48,10 @@
       <Value Profile="(Default)">4</Value>
     </Setting>
     <Setting Name="RTL_P_ENR" Type="System.Decimal" Scope="User">
-      <Value Profile="(Default)">15.45</Value>
+      <Value Profile="(Default)">0</Value>
     </Setting>
     <Setting Name="DUT_Frequency" Type="System.Decimal" Scope="User">
-      <Value Profile="(Default)">144</Value>
+      <Value Profile="(Default)">0</Value>
     </Setting>
     <Setting Name="DUT_P_ENR" Type="System.Decimal" Scope="User">
       <Value Profile="(Default)">0</Value>
@@ -149,13 +149,13 @@
       <Value Profile="(Default)">10</Value>
     </Setting>
     <Setting Name="RTL_Frequency_Step" Type="System.Decimal" Scope="User">
-      <Value Profile="(Default)">0</Value>
+      <Value Profile="(Default)">0.1</Value>
     </Setting>
     <Setting Name="RTL_Frequency_Start" Type="System.Decimal" Scope="User">
-      <Value Profile="(Default)">144</Value>
+      <Value Profile="(Default)">0</Value>
     </Setting>
     <Setting Name="RTL_Frequency_Stop" Type="System.Decimal" Scope="User">
-      <Value Profile="(Default)">144</Value>
+      <Value Profile="(Default)">0</Value>
     </Setting>
     <Setting Name="FFT_Filter" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
@@ -167,7 +167,7 @@
       <Value Profile="(Default)">0</Value>
     </Setting>
     <Setting Name="RTL_Frequency" Type="System.Decimal" Scope="User">
-      <Value Profile="(Default)">144</Value>
+      <Value Profile="(Default)">0</Value>
     </Setting>
     <Setting Name="FFT_Filter_Threshold" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">20</Value>
@@ -185,7 +185,7 @@
       <Value Profile="(Default)">0</Value>
     </Setting>
     <Setting Name="DUT_Frequency_Step" Type="System.Decimal" Scope="User">
-      <Value Profile="(Default)">0</Value>
+      <Value Profile="(Default)">0.1</Value>
     </Setting>
     <Setting Name="FFT_Algorithm" Type="CANFICore.FFTALGORITHM" Scope="User">
       <Value Profile="(Default)">FFTW</Value>

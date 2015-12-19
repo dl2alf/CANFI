@@ -35,8 +35,11 @@ namespace CANFI
         private int _decimalPlaces = 3;
         private int _overallplaces;
 
-        private decimal _value;
-        private double _increment;
+        private decimal _value = 0;
+        private double _increment = 1;
+
+        private decimal _maximum = 100;
+        private decimal _minimum = 0;
 
         public event EventHandler ValueChanged;
 
@@ -118,6 +121,11 @@ namespace CANFI
             set
             {
                 string s = this.Name;
+                // check bounds
+                if (value < _minimum)
+                    value = _minimum;
+                if (value > _maximum)
+                    value = _maximum;
                 _value = value;
                 if (_value < 0)
                     _value = 0;
@@ -156,6 +164,39 @@ namespace CANFI
                 UpdateText();
             }
         }
+
+        [DefaultValue(typeof(decimal), "0")]
+        public decimal Minimum
+        {
+            get
+            {
+                return _minimum;
+            }
+            set
+            {
+                // check bounds
+                if (value > _maximum)
+                    value = _maximum;
+                _minimum = value;
+            }
+        }
+
+        [DefaultValue(typeof(decimal), "100")]
+        public decimal Maximum
+        {
+            get
+            {
+                return _maximum;
+            }
+            set
+            {
+                // check bounds
+                if (value < _minimum)
+                    value = _minimum;
+                _maximum = value;
+            }
+        }
+
 
         private bool IsSelectionOnDecimalPoint()
         {

@@ -205,7 +205,7 @@ namespace CANFI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("15.45")]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
         public decimal RTL_P_ENR {
             get {
                 return ((decimal)(this["RTL_P_ENR"]));
@@ -217,7 +217,7 @@ namespace CANFI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("144")]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
         public decimal DUT_Frequency {
             get {
                 return ((decimal)(this["DUT_Frequency"]));
@@ -594,7 +594,7 @@ namespace CANFI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        [global::System.Configuration.DefaultSettingValueAttribute("0.1")]
         public decimal RTL_Frequency_Step {
             get {
                 return ((decimal)(this["RTL_Frequency_Step"]));
@@ -606,7 +606,7 @@ namespace CANFI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("144")]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
         public decimal RTL_Frequency_Start {
             get {
                 return ((decimal)(this["RTL_Frequency_Start"]));
@@ -618,7 +618,7 @@ namespace CANFI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("144")]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
         public decimal RTL_Frequency_Stop {
             get {
                 return ((decimal)(this["RTL_Frequency_Stop"]));
@@ -665,7 +665,7 @@ namespace CANFI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("144")]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
         public decimal RTL_Frequency {
             get {
                 return ((decimal)(this["RTL_Frequency"]));
@@ -737,7 +737,7 @@ namespace CANFI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        [global::System.Configuration.DefaultSettingValueAttribute("0.1")]
         public decimal DUT_Frequency_Step {
             get {
                 return ((decimal)(this["DUT_Frequency_Step"]));
