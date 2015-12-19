@@ -51,10 +51,7 @@
             this.gb_FFT_Filter = new System.Windows.Forms.GroupBox();
             this.label4 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.tb_FFT_Filter_NotchWidth = new System.Windows.Forms.TrackBar();
-            this.tb_FFT_Filter_Threshold = new System.Windows.Forms.TrackBar();
             this.lbl_FFT_Filter = new System.Windows.Forms.Label();
-            this.ud_Smoothing = new System.Windows.Forms.NumericUpDown();
             this.tp_Info = new System.Windows.Forms.TabPage();
             this.groupBox13 = new System.Windows.Forms.GroupBox();
             this.rtb_Info = new System.Windows.Forms.RichTextBox();
@@ -128,6 +125,9 @@
             this.label40 = new System.Windows.Forms.Label();
             this.lbl_RTL_Frequency = new System.Windows.Forms.Label();
             this.tc_Main = new System.Windows.Forms.TabControl();
+            this.tb_FFT_Filter_NotchWidth = new System.Windows.Forms.TrackBar();
+            this.tb_FFT_Filter_Threshold = new System.Windows.Forms.TrackBar();
+            this.ud_Smoothing = new System.Windows.Forms.NumericUpDown();
             this.ud_DUT_P_ENR = new CANFI.CANFIUpDown();
             this.ud_DUT_Frequency = new CANFI.CANFIUpDown();
             this.ud_RTL_P_ENR = new CANFI.CANFIUpDown();
@@ -142,9 +142,6 @@
             this.groupBox10.SuspendLayout();
             this.groupBox7.SuspendLayout();
             this.gb_FFT_Filter.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.tb_FFT_Filter_NotchWidth)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.tb_FFT_Filter_Threshold)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ud_Smoothing)).BeginInit();
             this.tp_Info.SuspendLayout();
             this.groupBox13.SuspendLayout();
             this.groupBox12.SuspendLayout();
@@ -166,6 +163,9 @@
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.tc_Main.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.tb_FFT_Filter_NotchWidth)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tb_FFT_Filter_Threshold)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ud_Smoothing)).BeginInit();
             this.SuspendLayout();
             // 
             // bw_Measure
@@ -343,35 +343,6 @@
             this.label1.TabIndex = 68;
             this.label1.Text = "Threshold";
             // 
-            // tb_FFT_Filter_NotchWidth
-            // 
-            this.tb_FFT_Filter_NotchWidth.DataBindings.Add(new System.Windows.Forms.Binding("Value", global::CANFI.Properties.Settings.Default, "FFT_Filter_NotchWidth", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.tb_FFT_Filter_NotchWidth.Location = new System.Drawing.Point(43, 28);
-            this.tb_FFT_Filter_NotchWidth.Maximum = 16384;
-            this.tb_FFT_Filter_NotchWidth.Name = "tb_FFT_Filter_NotchWidth";
-            this.tb_FFT_Filter_NotchWidth.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.tb_FFT_Filter_NotchWidth.Size = new System.Drawing.Size(45, 60);
-            this.tb_FFT_Filter_NotchWidth.TabIndex = 70;
-            this.tb_FFT_Filter_NotchWidth.TickStyle = System.Windows.Forms.TickStyle.None;
-            this.tt_Main.SetToolTip(this.tb_FFT_Filter_NotchWidth, "Click on the LED to enable/disable FFT-Filter");
-            this.tb_FFT_Filter_NotchWidth.Value = global::CANFI.Properties.Settings.Default.FFT_Filter_NotchWidth;
-            this.tb_FFT_Filter_NotchWidth.Scroll += new System.EventHandler(this.tb_FFT_Filter_NotchWidth_Scroll);
-            // 
-            // tb_FFT_Filter_Threshold
-            // 
-            this.tb_FFT_Filter_Threshold.DataBindings.Add(new System.Windows.Forms.Binding("Value", global::CANFI.Properties.Settings.Default, "FFT_Filter_Threshold", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.tb_FFT_Filter_Threshold.Location = new System.Drawing.Point(15, 30);
-            this.tb_FFT_Filter_Threshold.Maximum = 100;
-            this.tb_FFT_Filter_Threshold.Minimum = 1;
-            this.tb_FFT_Filter_Threshold.Name = "tb_FFT_Filter_Threshold";
-            this.tb_FFT_Filter_Threshold.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.tb_FFT_Filter_Threshold.Size = new System.Drawing.Size(45, 60);
-            this.tb_FFT_Filter_Threshold.TabIndex = 68;
-            this.tb_FFT_Filter_Threshold.TickStyle = System.Windows.Forms.TickStyle.None;
-            this.tt_Main.SetToolTip(this.tb_FFT_Filter_Threshold, "Click on the LED to enable/disable FFT-Filter");
-            this.tb_FFT_Filter_Threshold.Value = global::CANFI.Properties.Settings.Default.FFT_Filter_Threshold;
-            this.tb_FFT_Filter_Threshold.Scroll += new System.EventHandler(this.tb_FFT_Filter_Threshold_Scroll);
-            // 
             // lbl_FFT_Filter
             // 
             this.lbl_FFT_Filter.BackColor = System.Drawing.Color.Chartreuse;
@@ -382,24 +353,6 @@
             this.lbl_FFT_Filter.TabIndex = 55;
             this.tt_Main.SetToolTip(this.lbl_FFT_Filter, "Click on the LED to enable/disable FFT-Filter");
             this.lbl_FFT_Filter.Click += new System.EventHandler(this.lbl_FFT_Click);
-            // 
-            // ud_Smoothing
-            // 
-            this.ud_Smoothing.BackColor = System.Drawing.Color.Black;
-            this.ud_Smoothing.DataBindings.Add(new System.Windows.Forms.Binding("Value", global::CANFI.Properties.Settings.Default, "Smoothing", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.ud_Smoothing.DataBindings.Add(new System.Windows.Forms.Binding("Maximum", global::CANFI.Properties.Settings.Default, "Smoothing_Max", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.ud_Smoothing.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ud_Smoothing.ForeColor = System.Drawing.Color.Chartreuse;
-            this.ud_Smoothing.Location = new System.Drawing.Point(8, 21);
-            this.ud_Smoothing.Maximum = global::CANFI.Properties.Settings.Default.Smoothing_Max;
-            this.ud_Smoothing.Minimum = global::CANFI.Properties.Settings.Default.Smoothing_Min;
-            this.ud_Smoothing.Name = "ud_Smoothing";
-            this.ud_Smoothing.Size = new System.Drawing.Size(59, 29);
-            this.ud_Smoothing.TabIndex = 60;
-            this.tt_Main.SetToolTip(this.ud_Smoothing, "Select the Smoothing Level here.\r\nSmoothing is done by a Moving Avarage of 2^[Smo" +
-        "othing Level] values.");
-            this.ud_Smoothing.Value = global::CANFI.Properties.Settings.Default.Smoothing;
-            this.ud_Smoothing.ValueChanged += new System.EventHandler(this.ud_Smoothing_ValueChanged);
             // 
             // tp_Info
             // 
@@ -1298,6 +1251,53 @@
             this.tc_Main.TabIndex = 62;
             this.tc_Main.SizeChanged += new System.EventHandler(this.tc_Main_SizeChanged);
             // 
+            // tb_FFT_Filter_NotchWidth
+            // 
+            this.tb_FFT_Filter_NotchWidth.DataBindings.Add(new System.Windows.Forms.Binding("Value", global::CANFI.Properties.Settings.Default, "FFT_Filter_NotchWidth", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.tb_FFT_Filter_NotchWidth.Location = new System.Drawing.Point(43, 28);
+            this.tb_FFT_Filter_NotchWidth.Maximum = 16384;
+            this.tb_FFT_Filter_NotchWidth.Name = "tb_FFT_Filter_NotchWidth";
+            this.tb_FFT_Filter_NotchWidth.Orientation = System.Windows.Forms.Orientation.Vertical;
+            this.tb_FFT_Filter_NotchWidth.Size = new System.Drawing.Size(45, 60);
+            this.tb_FFT_Filter_NotchWidth.TabIndex = 70;
+            this.tb_FFT_Filter_NotchWidth.TickStyle = System.Windows.Forms.TickStyle.None;
+            this.tt_Main.SetToolTip(this.tb_FFT_Filter_NotchWidth, "Click on the LED to enable/disable FFT-Filter");
+            this.tb_FFT_Filter_NotchWidth.Value = global::CANFI.Properties.Settings.Default.FFT_Filter_NotchWidth;
+            this.tb_FFT_Filter_NotchWidth.Scroll += new System.EventHandler(this.tb_FFT_Filter_NotchWidth_Scroll);
+            // 
+            // tb_FFT_Filter_Threshold
+            // 
+            this.tb_FFT_Filter_Threshold.DataBindings.Add(new System.Windows.Forms.Binding("Value", global::CANFI.Properties.Settings.Default, "FFT_Filter_Threshold", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.tb_FFT_Filter_Threshold.Location = new System.Drawing.Point(15, 30);
+            this.tb_FFT_Filter_Threshold.Maximum = 100;
+            this.tb_FFT_Filter_Threshold.Minimum = 1;
+            this.tb_FFT_Filter_Threshold.Name = "tb_FFT_Filter_Threshold";
+            this.tb_FFT_Filter_Threshold.Orientation = System.Windows.Forms.Orientation.Vertical;
+            this.tb_FFT_Filter_Threshold.Size = new System.Drawing.Size(45, 60);
+            this.tb_FFT_Filter_Threshold.TabIndex = 68;
+            this.tb_FFT_Filter_Threshold.TickStyle = System.Windows.Forms.TickStyle.None;
+            this.tt_Main.SetToolTip(this.tb_FFT_Filter_Threshold, "Click on the LED to enable/disable FFT-Filter");
+            this.tb_FFT_Filter_Threshold.Value = global::CANFI.Properties.Settings.Default.FFT_Filter_Threshold;
+            this.tb_FFT_Filter_Threshold.Scroll += new System.EventHandler(this.tb_FFT_Filter_Threshold_Scroll);
+            // 
+            // ud_Smoothing
+            // 
+            this.ud_Smoothing.BackColor = System.Drawing.Color.Black;
+            this.ud_Smoothing.DataBindings.Add(new System.Windows.Forms.Binding("Value", global::CANFI.Properties.Settings.Default, "Smoothing", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.ud_Smoothing.DataBindings.Add(new System.Windows.Forms.Binding("Maximum", global::CANFI.Properties.Settings.Default, "Smoothing_Max", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.ud_Smoothing.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ud_Smoothing.ForeColor = System.Drawing.Color.Chartreuse;
+            this.ud_Smoothing.Location = new System.Drawing.Point(8, 21);
+            this.ud_Smoothing.Maximum = global::CANFI.Properties.Settings.Default.Smoothing_Max;
+            this.ud_Smoothing.Minimum = global::CANFI.Properties.Settings.Default.Smoothing_Min;
+            this.ud_Smoothing.Name = "ud_Smoothing";
+            this.ud_Smoothing.Size = new System.Drawing.Size(59, 29);
+            this.ud_Smoothing.TabIndex = 60;
+            this.tt_Main.SetToolTip(this.ud_Smoothing, "Select the Smoothing Level here.\r\nSmoothing is done by a Moving Avarage of 2^[Smo" +
+        "othing Level] values.");
+            this.ud_Smoothing.Value = global::CANFI.Properties.Settings.Default.Smoothing;
+            this.ud_Smoothing.ValueChanged += new System.EventHandler(this.ud_Smoothing_ValueChanged);
+            // 
             // ud_DUT_P_ENR
             // 
             this.ud_DUT_P_ENR.BackColor = System.Drawing.Color.Black;
@@ -1324,6 +1324,11 @@
             this.ud_DUT_Frequency.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ud_DUT_Frequency.ForeColor = System.Drawing.Color.Chartreuse;
             this.ud_DUT_Frequency.Location = new System.Drawing.Point(84, 18);
+            this.ud_DUT_Frequency.Maximum = new decimal(new int[] {
+            99999999,
+            0,
+            0,
+            196608});
             this.ud_DUT_Frequency.Multiline = false;
             this.ud_DUT_Frequency.Name = "ud_DUT_Frequency";
             this.ud_DUT_Frequency.PredecimalPlaces = 5;
@@ -1359,14 +1364,13 @@
             // 
             this.ud_RTL_Frequency.BackColor = System.Drawing.Color.Black;
             this.ud_RTL_Frequency.DataBindings.Add(new System.Windows.Forms.Binding("Value", global::CANFI.Properties.Settings.Default, "RTL_Frequency", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.ud_RTL_Frequency.DataBindings.Add(new System.Windows.Forms.Binding("Minimum", global::CANFI.Properties.Settings.Default, "RTL_Frequency_Min", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.ud_RTL_Frequency.DataBindings.Add(new System.Windows.Forms.Binding("Maximum", global::CANFI.Properties.Settings.Default, "RTL_Frequency_Max", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.ud_RTL_Frequency.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ud_RTL_Frequency.ForeColor = System.Drawing.Color.Chartreuse;
             this.ud_RTL_Frequency.Location = new System.Drawing.Point(82, 15);
-            this.ud_RTL_Frequency.Maximum = new decimal(new int[] {
-            2000,
-            0,
-            0,
-            0});
+            this.ud_RTL_Frequency.Maximum = global::CANFI.Properties.Settings.Default.RTL_Frequency_Max;
+            this.ud_RTL_Frequency.Minimum = global::CANFI.Properties.Settings.Default.RTL_Frequency_Min;
             this.ud_RTL_Frequency.Multiline = false;
             this.ud_RTL_Frequency.Name = "ud_RTL_Frequency";
             this.ud_RTL_Frequency.PredecimalPlaces = 5;
@@ -1409,6 +1413,11 @@
             this.ud_DUT_Sweep_Stop.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ud_DUT_Sweep_Stop.ForeColor = System.Drawing.Color.Chartreuse;
             this.ud_DUT_Sweep_Stop.Location = new System.Drawing.Point(83, 47);
+            this.ud_DUT_Sweep_Stop.Maximum = new decimal(new int[] {
+            99999999,
+            0,
+            0,
+            196608});
             this.ud_DUT_Sweep_Stop.Multiline = false;
             this.ud_DUT_Sweep_Stop.Name = "ud_DUT_Sweep_Stop";
             this.ud_DUT_Sweep_Stop.PredecimalPlaces = 5;
@@ -1427,6 +1436,11 @@
             this.ud_DUT_Sweep_Start.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ud_DUT_Sweep_Start.ForeColor = System.Drawing.Color.Chartreuse;
             this.ud_DUT_Sweep_Start.Location = new System.Drawing.Point(83, 19);
+            this.ud_DUT_Sweep_Start.Maximum = new decimal(new int[] {
+            99999999,
+            0,
+            0,
+            196608});
             this.ud_DUT_Sweep_Start.Multiline = false;
             this.ud_DUT_Sweep_Start.Name = "ud_DUT_Sweep_Start";
             this.ud_DUT_Sweep_Start.PredecimalPlaces = 5;
@@ -1466,9 +1480,13 @@
             // 
             this.ud_RTL_Sweep_Stop.BackColor = System.Drawing.Color.Black;
             this.ud_RTL_Sweep_Stop.DataBindings.Add(new System.Windows.Forms.Binding("Value", global::CANFI.Properties.Settings.Default, "RTL_Frequency_Stop", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.ud_RTL_Sweep_Stop.DataBindings.Add(new System.Windows.Forms.Binding("Maximum", global::CANFI.Properties.Settings.Default, "RTL_Frequency_Max", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.ud_RTL_Sweep_Stop.DataBindings.Add(new System.Windows.Forms.Binding("Minimum", global::CANFI.Properties.Settings.Default, "RTL_Frequency_Min", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.ud_RTL_Sweep_Stop.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ud_RTL_Sweep_Stop.ForeColor = System.Drawing.Color.Chartreuse;
             this.ud_RTL_Sweep_Stop.Location = new System.Drawing.Point(83, 47);
+            this.ud_RTL_Sweep_Stop.Maximum = global::CANFI.Properties.Settings.Default.RTL_Frequency_Max;
+            this.ud_RTL_Sweep_Stop.Minimum = global::CANFI.Properties.Settings.Default.RTL_Frequency_Min;
             this.ud_RTL_Sweep_Stop.Multiline = false;
             this.ud_RTL_Sweep_Stop.Name = "ud_RTL_Sweep_Stop";
             this.ud_RTL_Sweep_Stop.PredecimalPlaces = 5;
@@ -1485,9 +1503,13 @@
             // 
             this.ud_RTL_Sweep_Start.BackColor = System.Drawing.Color.Black;
             this.ud_RTL_Sweep_Start.DataBindings.Add(new System.Windows.Forms.Binding("Value", global::CANFI.Properties.Settings.Default, "RTL_Frequency_Start", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.ud_RTL_Sweep_Start.DataBindings.Add(new System.Windows.Forms.Binding("Minimum", global::CANFI.Properties.Settings.Default, "RTL_Frequency_Min", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.ud_RTL_Sweep_Start.DataBindings.Add(new System.Windows.Forms.Binding("Maximum", global::CANFI.Properties.Settings.Default, "RTL_Frequency_Max", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.ud_RTL_Sweep_Start.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ud_RTL_Sweep_Start.ForeColor = System.Drawing.Color.Chartreuse;
             this.ud_RTL_Sweep_Start.Location = new System.Drawing.Point(83, 19);
+            this.ud_RTL_Sweep_Start.Maximum = global::CANFI.Properties.Settings.Default.RTL_Frequency_Max;
+            this.ud_RTL_Sweep_Start.Minimum = global::CANFI.Properties.Settings.Default.RTL_Frequency_Min;
             this.ud_RTL_Sweep_Start.Multiline = false;
             this.ud_RTL_Sweep_Start.Name = "ud_RTL_Sweep_Start";
             this.ud_RTL_Sweep_Start.PredecimalPlaces = 5;
@@ -1520,9 +1542,6 @@
             this.groupBox7.ResumeLayout(false);
             this.gb_FFT_Filter.ResumeLayout(false);
             this.gb_FFT_Filter.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.tb_FFT_Filter_NotchWidth)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.tb_FFT_Filter_Threshold)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ud_Smoothing)).EndInit();
             this.tp_Info.ResumeLayout(false);
             this.groupBox13.ResumeLayout(false);
             this.groupBox12.ResumeLayout(false);
@@ -1554,6 +1573,9 @@
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.tc_Main.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.tb_FFT_Filter_NotchWidth)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tb_FFT_Filter_Threshold)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ud_Smoothing)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

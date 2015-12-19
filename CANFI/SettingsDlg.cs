@@ -230,6 +230,42 @@ namespace CANFI
             {
                 MessageBox.Show(ex.Message, "Error while getting tuner gains");
             }
+            // set frequency bounds
+            switch (item.TunerType)
+            {
+                case RtlSdrTunerType.E4000:
+                    // set bounds
+                    Properties.Settings.Default.RTL_Frequency_Min = 52;
+                    Properties.Settings.Default.RTL_Frequency_Max = 2200;
+                    // adjust current frequencies to new bounds
+                    Properties.Settings.Default.RTL_Frequency = Math.Max(Properties.Settings.Default.RTL_Frequency, Properties.Settings.Default.RTL_Frequency_Min);
+                    Properties.Settings.Default.RTL_Frequency = Math.Min(Properties.Settings.Default.RTL_Frequency, Properties.Settings.Default.RTL_Frequency_Max);
+                    Properties.Settings.Default.RTL_Frequency_Start = Math.Max(Properties.Settings.Default.RTL_Frequency_Start, Properties.Settings.Default.RTL_Frequency_Min);
+                    Properties.Settings.Default.RTL_Frequency_Start = Math.Min(Properties.Settings.Default.RTL_Frequency_Start, Properties.Settings.Default.RTL_Frequency_Max);
+                    Properties.Settings.Default.RTL_Frequency_Stop = Math.Max(Properties.Settings.Default.RTL_Frequency_Stop, Properties.Settings.Default.RTL_Frequency_Min);
+                    Properties.Settings.Default.RTL_Frequency_Stop = Math.Min(Properties.Settings.Default.RTL_Frequency_Stop, Properties.Settings.Default.RTL_Frequency_Max);
+                    break;
+                case RtlSdrTunerType.R820T:
+                    Properties.Settings.Default.RTL_Frequency_Min = 24;
+                    Properties.Settings.Default.RTL_Frequency_Max = 1766;
+                    Properties.Settings.Default.RTL_Frequency = Math.Max(Properties.Settings.Default.RTL_Frequency, Properties.Settings.Default.RTL_Frequency_Min);
+                    Properties.Settings.Default.RTL_Frequency = Math.Min(Properties.Settings.Default.RTL_Frequency, Properties.Settings.Default.RTL_Frequency_Max);
+                    Properties.Settings.Default.RTL_Frequency_Start = Math.Max(Properties.Settings.Default.RTL_Frequency_Start, Properties.Settings.Default.RTL_Frequency_Min);
+                    Properties.Settings.Default.RTL_Frequency_Start = Math.Min(Properties.Settings.Default.RTL_Frequency_Start, Properties.Settings.Default.RTL_Frequency_Max);
+                    Properties.Settings.Default.RTL_Frequency_Stop = Math.Max(Properties.Settings.Default.RTL_Frequency_Stop, Properties.Settings.Default.RTL_Frequency_Min);
+                    Properties.Settings.Default.RTL_Frequency_Stop = Math.Min(Properties.Settings.Default.RTL_Frequency_Stop, Properties.Settings.Default.RTL_Frequency_Max);
+                    break;
+                default:
+                    Properties.Settings.Default.RTL_Frequency_Min = 0;
+                    Properties.Settings.Default.RTL_Frequency_Max = 99999.999m;
+                    Properties.Settings.Default.RTL_Frequency = Math.Max(Properties.Settings.Default.RTL_Frequency, Properties.Settings.Default.RTL_Frequency_Min);
+                    Properties.Settings.Default.RTL_Frequency = Math.Min(Properties.Settings.Default.RTL_Frequency, Properties.Settings.Default.RTL_Frequency_Max);
+                    Properties.Settings.Default.RTL_Frequency_Start = Math.Max(Properties.Settings.Default.RTL_Frequency_Start, Properties.Settings.Default.RTL_Frequency_Min);
+                    Properties.Settings.Default.RTL_Frequency_Start = Math.Min(Properties.Settings.Default.RTL_Frequency_Start, Properties.Settings.Default.RTL_Frequency_Max);
+                    Properties.Settings.Default.RTL_Frequency_Stop = Math.Max(Properties.Settings.Default.RTL_Frequency_Stop, Properties.Settings.Default.RTL_Frequency_Min);
+                    Properties.Settings.Default.RTL_Frequency_Stop = Math.Min(Properties.Settings.Default.RTL_Frequency_Stop, Properties.Settings.Default.RTL_Frequency_Max);
+                    break;
+            }
             // invalidate calibrations
             InvalidateCalibration = true;
         }
