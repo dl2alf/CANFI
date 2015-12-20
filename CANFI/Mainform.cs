@@ -571,7 +571,6 @@ namespace CANFI
                 Status("");
                 if (State > STATE.IDLE)
                     Error("");
-
                 // start measure thread
                 RTLWorker.RunWorkerAsync(_rtlParams);
 
@@ -580,6 +579,8 @@ namespace CANFI
 
         public void Stop()
         {
+            // stop tone output
+            ti_Tone.Stop();
             // stop measure thread and wait for IDLE state
             try
             {
@@ -1382,6 +1383,8 @@ namespace CANFI
                 // clear sweep chart
                 ch_Sweep.Series["NF"].Points.Clear();
                 ch_Sweep.Series["Gain"].Points.Clear();
+                // start timer for tone output
+                ti_Tone.Start();
                 Measure();
             }
             else
@@ -1698,6 +1701,37 @@ namespace CANFI
                 // do nothing if failed
             }
         }
+
+        private void ti_Tone_Tick(object sender, EventArgs e)
+        {
+            // output tone if activated
+            if (Properties.Settings.Default.Tone_Active)
+            {
+                try
+                {
+                    int tone_frequency = 0;
+                    int tone_duration = System.Convert.ToInt32(Properties.Settings.Default.Tone_Duration);
+                    double nf_min = System.Convert.ToDouble(Properties.Settings.Default.Tone_NF_0kHz);
+                    double nf_max = System.Convert.ToDouble(Properties.Settings.Default.Tone_NF_10kHz);
+                    double nf = SupportFunctions.TodB(Av_F.Average);
+                    // calculate tone frequency according to NF
+                    tone_frequency = (int)((nf - nf_min) / (nf_max - nf_min) * 10000.0);
+                    // output a non-blocking system beep
+                    if ((tone_frequency > 32) && (tone_frequency < 32767))
+                    {
+                        Action beep = () => Console.Beep(tone_frequency, tone_duration); 
+                        beep.BeginInvoke(null, null);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // do nothing
+                }
+                // set timer interval
+                ti_Tone.Interval = System.Convert.ToInt32(Properties.Settings.Default.Tone_Interval);
+            }
+        }
+
     }
 
     #endregion

@@ -51,7 +51,10 @@
             this.gb_FFT_Filter = new System.Windows.Forms.GroupBox();
             this.label4 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.tb_FFT_Filter_NotchWidth = new System.Windows.Forms.TrackBar();
+            this.tb_FFT_Filter_Threshold = new System.Windows.Forms.TrackBar();
             this.lbl_FFT_Filter = new System.Windows.Forms.Label();
+            this.ud_Smoothing = new System.Windows.Forms.NumericUpDown();
             this.tp_Info = new System.Windows.Forms.TabPage();
             this.groupBox13 = new System.Windows.Forms.GroupBox();
             this.rtb_Info = new System.Windows.Forms.RichTextBox();
@@ -125,9 +128,7 @@
             this.label40 = new System.Windows.Forms.Label();
             this.lbl_RTL_Frequency = new System.Windows.Forms.Label();
             this.tc_Main = new System.Windows.Forms.TabControl();
-            this.tb_FFT_Filter_NotchWidth = new System.Windows.Forms.TrackBar();
-            this.tb_FFT_Filter_Threshold = new System.Windows.Forms.TrackBar();
-            this.ud_Smoothing = new System.Windows.Forms.NumericUpDown();
+            this.ti_Tone = new System.Windows.Forms.Timer(this.components);
             this.ud_DUT_P_ENR = new CANFI.CANFIUpDown();
             this.ud_DUT_Frequency = new CANFI.CANFIUpDown();
             this.ud_RTL_P_ENR = new CANFI.CANFIUpDown();
@@ -142,6 +143,9 @@
             this.groupBox10.SuspendLayout();
             this.groupBox7.SuspendLayout();
             this.gb_FFT_Filter.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.tb_FFT_Filter_NotchWidth)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tb_FFT_Filter_Threshold)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ud_Smoothing)).BeginInit();
             this.tp_Info.SuspendLayout();
             this.groupBox13.SuspendLayout();
             this.groupBox12.SuspendLayout();
@@ -163,9 +167,6 @@
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.tc_Main.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.tb_FFT_Filter_NotchWidth)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.tb_FFT_Filter_Threshold)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ud_Smoothing)).BeginInit();
             this.SuspendLayout();
             // 
             // bw_Measure
@@ -343,6 +344,35 @@
             this.label1.TabIndex = 68;
             this.label1.Text = "Threshold";
             // 
+            // tb_FFT_Filter_NotchWidth
+            // 
+            this.tb_FFT_Filter_NotchWidth.DataBindings.Add(new System.Windows.Forms.Binding("Value", global::CANFI.Properties.Settings.Default, "FFT_Filter_NotchWidth", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.tb_FFT_Filter_NotchWidth.Location = new System.Drawing.Point(43, 28);
+            this.tb_FFT_Filter_NotchWidth.Maximum = 16384;
+            this.tb_FFT_Filter_NotchWidth.Name = "tb_FFT_Filter_NotchWidth";
+            this.tb_FFT_Filter_NotchWidth.Orientation = System.Windows.Forms.Orientation.Vertical;
+            this.tb_FFT_Filter_NotchWidth.Size = new System.Drawing.Size(45, 60);
+            this.tb_FFT_Filter_NotchWidth.TabIndex = 70;
+            this.tb_FFT_Filter_NotchWidth.TickStyle = System.Windows.Forms.TickStyle.None;
+            this.tt_Main.SetToolTip(this.tb_FFT_Filter_NotchWidth, "Click on the LED to enable/disable FFT-Filter");
+            this.tb_FFT_Filter_NotchWidth.Value = global::CANFI.Properties.Settings.Default.FFT_Filter_NotchWidth;
+            this.tb_FFT_Filter_NotchWidth.Scroll += new System.EventHandler(this.tb_FFT_Filter_NotchWidth_Scroll);
+            // 
+            // tb_FFT_Filter_Threshold
+            // 
+            this.tb_FFT_Filter_Threshold.DataBindings.Add(new System.Windows.Forms.Binding("Value", global::CANFI.Properties.Settings.Default, "FFT_Filter_Threshold", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.tb_FFT_Filter_Threshold.Location = new System.Drawing.Point(15, 30);
+            this.tb_FFT_Filter_Threshold.Maximum = 100;
+            this.tb_FFT_Filter_Threshold.Minimum = 1;
+            this.tb_FFT_Filter_Threshold.Name = "tb_FFT_Filter_Threshold";
+            this.tb_FFT_Filter_Threshold.Orientation = System.Windows.Forms.Orientation.Vertical;
+            this.tb_FFT_Filter_Threshold.Size = new System.Drawing.Size(45, 60);
+            this.tb_FFT_Filter_Threshold.TabIndex = 68;
+            this.tb_FFT_Filter_Threshold.TickStyle = System.Windows.Forms.TickStyle.None;
+            this.tt_Main.SetToolTip(this.tb_FFT_Filter_Threshold, "Click on the LED to enable/disable FFT-Filter");
+            this.tb_FFT_Filter_Threshold.Value = global::CANFI.Properties.Settings.Default.FFT_Filter_Threshold;
+            this.tb_FFT_Filter_Threshold.Scroll += new System.EventHandler(this.tb_FFT_Filter_Threshold_Scroll);
+            // 
             // lbl_FFT_Filter
             // 
             this.lbl_FFT_Filter.BackColor = System.Drawing.Color.Chartreuse;
@@ -353,6 +383,24 @@
             this.lbl_FFT_Filter.TabIndex = 55;
             this.tt_Main.SetToolTip(this.lbl_FFT_Filter, "Click on the LED to enable/disable FFT-Filter");
             this.lbl_FFT_Filter.Click += new System.EventHandler(this.lbl_FFT_Click);
+            // 
+            // ud_Smoothing
+            // 
+            this.ud_Smoothing.BackColor = System.Drawing.Color.Black;
+            this.ud_Smoothing.DataBindings.Add(new System.Windows.Forms.Binding("Value", global::CANFI.Properties.Settings.Default, "Smoothing", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.ud_Smoothing.DataBindings.Add(new System.Windows.Forms.Binding("Maximum", global::CANFI.Properties.Settings.Default, "Smoothing_Max", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.ud_Smoothing.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ud_Smoothing.ForeColor = System.Drawing.Color.Chartreuse;
+            this.ud_Smoothing.Location = new System.Drawing.Point(8, 21);
+            this.ud_Smoothing.Maximum = global::CANFI.Properties.Settings.Default.Smoothing_Max;
+            this.ud_Smoothing.Minimum = global::CANFI.Properties.Settings.Default.Smoothing_Min;
+            this.ud_Smoothing.Name = "ud_Smoothing";
+            this.ud_Smoothing.Size = new System.Drawing.Size(59, 29);
+            this.ud_Smoothing.TabIndex = 60;
+            this.tt_Main.SetToolTip(this.ud_Smoothing, "Select the Smoothing Level here.\r\nSmoothing is done by a Moving Avarage of 2^[Smo" +
+        "othing Level] values.");
+            this.ud_Smoothing.Value = global::CANFI.Properties.Settings.Default.Smoothing;
+            this.ud_Smoothing.ValueChanged += new System.EventHandler(this.ud_Smoothing_ValueChanged);
             // 
             // tp_Info
             // 
@@ -1251,52 +1299,10 @@
             this.tc_Main.TabIndex = 62;
             this.tc_Main.SizeChanged += new System.EventHandler(this.tc_Main_SizeChanged);
             // 
-            // tb_FFT_Filter_NotchWidth
+            // ti_Tone
             // 
-            this.tb_FFT_Filter_NotchWidth.DataBindings.Add(new System.Windows.Forms.Binding("Value", global::CANFI.Properties.Settings.Default, "FFT_Filter_NotchWidth", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.tb_FFT_Filter_NotchWidth.Location = new System.Drawing.Point(43, 28);
-            this.tb_FFT_Filter_NotchWidth.Maximum = 16384;
-            this.tb_FFT_Filter_NotchWidth.Name = "tb_FFT_Filter_NotchWidth";
-            this.tb_FFT_Filter_NotchWidth.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.tb_FFT_Filter_NotchWidth.Size = new System.Drawing.Size(45, 60);
-            this.tb_FFT_Filter_NotchWidth.TabIndex = 70;
-            this.tb_FFT_Filter_NotchWidth.TickStyle = System.Windows.Forms.TickStyle.None;
-            this.tt_Main.SetToolTip(this.tb_FFT_Filter_NotchWidth, "Click on the LED to enable/disable FFT-Filter");
-            this.tb_FFT_Filter_NotchWidth.Value = global::CANFI.Properties.Settings.Default.FFT_Filter_NotchWidth;
-            this.tb_FFT_Filter_NotchWidth.Scroll += new System.EventHandler(this.tb_FFT_Filter_NotchWidth_Scroll);
-            // 
-            // tb_FFT_Filter_Threshold
-            // 
-            this.tb_FFT_Filter_Threshold.DataBindings.Add(new System.Windows.Forms.Binding("Value", global::CANFI.Properties.Settings.Default, "FFT_Filter_Threshold", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.tb_FFT_Filter_Threshold.Location = new System.Drawing.Point(15, 30);
-            this.tb_FFT_Filter_Threshold.Maximum = 100;
-            this.tb_FFT_Filter_Threshold.Minimum = 1;
-            this.tb_FFT_Filter_Threshold.Name = "tb_FFT_Filter_Threshold";
-            this.tb_FFT_Filter_Threshold.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.tb_FFT_Filter_Threshold.Size = new System.Drawing.Size(45, 60);
-            this.tb_FFT_Filter_Threshold.TabIndex = 68;
-            this.tb_FFT_Filter_Threshold.TickStyle = System.Windows.Forms.TickStyle.None;
-            this.tt_Main.SetToolTip(this.tb_FFT_Filter_Threshold, "Click on the LED to enable/disable FFT-Filter");
-            this.tb_FFT_Filter_Threshold.Value = global::CANFI.Properties.Settings.Default.FFT_Filter_Threshold;
-            this.tb_FFT_Filter_Threshold.Scroll += new System.EventHandler(this.tb_FFT_Filter_Threshold_Scroll);
-            // 
-            // ud_Smoothing
-            // 
-            this.ud_Smoothing.BackColor = System.Drawing.Color.Black;
-            this.ud_Smoothing.DataBindings.Add(new System.Windows.Forms.Binding("Value", global::CANFI.Properties.Settings.Default, "Smoothing", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.ud_Smoothing.DataBindings.Add(new System.Windows.Forms.Binding("Maximum", global::CANFI.Properties.Settings.Default, "Smoothing_Max", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.ud_Smoothing.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ud_Smoothing.ForeColor = System.Drawing.Color.Chartreuse;
-            this.ud_Smoothing.Location = new System.Drawing.Point(8, 21);
-            this.ud_Smoothing.Maximum = global::CANFI.Properties.Settings.Default.Smoothing_Max;
-            this.ud_Smoothing.Minimum = global::CANFI.Properties.Settings.Default.Smoothing_Min;
-            this.ud_Smoothing.Name = "ud_Smoothing";
-            this.ud_Smoothing.Size = new System.Drawing.Size(59, 29);
-            this.ud_Smoothing.TabIndex = 60;
-            this.tt_Main.SetToolTip(this.ud_Smoothing, "Select the Smoothing Level here.\r\nSmoothing is done by a Moving Avarage of 2^[Smo" +
-        "othing Level] values.");
-            this.ud_Smoothing.Value = global::CANFI.Properties.Settings.Default.Smoothing;
-            this.ud_Smoothing.ValueChanged += new System.EventHandler(this.ud_Smoothing_ValueChanged);
+            this.ti_Tone.Interval = 500;
+            this.ti_Tone.Tick += new System.EventHandler(this.ti_Tone_Tick);
             // 
             // ud_DUT_P_ENR
             // 
@@ -1542,6 +1548,9 @@
             this.groupBox7.ResumeLayout(false);
             this.gb_FFT_Filter.ResumeLayout(false);
             this.gb_FFT_Filter.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.tb_FFT_Filter_NotchWidth)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tb_FFT_Filter_Threshold)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ud_Smoothing)).EndInit();
             this.tp_Info.ResumeLayout(false);
             this.groupBox13.ResumeLayout(false);
             this.groupBox12.ResumeLayout(false);
@@ -1573,9 +1582,6 @@
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.tc_Main.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.tb_FFT_Filter_NotchWidth)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.tb_FFT_Filter_Threshold)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ud_Smoothing)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1686,6 +1692,7 @@
         private System.Windows.Forms.Label label40;
         private System.Windows.Forms.Label lbl_RTL_Frequency;
         private System.Windows.Forms.TabControl tc_Main;
+        private System.Windows.Forms.Timer ti_Tone;
     }
 }
 

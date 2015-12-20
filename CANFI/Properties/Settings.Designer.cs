@@ -665,7 +665,7 @@ namespace CANFI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        [global::System.Configuration.DefaultSettingValueAttribute("144")]
         public decimal RTL_Frequency {
             get {
                 return ((decimal)(this["RTL_Frequency"]));
@@ -828,6 +828,66 @@ namespace CANFI.Properties {
             }
             set {
                 this["RTL_DLL_Zip_FileName"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool Tone_Active {
+            get {
+                return ((bool)(this["Tone_Active"]));
+            }
+            set {
+                this["Tone_Active"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public decimal Tone_NF_0kHz {
+            get {
+                return ((decimal)(this["Tone_NF_0kHz"]));
+            }
+            set {
+                this["Tone_NF_0kHz"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("500")]
+        public decimal Tone_Interval {
+            get {
+                return ((decimal)(this["Tone_Interval"]));
+            }
+            set {
+                this["Tone_Interval"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("100")]
+        public decimal Tone_Duration {
+            get {
+                return ((decimal)(this["Tone_Duration"]));
+            }
+            set {
+                this["Tone_Duration"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("10")]
+        public decimal Tone_NF_10kHz {
+            get {
+                return ((decimal)(this["Tone_NF_10kHz"]));
+            }
+            set {
+                this["Tone_NF_10kHz"] = value;
             }
         }
     }

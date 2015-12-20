@@ -15,5 +15,6 @@
 - fftw library support
 - many other new features and bugfixes
 - sweep mode (experimental)
+- tone output (experimental) --> tnx K6HLH
 
 

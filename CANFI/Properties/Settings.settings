@@ -167,7 +167,7 @@
       <Value Profile="(Default)">0</Value>
     </Setting>
     <Setting Name="RTL_Frequency" Type="System.Decimal" Scope="User">
-      <Value Profile="(Default)">0</Value>
+      <Value Profile="(Default)">144</Value>
     </Setting>
     <Setting Name="FFT_Filter_Threshold" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">20</Value>
@@ -207,6 +207,21 @@
     </Setting>
     <Setting Name="RTL_DLL_Zip_FileName" Type="System.String" Scope="User">
       <Value Profile="(Default)">rtlsdr.zip</Value>
+    </Setting>
+    <Setting Name="Tone_Active" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="Tone_NF_0kHz" Type="System.Decimal" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="Tone_Interval" Type="System.Decimal" Scope="User">
+      <Value Profile="(Default)">500</Value>
+    </Setting>
+    <Setting Name="Tone_Duration" Type="System.Decimal" Scope="User">
+      <Value Profile="(Default)">100</Value>
+    </Setting>
+    <Setting Name="Tone_NF_10kHz" Type="System.Decimal" Scope="User">
+      <Value Profile="(Default)">10</Value>
     </Setting>
   </Settings>
 </SettingsFile>
