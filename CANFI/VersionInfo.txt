@@ -9,7 +9,7 @@
 - COM status line selection for Noise Source and DUT does not work --> fixed (tnx UA3AVR)
 - AGC is slowering measurement when activated --> fixed
 
-****** V2.7.0.0 2015-11-15 **********
+****** V2.7.0.0 2015-12-25 **********
 
 - R820T tuner support
 - fftw library support
