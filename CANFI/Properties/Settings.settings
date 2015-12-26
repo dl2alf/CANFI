@@ -208,8 +208,8 @@
     <Setting Name="RTL_DLL_Zip_FileName" Type="System.String" Scope="User">
       <Value Profile="(Default)">rtlsdr.zip</Value>
     </Setting>
-    <Setting Name="Tone_Active" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
+    <Setting Name="Tone_Output" Type="CANFICore.TONEOUTPUT" Scope="User">
+      <Value Profile="(Default)">NONE</Value>
     </Setting>
     <Setting Name="Tone_NF_0kHz" Type="System.Decimal" Scope="User">
       <Value Profile="(Default)">0</Value>
@@ -222,6 +222,12 @@
     </Setting>
     <Setting Name="Tone_NF_10kHz" Type="System.Decimal" Scope="User">
       <Value Profile="(Default)">10</Value>
+    </Setting>
+    <Setting Name="Tone_G_0kHz" Type="System.Decimal" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="Tone_G_10kHz" Type="System.Decimal" Scope="User">
+      <Value Profile="(Default)">40</Value>
     </Setting>
   </Settings>
 </SettingsFile>

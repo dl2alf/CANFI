@@ -833,13 +833,13 @@ namespace CANFI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool Tone_Active {
+        [global::System.Configuration.DefaultSettingValueAttribute("NONE")]
+        public global::CANFICore.TONEOUTPUT Tone_Output {
             get {
-                return ((bool)(this["Tone_Active"]));
+                return ((global::CANFICore.TONEOUTPUT)(this["Tone_Output"]));
             }
             set {
-                this["Tone_Active"] = value;
+                this["Tone_Output"] = value;
             }
         }
         
@@ -888,6 +888,30 @@ namespace CANFI.Properties {
             }
             set {
                 this["Tone_NF_10kHz"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public decimal Tone_G_0kHz {
+            get {
+                return ((decimal)(this["Tone_G_0kHz"]));
+            }
+            set {
+                this["Tone_G_0kHz"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("40")]
+        public decimal Tone_G_10kHz {
+            get {
+                return ((decimal)(this["Tone_G_10kHz"]));
+            }
+            set {
+                this["Tone_G_10kHz"] = value;
             }
         }
     }

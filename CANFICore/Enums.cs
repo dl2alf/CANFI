@@ -81,4 +81,12 @@ namespace CANFICore
         LOMONT = 1,
         FFTW = 2
     }
+
+    // enum for CAMFI's tone output
+    public enum TONEOUTPUT
+    {
+        NONE = 0,
+        NF = 1,
+        GAIN = 2
+    }
 }

@@ -1705,31 +1705,46 @@ namespace CANFI
         private void ti_Tone_Tick(object sender, EventArgs e)
         {
             // output tone if activated
-            if (Properties.Settings.Default.Tone_Active)
+            try
             {
-                try
+                int tone_frequency = 0;
+                int tone_duration = System.Convert.ToInt32(Properties.Settings.Default.Tone_Duration);
+                switch (Properties.Settings.Default.Tone_Output)
                 {
-                    int tone_frequency = 0;
-                    int tone_duration = System.Convert.ToInt32(Properties.Settings.Default.Tone_Duration);
-                    double nf_min = System.Convert.ToDouble(Properties.Settings.Default.Tone_NF_0kHz);
-                    double nf_max = System.Convert.ToDouble(Properties.Settings.Default.Tone_NF_10kHz);
-                    double nf = SupportFunctions.TodB(Av_F.Average);
-                    // calculate tone frequency according to NF
-                    tone_frequency = (int)((nf - nf_min) / (nf_max - nf_min) * 10000.0);
-                    // output a non-blocking system beep
-                    if ((tone_frequency > 32) && (tone_frequency < 32767))
-                    {
-                        Action beep = () => Console.Beep(tone_frequency, tone_duration); 
-                        beep.BeginInvoke(null, null);
-                    }
+                    case TONEOUTPUT.NF:
+                        double nf_min = System.Convert.ToDouble(Properties.Settings.Default.Tone_NF_0kHz);
+                        double nf_max = System.Convert.ToDouble(Properties.Settings.Default.Tone_NF_10kHz);
+                        double nf = SupportFunctions.TodB(Av_F.Average);
+                        // calculate tone frequency according to NF
+                        tone_frequency = (int)((nf - nf_min) / (nf_max - nf_min) * 10000.0);
+                        // output a non-blocking system beep
+                        if ((tone_frequency > 32) && (tone_frequency < 32767))
+                        {
+                            Action beep = () => Console.Beep(tone_frequency, tone_duration);
+                            beep.BeginInvoke(null, null);
+                        }
+                        break;
+                    case TONEOUTPUT.GAIN:
+                        double g_min = System.Convert.ToDouble(Properties.Settings.Default.Tone_G_0kHz);
+                        double g_max = System.Convert.ToDouble(Properties.Settings.Default.Tone_G_10kHz);
+                        double g = SupportFunctions.TodB(Av_G.Average);
+                        // calculate tone frequency according to NF
+                        tone_frequency = (int)((g - g_min) / (g_max - g_min) * 10000.0);
+                        // output a non-blocking system beep
+                        if ((tone_frequency > 32) && (tone_frequency < 32767))
+                        {
+                            Action beep = () => Console.Beep(tone_frequency, tone_duration);
+                            beep.BeginInvoke(null, null);
+                        }
+                        break;
                 }
-                catch (Exception ex)
-                {
-                    // do nothing
-                }
-                // set timer interval
-                ti_Tone.Interval = System.Convert.ToInt32(Properties.Settings.Default.Tone_Interval);
             }
+            catch (Exception ex)
+            {
+                // do nothing
+            }
+            // set timer interval
+            ti_Tone.Interval = System.Convert.ToInt32(Properties.Settings.Default.Tone_Interval);
         }
 
     }

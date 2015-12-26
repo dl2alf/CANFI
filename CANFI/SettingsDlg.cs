@@ -114,6 +114,18 @@ namespace CANFI
             {
                 cbb_FFT_Filter.SelectedItem = FFTALGORITHM.NONE;
             }
+            // setup tone output combo box
+            cbb_Tone_Output.Items.Add(TONEOUTPUT.NONE);
+            cbb_Tone_Output.Items.Add(TONEOUTPUT.NF);
+            cbb_Tone_Output.Items.Add(TONEOUTPUT.GAIN);
+            try
+            {
+                cbb_Tone_Output.SelectedItem = Properties.Settings.Default.Tone_Output;
+            }
+            catch
+            {
+                cbb_Tone_Output.SelectedItem = TONEOUTPUT.NONE;
+            }
         }
 
         private void SettingsDlg_FormClosing(object sender, FormClosingEventArgs e)
@@ -317,6 +329,14 @@ namespace CANFI
                     Properties.Settings.Default.FFT_Filter = false;
                 else
                     Properties.Settings.Default.FFT_Filter = true;
+            }
+        }
+
+        private void cbb_Tone_Output_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cbb_Tone_Output.SelectedItem != null)
+            {
+                Properties.Settings.Default.Tone_Output = (TONEOUTPUT)cbb_Tone_Output.SelectedItem;
             }
         }
 

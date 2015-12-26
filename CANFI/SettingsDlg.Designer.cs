@@ -34,13 +34,7 @@
             this.cbb_Device = new System.Windows.Forms.ComboBox();
             this.lbl_TunerType = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.ud_COM_Delay = new System.Windows.Forms.NumericUpDown();
             this.label15 = new System.Windows.Forms.Label();
-            this.cb_COM_DUT_Inverse = new System.Windows.Forms.CheckBox();
-            this.cb_COM_Noise_Inverse = new System.Windows.Forms.CheckBox();
-            this.cb_COM_DUT = new System.Windows.Forms.CheckBox();
-            this.cb_COM_Noise = new System.Windows.Forms.CheckBox();
-            this.cb_COM_Port = new System.Windows.Forms.CheckBox();
             this.cbb_COM_DUT = new System.Windows.Forms.ComboBox();
             this.cbb_COM_Noise = new System.Windows.Forms.ComboBox();
             this.cbb_COM = new System.Windows.Forms.ComboBox();
@@ -49,60 +43,73 @@
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.rb_Noise_Cal_File = new System.Windows.Forms.RadioButton();
             this.rb_Noise_Cal_Man = new System.Windows.Forms.RadioButton();
-            this.tb_Noise_FileName = new System.Windows.Forms.TextBox();
             this.btn_Noise_File = new System.Windows.Forms.Button();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.ud_RTL_SampleRate = new System.Windows.Forms.NumericUpDown();
             this.label5 = new System.Windows.Forms.Label();
             this.cbb_RTL_TunerGain = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.cb_RTL_AGC_Auto = new System.Windows.Forms.CheckBox();
-            this.ud_Averaging = new System.Windows.Forms.NumericUpDown();
             this.label2 = new System.Windows.Forms.Label();
-            this.ud_SampleCount = new System.Windows.Forms.NumericUpDown();
             this.label3 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
-            this.cb_Tone_Active = new System.Windows.Forms.CheckBox();
-            this.ud_Tone_Duration = new System.Windows.Forms.NumericUpDown();
-            this.ud_Tone_Interval = new System.Windows.Forms.NumericUpDown();
+            this.label6 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
-            this.cb_RTL_Logging = new System.Windows.Forms.CheckBox();
-            this.cb_CAL_Logging = new System.Windows.Forms.CheckBox();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
             this.label16 = new System.Windows.Forms.Label();
             this.cbb_FFT_Filter = new System.Windows.Forms.ComboBox();
-            this.cb_FFT_Display_Realtime = new System.Windows.Forms.CheckBox();
             this.label11 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.groupBox9 = new System.Windows.Forms.GroupBox();
-            this.ud_Tamb = new System.Windows.Forms.NumericUpDown();
             this.label14 = new System.Windows.Forms.Label();
-            this.ud_Tone_NF_10kHz = new System.Windows.Forms.NumericUpDown();
-            this.label6 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label17 = new System.Windows.Forms.Label();
+            this.cbb_Tone_Output = new System.Windows.Forms.ComboBox();
+            this.label18 = new System.Windows.Forms.Label();
+            this.ud_Tamb = new System.Windows.Forms.NumericUpDown();
+            this.cb_FFT_Display_Realtime = new System.Windows.Forms.CheckBox();
+            this.cb_RTL_Logging = new System.Windows.Forms.CheckBox();
+            this.cb_CAL_Logging = new System.Windows.Forms.CheckBox();
+            this.ud_Tone_G_0kHz = new System.Windows.Forms.NumericUpDown();
+            this.ud_Tone_G_10kHz = new System.Windows.Forms.NumericUpDown();
             this.ud_Tone_NF_0kHz = new System.Windows.Forms.NumericUpDown();
+            this.ud_Tone_NF_10kHz = new System.Windows.Forms.NumericUpDown();
+            this.ud_Tone_Duration = new System.Windows.Forms.NumericUpDown();
+            this.ud_Tone_Interval = new System.Windows.Forms.NumericUpDown();
+            this.ud_RTL_SampleRate = new System.Windows.Forms.NumericUpDown();
+            this.cb_RTL_AGC_Auto = new System.Windows.Forms.CheckBox();
+            this.ud_Averaging = new System.Windows.Forms.NumericUpDown();
+            this.ud_SampleCount = new System.Windows.Forms.NumericUpDown();
+            this.tb_Noise_FileName = new System.Windows.Forms.TextBox();
+            this.ud_COM_Delay = new System.Windows.Forms.NumericUpDown();
+            this.cb_COM_DUT_Inverse = new System.Windows.Forms.CheckBox();
+            this.cb_COM_Noise_Inverse = new System.Windows.Forms.CheckBox();
+            this.cb_COM_DUT = new System.Windows.Forms.CheckBox();
+            this.cb_COM_Noise = new System.Windows.Forms.CheckBox();
+            this.cb_COM_Port = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.ud_COM_Delay)).BeginInit();
             this.groupBox3.SuspendLayout();
             this.groupBox4.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.ud_RTL_SampleRate)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ud_Averaging)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ud_SampleCount)).BeginInit();
             this.groupBox6.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.ud_Tone_Duration)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ud_Tone_Interval)).BeginInit();
             this.groupBox7.SuspendLayout();
             this.groupBox8.SuspendLayout();
             this.panel1.SuspendLayout();
             this.groupBox9.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ud_Tamb)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ud_Tone_NF_10kHz)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ud_Tone_G_0kHz)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ud_Tone_G_10kHz)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ud_Tone_NF_0kHz)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ud_Tone_NF_10kHz)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ud_Tone_Duration)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ud_Tone_Interval)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ud_RTL_SampleRate)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ud_Averaging)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ud_SampleCount)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ud_COM_Delay)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -169,27 +176,6 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "COM Control";
             // 
-            // ud_COM_Delay
-            // 
-            this.ud_COM_Delay.DataBindings.Add(new System.Windows.Forms.Binding("Value", global::CANFI.Properties.Settings.Default, "COM_Delay", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.ud_COM_Delay.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ud_COM_Delay.Location = new System.Drawing.Point(143, 116);
-            this.ud_COM_Delay.Maximum = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
-            this.ud_COM_Delay.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.ud_COM_Delay.Name = "ud_COM_Delay";
-            this.ud_COM_Delay.Size = new System.Drawing.Size(78, 20);
-            this.ud_COM_Delay.TabIndex = 56;
-            this.ud_COM_Delay.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.ud_COM_Delay.Value = global::CANFI.Properties.Settings.Default.COM_Delay;
-            // 
             // label15
             // 
             this.label15.AutoSize = true;
@@ -199,75 +185,6 @@
             this.label15.Size = new System.Drawing.Size(115, 13);
             this.label15.TabIndex = 55;
             this.label15.Text = "Switchover Delay [ms]:";
-            // 
-            // cb_COM_DUT_Inverse
-            // 
-            this.cb_COM_DUT_Inverse.AutoSize = true;
-            this.cb_COM_DUT_Inverse.Checked = global::CANFI.Properties.Settings.Default.COM_DUT_Inverse;
-            this.cb_COM_DUT_Inverse.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::CANFI.Properties.Settings.Default, "COM_DUT_Inverse", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.cb_COM_DUT_Inverse.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cb_COM_DUT_Inverse.Location = new System.Drawing.Point(239, 88);
-            this.cb_COM_DUT_Inverse.Name = "cb_COM_DUT_Inverse";
-            this.cb_COM_DUT_Inverse.Size = new System.Drawing.Size(41, 17);
-            this.cb_COM_DUT_Inverse.TabIndex = 34;
-            this.cb_COM_DUT_Inverse.Text = "Inv";
-            this.cb_COM_DUT_Inverse.UseVisualStyleBackColor = true;
-            // 
-            // cb_COM_Noise_Inverse
-            // 
-            this.cb_COM_Noise_Inverse.AutoSize = true;
-            this.cb_COM_Noise_Inverse.Checked = global::CANFI.Properties.Settings.Default.COM_Noise_Inverse;
-            this.cb_COM_Noise_Inverse.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::CANFI.Properties.Settings.Default, "COM_Noise_Inverse", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.cb_COM_Noise_Inverse.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cb_COM_Noise_Inverse.Location = new System.Drawing.Point(239, 58);
-            this.cb_COM_Noise_Inverse.Name = "cb_COM_Noise_Inverse";
-            this.cb_COM_Noise_Inverse.Size = new System.Drawing.Size(41, 17);
-            this.cb_COM_Noise_Inverse.TabIndex = 33;
-            this.cb_COM_Noise_Inverse.Text = "Inv";
-            this.cb_COM_Noise_Inverse.UseVisualStyleBackColor = true;
-            // 
-            // cb_COM_DUT
-            // 
-            this.cb_COM_DUT.AutoSize = true;
-            this.cb_COM_DUT.Checked = global::CANFI.Properties.Settings.Default.COM_DUT_Use;
-            this.cb_COM_DUT.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::CANFI.Properties.Settings.Default, "COM_DUT_Use", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.cb_COM_DUT.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cb_COM_DUT.Location = new System.Drawing.Point(18, 86);
-            this.cb_COM_DUT.Name = "cb_COM_DUT";
-            this.cb_COM_DUT.Size = new System.Drawing.Size(87, 17);
-            this.cb_COM_DUT.TabIndex = 32;
-            this.cb_COM_DUT.Text = "DUT Switch:";
-            this.cb_COM_DUT.UseVisualStyleBackColor = true;
-            // 
-            // cb_COM_Noise
-            // 
-            this.cb_COM_Noise.AutoSize = true;
-            this.cb_COM_Noise.Checked = global::CANFI.Properties.Settings.Default.COM_Noise_Use;
-            this.cb_COM_Noise.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cb_COM_Noise.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::CANFI.Properties.Settings.Default, "COM_Noise_Use", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.cb_COM_Noise.Enabled = false;
-            this.cb_COM_Noise.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cb_COM_Noise.Location = new System.Drawing.Point(18, 56);
-            this.cb_COM_Noise.Name = "cb_COM_Noise";
-            this.cb_COM_Noise.Size = new System.Drawing.Size(93, 17);
-            this.cb_COM_Noise.TabIndex = 31;
-            this.cb_COM_Noise.Text = "Noise Source:";
-            this.cb_COM_Noise.UseVisualStyleBackColor = true;
-            // 
-            // cb_COM_Port
-            // 
-            this.cb_COM_Port.AutoSize = true;
-            this.cb_COM_Port.Checked = global::CANFI.Properties.Settings.Default.COM_Port_Use;
-            this.cb_COM_Port.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cb_COM_Port.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::CANFI.Properties.Settings.Default, "COM_Port_Use", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.cb_COM_Port.Enabled = false;
-            this.cb_COM_Port.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cb_COM_Port.Location = new System.Drawing.Point(18, 24);
-            this.cb_COM_Port.Name = "cb_COM_Port";
-            this.cb_COM_Port.Size = new System.Drawing.Size(75, 17);
-            this.cb_COM_Port.TabIndex = 30;
-            this.cb_COM_Port.Text = "COM Port:";
-            this.cb_COM_Port.UseVisualStyleBackColor = true;
             // 
             // cbb_COM_DUT
             // 
@@ -361,17 +278,6 @@
             this.rb_Noise_Cal_Man.UseVisualStyleBackColor = true;
             this.rb_Noise_Cal_Man.CheckedChanged += new System.EventHandler(this.rb_Noise_Cal_Man_CheckedChanged);
             // 
-            // tb_Noise_FileName
-            // 
-            this.tb_Noise_FileName.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::CANFI.Properties.Settings.Default, "Noise_FileName", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.tb_Noise_FileName.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tb_Noise_FileName.Location = new System.Drawing.Point(20, 70);
-            this.tb_Noise_FileName.Name = "tb_Noise_FileName";
-            this.tb_Noise_FileName.ReadOnly = true;
-            this.tb_Noise_FileName.Size = new System.Drawing.Size(254, 20);
-            this.tb_Noise_FileName.TabIndex = 33;
-            this.tb_Noise_FileName.Text = global::CANFI.Properties.Settings.Default.Noise_FileName;
-            // 
             // btn_Noise_File
             // 
             this.btn_Noise_File.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -401,27 +307,6 @@
             this.groupBox4.TabIndex = 36;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "RTL Measure Settings";
-            // 
-            // ud_RTL_SampleRate
-            // 
-            this.ud_RTL_SampleRate.DataBindings.Add(new System.Windows.Forms.Binding("Value", global::CANFI.Properties.Settings.Default, "RTL_SampleRate", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.ud_RTL_SampleRate.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ud_RTL_SampleRate.Location = new System.Drawing.Point(140, 69);
-            this.ud_RTL_SampleRate.Maximum = new decimal(new int[] {
-            2500000,
-            0,
-            0,
-            0});
-            this.ud_RTL_SampleRate.Minimum = new decimal(new int[] {
-            10000,
-            0,
-            0,
-            0});
-            this.ud_RTL_SampleRate.Name = "ud_RTL_SampleRate";
-            this.ud_RTL_SampleRate.Size = new System.Drawing.Size(83, 20);
-            this.ud_RTL_SampleRate.TabIndex = 50;
-            this.ud_RTL_SampleRate.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.ud_RTL_SampleRate.Value = global::CANFI.Properties.Settings.Default.RTL_SampleRate;
             // 
             // label5
             // 
@@ -454,37 +339,6 @@
             this.label4.TabIndex = 47;
             this.label4.Text = "Tuner Gain [dB]:";
             // 
-            // cb_RTL_AGC_Auto
-            // 
-            this.cb_RTL_AGC_Auto.AutoSize = true;
-            this.cb_RTL_AGC_Auto.Checked = global::CANFI.Properties.Settings.Default.RTL_AGC_Auto;
-            this.cb_RTL_AGC_Auto.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cb_RTL_AGC_Auto.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::CANFI.Properties.Settings.Default, "RTL_AGC_Auto", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.cb_RTL_AGC_Auto.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cb_RTL_AGC_Auto.Location = new System.Drawing.Point(176, 26);
-            this.cb_RTL_AGC_Auto.Name = "cb_RTL_AGC_Auto";
-            this.cb_RTL_AGC_Auto.Size = new System.Drawing.Size(48, 17);
-            this.cb_RTL_AGC_Auto.TabIndex = 46;
-            this.cb_RTL_AGC_Auto.Text = "Auto";
-            this.cb_RTL_AGC_Auto.UseVisualStyleBackColor = true;
-            this.cb_RTL_AGC_Auto.CheckedChanged += new System.EventHandler(this.cb_RTL_AGC_Auto_CheckedChanged);
-            // 
-            // ud_Averaging
-            // 
-            this.ud_Averaging.DataBindings.Add(new System.Windows.Forms.Binding("Value", global::CANFI.Properties.Settings.Default, "Smoothing", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.ud_Averaging.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ud_Averaging.Location = new System.Drawing.Point(140, 126);
-            this.ud_Averaging.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.ud_Averaging.Name = "ud_Averaging";
-            this.ud_Averaging.Size = new System.Drawing.Size(83, 20);
-            this.ud_Averaging.TabIndex = 45;
-            this.ud_Averaging.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.ud_Averaging.Value = global::CANFI.Properties.Settings.Default.Smoothing;
-            // 
             // label2
             // 
             this.label2.AutoSize = true;
@@ -494,21 +348,6 @@
             this.label2.Size = new System.Drawing.Size(89, 13);
             this.label2.TabIndex = 44;
             this.label2.Text = "Smoothing Level:";
-            // 
-            // ud_SampleCount
-            // 
-            this.ud_SampleCount.DataBindings.Add(new System.Windows.Forms.Binding("Value", global::CANFI.Properties.Settings.Default, "RTL_SampleCount", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.ud_SampleCount.DataBindings.Add(new System.Windows.Forms.Binding("Maximum", global::CANFI.Properties.Settings.Default, "RTL_SampleCount_Max", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.ud_SampleCount.DataBindings.Add(new System.Windows.Forms.Binding("Minimum", global::CANFI.Properties.Settings.Default, "RTL_SampleCount_Min", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.ud_SampleCount.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ud_SampleCount.Location = new System.Drawing.Point(140, 98);
-            this.ud_SampleCount.Maximum = global::CANFI.Properties.Settings.Default.RTL_SampleCount_Max;
-            this.ud_SampleCount.Minimum = global::CANFI.Properties.Settings.Default.RTL_SampleCount_Min;
-            this.ud_SampleCount.Name = "ud_SampleCount";
-            this.ud_SampleCount.Size = new System.Drawing.Size(83, 20);
-            this.ud_SampleCount.TabIndex = 43;
-            this.ud_SampleCount.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.ud_SampleCount.Value = global::CANFI.Properties.Settings.Default.RTL_SampleCount;
             // 
             // label3
             // 
@@ -524,7 +363,7 @@
             // 
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(16, 44);
+            this.label8.Location = new System.Drawing.Point(16, 45);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(102, 13);
             this.label8.TabIndex = 51;
@@ -532,78 +371,37 @@
             // 
             // groupBox6
             // 
+            this.groupBox6.Controls.Add(this.label18);
+            this.groupBox6.Controls.Add(this.cbb_Tone_Output);
+            this.groupBox6.Controls.Add(this.ud_Tone_G_0kHz);
+            this.groupBox6.Controls.Add(this.ud_Tone_G_10kHz);
+            this.groupBox6.Controls.Add(this.label7);
+            this.groupBox6.Controls.Add(this.label17);
             this.groupBox6.Controls.Add(this.ud_Tone_NF_0kHz);
             this.groupBox6.Controls.Add(this.ud_Tone_NF_10kHz);
             this.groupBox6.Controls.Add(this.label6);
-            this.groupBox6.Controls.Add(this.cb_Tone_Active);
             this.groupBox6.Controls.Add(this.ud_Tone_Duration);
             this.groupBox6.Controls.Add(this.ud_Tone_Interval);
             this.groupBox6.Controls.Add(this.label10);
             this.groupBox6.Controls.Add(this.label9);
             this.groupBox6.Controls.Add(this.label8);
             this.groupBox6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox6.Location = new System.Drawing.Point(248, 115);
+            this.groupBox6.Location = new System.Drawing.Point(248, 68);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(230, 163);
+            this.groupBox6.Size = new System.Drawing.Size(230, 210);
             this.groupBox6.TabIndex = 38;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Tone Output Settings";
             // 
-            // cb_Tone_Active
+            // label6
             // 
-            this.cb_Tone_Active.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.cb_Tone_Active.Checked = global::CANFI.Properties.Settings.Default.Tone_Active;
-            this.cb_Tone_Active.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cb_Tone_Active.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::CANFI.Properties.Settings.Default, "Tone_Active", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.cb_Tone_Active.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cb_Tone_Active.Location = new System.Drawing.Point(15, 13);
-            this.cb_Tone_Active.Name = "cb_Tone_Active";
-            this.cb_Tone_Active.Size = new System.Drawing.Size(198, 23);
-            this.cb_Tone_Active.TabIndex = 59;
-            this.cb_Tone_Active.Text = "Output Avctive:";
-            this.cb_Tone_Active.UseVisualStyleBackColor = true;
-            // 
-            // ud_Tone_Duration
-            // 
-            this.ud_Tone_Duration.DataBindings.Add(new System.Windows.Forms.Binding("Value", global::CANFI.Properties.Settings.Default, "Tone_Duration", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.ud_Tone_Duration.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ud_Tone_Duration.Location = new System.Drawing.Point(135, 69);
-            this.ud_Tone_Duration.Maximum = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
-            this.ud_Tone_Duration.Minimum = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            this.ud_Tone_Duration.Name = "ud_Tone_Duration";
-            this.ud_Tone_Duration.Size = new System.Drawing.Size(78, 20);
-            this.ud_Tone_Duration.TabIndex = 57;
-            this.ud_Tone_Duration.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.ud_Tone_Duration.Value = global::CANFI.Properties.Settings.Default.Tone_Duration;
-            // 
-            // ud_Tone_Interval
-            // 
-            this.ud_Tone_Interval.DataBindings.Add(new System.Windows.Forms.Binding("Value", global::CANFI.Properties.Settings.Default, "Tone_Interval", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.ud_Tone_Interval.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ud_Tone_Interval.Location = new System.Drawing.Point(135, 42);
-            this.ud_Tone_Interval.Maximum = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
-            this.ud_Tone_Interval.Minimum = new decimal(new int[] {
-            100,
-            0,
-            0,
-            0});
-            this.ud_Tone_Interval.Name = "ud_Tone_Interval";
-            this.ud_Tone_Interval.Size = new System.Drawing.Size(78, 20);
-            this.ud_Tone_Interval.TabIndex = 56;
-            this.ud_Tone_Interval.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.ud_Tone_Interval.Value = global::CANFI.Properties.Settings.Default.Tone_Interval;
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.Location = new System.Drawing.Point(16, 128);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(91, 13);
+            this.label6.TabIndex = 61;
+            this.label6.Text = "NF @10kHz [dB]:";
             // 
             // label10
             // 
@@ -619,7 +417,7 @@
             // 
             this.label9.AutoSize = true;
             this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.Location = new System.Drawing.Point(16, 71);
+            this.label9.Location = new System.Drawing.Point(16, 73);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(107, 13);
             this.label9.TabIndex = 53;
@@ -636,32 +434,6 @@
             this.groupBox7.TabIndex = 39;
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "RTL Logging Settings";
-            // 
-            // cb_RTL_Logging
-            // 
-            this.cb_RTL_Logging.AutoSize = true;
-            this.cb_RTL_Logging.Checked = global::CANFI.Properties.Settings.Default.RTL_Logging;
-            this.cb_RTL_Logging.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::CANFI.Properties.Settings.Default, "RTL_Logging", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.cb_RTL_Logging.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cb_RTL_Logging.Location = new System.Drawing.Point(13, 41);
-            this.cb_RTL_Logging.Name = "cb_RTL_Logging";
-            this.cb_RTL_Logging.Size = new System.Drawing.Size(145, 17);
-            this.cb_RTL_Logging.TabIndex = 41;
-            this.cb_RTL_Logging.Text = "Log Measurement to File:";
-            this.cb_RTL_Logging.UseVisualStyleBackColor = true;
-            // 
-            // cb_CAL_Logging
-            // 
-            this.cb_CAL_Logging.AutoSize = true;
-            this.cb_CAL_Logging.Checked = global::CANFI.Properties.Settings.Default.CAL_Logging;
-            this.cb_CAL_Logging.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::CANFI.Properties.Settings.Default, "CAL_Logging", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.cb_CAL_Logging.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cb_CAL_Logging.Location = new System.Drawing.Point(13, 18);
-            this.cb_CAL_Logging.Name = "cb_CAL_Logging";
-            this.cb_CAL_Logging.Size = new System.Drawing.Size(130, 17);
-            this.cb_CAL_Logging.TabIndex = 40;
-            this.cb_CAL_Logging.Text = "Log Calibration to File:";
-            this.cb_CAL_Logging.UseVisualStyleBackColor = true;
             // 
             // groupBox8
             // 
@@ -696,21 +468,6 @@
             this.cbb_FFT_Filter.Size = new System.Drawing.Size(104, 21);
             this.cbb_FFT_Filter.TabIndex = 41;
             this.cbb_FFT_Filter.SelectedIndexChanged += new System.EventHandler(this.cbb_FFT_Filter_SelectedIndexChanged);
-            // 
-            // cb_FFT_Display_Realtime
-            // 
-            this.cb_FFT_Display_Realtime.AutoSize = true;
-            this.cb_FFT_Display_Realtime.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.cb_FFT_Display_Realtime.Checked = global::CANFI.Properties.Settings.Default.FFT_RealtimeDisplay;
-            this.cb_FFT_Display_Realtime.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cb_FFT_Display_Realtime.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::CANFI.Properties.Settings.Default, "FFT_RealtimeDisplay", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.cb_FFT_Display_Realtime.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cb_FFT_Display_Realtime.Location = new System.Drawing.Point(15, 15);
-            this.cb_FFT_Display_Realtime.Name = "cb_FFT_Display_Realtime";
-            this.cb_FFT_Display_Realtime.Size = new System.Drawing.Size(205, 17);
-            this.cb_FFT_Display_Realtime.TabIndex = 40;
-            this.cb_FFT_Display_Realtime.Text = "Display Spectrum in Realtime:             ";
-            this.cb_FFT_Display_Realtime.UseVisualStyleBackColor = true;
             // 
             // label11
             // 
@@ -769,6 +526,57 @@
             this.groupBox9.TabStop = false;
             this.groupBox9.Text = "Temperature Correction";
             // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label14.Location = new System.Drawing.Point(6, 24);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(127, 13);
+            this.label14.TabIndex = 53;
+            this.label14.Text = "Ambient Temperature [K]:";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label7.Location = new System.Drawing.Point(16, 184);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(99, 13);
+            this.label7.TabIndex = 65;
+            this.label7.Text = "Gain @10kHz [dB]:";
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label17.Location = new System.Drawing.Point(16, 156);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(96, 13);
+            this.label17.TabIndex = 64;
+            this.label17.Text = "Gain @ 0kHz [dB]:";
+            // 
+            // cbb_Tone_Output
+            // 
+            this.cbb_Tone_Output.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbb_Tone_Output.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbb_Tone_Output.FormattingEnabled = true;
+            this.cbb_Tone_Output.Location = new System.Drawing.Point(135, 15);
+            this.cbb_Tone_Output.Name = "cbb_Tone_Output";
+            this.cbb_Tone_Output.Size = new System.Drawing.Size(78, 21);
+            this.cbb_Tone_Output.TabIndex = 68;
+            this.cbb_Tone_Output.SelectedIndexChanged += new System.EventHandler(this.cbb_Tone_Output_SelectedIndexChanged);
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label18.Location = new System.Drawing.Point(16, 21);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(72, 13);
+            this.label18.TabIndex = 69;
+            this.label18.Text = "Output Mode:";
+            // 
             // ud_Tamb
             // 
             this.ud_Tamb.DataBindings.Add(new System.Windows.Forms.Binding("Value", global::CANFI.Properties.Settings.Default, "Tamb", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
@@ -790,15 +598,82 @@
             this.ud_Tamb.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.ud_Tamb.Value = global::CANFI.Properties.Settings.Default.Tamb;
             // 
-            // label14
+            // cb_FFT_Display_Realtime
             // 
-            this.label14.AutoSize = true;
-            this.label14.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label14.Location = new System.Drawing.Point(6, 24);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(127, 13);
-            this.label14.TabIndex = 53;
-            this.label14.Text = "Ambient Temperature [K]:";
+            this.cb_FFT_Display_Realtime.AutoSize = true;
+            this.cb_FFT_Display_Realtime.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.cb_FFT_Display_Realtime.Checked = global::CANFI.Properties.Settings.Default.FFT_RealtimeDisplay;
+            this.cb_FFT_Display_Realtime.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cb_FFT_Display_Realtime.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::CANFI.Properties.Settings.Default, "FFT_RealtimeDisplay", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.cb_FFT_Display_Realtime.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cb_FFT_Display_Realtime.Location = new System.Drawing.Point(15, 15);
+            this.cb_FFT_Display_Realtime.Name = "cb_FFT_Display_Realtime";
+            this.cb_FFT_Display_Realtime.Size = new System.Drawing.Size(205, 17);
+            this.cb_FFT_Display_Realtime.TabIndex = 40;
+            this.cb_FFT_Display_Realtime.Text = "Display Spectrum in Realtime:             ";
+            this.cb_FFT_Display_Realtime.UseVisualStyleBackColor = true;
+            // 
+            // cb_RTL_Logging
+            // 
+            this.cb_RTL_Logging.AutoSize = true;
+            this.cb_RTL_Logging.Checked = global::CANFI.Properties.Settings.Default.RTL_Logging;
+            this.cb_RTL_Logging.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::CANFI.Properties.Settings.Default, "RTL_Logging", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.cb_RTL_Logging.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cb_RTL_Logging.Location = new System.Drawing.Point(13, 41);
+            this.cb_RTL_Logging.Name = "cb_RTL_Logging";
+            this.cb_RTL_Logging.Size = new System.Drawing.Size(145, 17);
+            this.cb_RTL_Logging.TabIndex = 41;
+            this.cb_RTL_Logging.Text = "Log Measurement to File:";
+            this.cb_RTL_Logging.UseVisualStyleBackColor = true;
+            // 
+            // cb_CAL_Logging
+            // 
+            this.cb_CAL_Logging.AutoSize = true;
+            this.cb_CAL_Logging.Checked = global::CANFI.Properties.Settings.Default.CAL_Logging;
+            this.cb_CAL_Logging.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::CANFI.Properties.Settings.Default, "CAL_Logging", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.cb_CAL_Logging.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cb_CAL_Logging.Location = new System.Drawing.Point(13, 18);
+            this.cb_CAL_Logging.Name = "cb_CAL_Logging";
+            this.cb_CAL_Logging.Size = new System.Drawing.Size(130, 17);
+            this.cb_CAL_Logging.TabIndex = 40;
+            this.cb_CAL_Logging.Text = "Log Calibration to File:";
+            this.cb_CAL_Logging.UseVisualStyleBackColor = true;
+            // 
+            // ud_Tone_G_0kHz
+            // 
+            this.ud_Tone_G_0kHz.DataBindings.Add(new System.Windows.Forms.Binding("Value", global::CANFI.Properties.Settings.Default, "Tone_G_0kHz", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.ud_Tone_G_0kHz.DecimalPlaces = 1;
+            this.ud_Tone_G_0kHz.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ud_Tone_G_0kHz.Location = new System.Drawing.Point(135, 154);
+            this.ud_Tone_G_0kHz.Name = "ud_Tone_G_0kHz";
+            this.ud_Tone_G_0kHz.Size = new System.Drawing.Size(78, 20);
+            this.ud_Tone_G_0kHz.TabIndex = 67;
+            this.ud_Tone_G_0kHz.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.ud_Tone_G_0kHz.Value = global::CANFI.Properties.Settings.Default.Tone_G_0kHz;
+            // 
+            // ud_Tone_G_10kHz
+            // 
+            this.ud_Tone_G_10kHz.DataBindings.Add(new System.Windows.Forms.Binding("Value", global::CANFI.Properties.Settings.Default, "Tone_G_10kHz", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.ud_Tone_G_10kHz.DecimalPlaces = 1;
+            this.ud_Tone_G_10kHz.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ud_Tone_G_10kHz.Location = new System.Drawing.Point(135, 182);
+            this.ud_Tone_G_10kHz.Name = "ud_Tone_G_10kHz";
+            this.ud_Tone_G_10kHz.Size = new System.Drawing.Size(78, 20);
+            this.ud_Tone_G_10kHz.TabIndex = 66;
+            this.ud_Tone_G_10kHz.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.ud_Tone_G_10kHz.Value = global::CANFI.Properties.Settings.Default.Tone_G_10kHz;
+            // 
+            // ud_Tone_NF_0kHz
+            // 
+            this.ud_Tone_NF_0kHz.DataBindings.Add(new System.Windows.Forms.Binding("Value", global::CANFI.Properties.Settings.Default, "Tone_NF_0kHz", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.ud_Tone_NF_0kHz.DecimalPlaces = 1;
+            this.ud_Tone_NF_0kHz.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ud_Tone_NF_0kHz.Location = new System.Drawing.Point(135, 98);
+            this.ud_Tone_NF_0kHz.Name = "ud_Tone_NF_0kHz";
+            this.ud_Tone_NF_0kHz.Size = new System.Drawing.Size(78, 20);
+            this.ud_Tone_NF_0kHz.TabIndex = 63;
+            this.ud_Tone_NF_0kHz.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.ud_Tone_NF_0kHz.Value = global::CANFI.Properties.Settings.Default.Tone_NF_0kHz;
             // 
             // ud_Tone_NF_10kHz
             // 
@@ -812,27 +687,215 @@
             this.ud_Tone_NF_10kHz.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.ud_Tone_NF_10kHz.Value = global::CANFI.Properties.Settings.Default.Tone_NF_10kHz;
             // 
-            // label6
+            // ud_Tone_Duration
             // 
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(16, 128);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(91, 13);
-            this.label6.TabIndex = 61;
-            this.label6.Text = "NF @10kHz [dB]:";
+            this.ud_Tone_Duration.DataBindings.Add(new System.Windows.Forms.Binding("Value", global::CANFI.Properties.Settings.Default, "Tone_Duration", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.ud_Tone_Duration.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ud_Tone_Duration.Location = new System.Drawing.Point(135, 71);
+            this.ud_Tone_Duration.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.ud_Tone_Duration.Minimum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.ud_Tone_Duration.Name = "ud_Tone_Duration";
+            this.ud_Tone_Duration.Size = new System.Drawing.Size(78, 20);
+            this.ud_Tone_Duration.TabIndex = 57;
+            this.ud_Tone_Duration.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.ud_Tone_Duration.Value = global::CANFI.Properties.Settings.Default.Tone_Duration;
             // 
-            // ud_Tone_NF_0kHz
+            // ud_Tone_Interval
             // 
-            this.ud_Tone_NF_0kHz.DataBindings.Add(new System.Windows.Forms.Binding("Value", global::CANFI.Properties.Settings.Default, "Tone_NF_0kHz", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.ud_Tone_NF_0kHz.DecimalPlaces = 1;
-            this.ud_Tone_NF_0kHz.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ud_Tone_NF_0kHz.Location = new System.Drawing.Point(135, 98);
-            this.ud_Tone_NF_0kHz.Name = "ud_Tone_NF_0kHz";
-            this.ud_Tone_NF_0kHz.Size = new System.Drawing.Size(78, 20);
-            this.ud_Tone_NF_0kHz.TabIndex = 63;
-            this.ud_Tone_NF_0kHz.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.ud_Tone_NF_0kHz.Value = global::CANFI.Properties.Settings.Default.Tone_NF_0kHz;
+            this.ud_Tone_Interval.DataBindings.Add(new System.Windows.Forms.Binding("Value", global::CANFI.Properties.Settings.Default, "Tone_Interval", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.ud_Tone_Interval.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ud_Tone_Interval.Location = new System.Drawing.Point(135, 43);
+            this.ud_Tone_Interval.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.ud_Tone_Interval.Minimum = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            this.ud_Tone_Interval.Name = "ud_Tone_Interval";
+            this.ud_Tone_Interval.Size = new System.Drawing.Size(78, 20);
+            this.ud_Tone_Interval.TabIndex = 56;
+            this.ud_Tone_Interval.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.ud_Tone_Interval.Value = global::CANFI.Properties.Settings.Default.Tone_Interval;
+            // 
+            // ud_RTL_SampleRate
+            // 
+            this.ud_RTL_SampleRate.DataBindings.Add(new System.Windows.Forms.Binding("Value", global::CANFI.Properties.Settings.Default, "RTL_SampleRate", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.ud_RTL_SampleRate.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ud_RTL_SampleRate.Location = new System.Drawing.Point(140, 69);
+            this.ud_RTL_SampleRate.Maximum = new decimal(new int[] {
+            2500000,
+            0,
+            0,
+            0});
+            this.ud_RTL_SampleRate.Minimum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.ud_RTL_SampleRate.Name = "ud_RTL_SampleRate";
+            this.ud_RTL_SampleRate.Size = new System.Drawing.Size(83, 20);
+            this.ud_RTL_SampleRate.TabIndex = 50;
+            this.ud_RTL_SampleRate.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.ud_RTL_SampleRate.Value = global::CANFI.Properties.Settings.Default.RTL_SampleRate;
+            // 
+            // cb_RTL_AGC_Auto
+            // 
+            this.cb_RTL_AGC_Auto.AutoSize = true;
+            this.cb_RTL_AGC_Auto.Checked = global::CANFI.Properties.Settings.Default.RTL_AGC_Auto;
+            this.cb_RTL_AGC_Auto.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cb_RTL_AGC_Auto.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::CANFI.Properties.Settings.Default, "RTL_AGC_Auto", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.cb_RTL_AGC_Auto.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cb_RTL_AGC_Auto.Location = new System.Drawing.Point(176, 26);
+            this.cb_RTL_AGC_Auto.Name = "cb_RTL_AGC_Auto";
+            this.cb_RTL_AGC_Auto.Size = new System.Drawing.Size(48, 17);
+            this.cb_RTL_AGC_Auto.TabIndex = 46;
+            this.cb_RTL_AGC_Auto.Text = "Auto";
+            this.cb_RTL_AGC_Auto.UseVisualStyleBackColor = true;
+            this.cb_RTL_AGC_Auto.CheckedChanged += new System.EventHandler(this.cb_RTL_AGC_Auto_CheckedChanged);
+            // 
+            // ud_Averaging
+            // 
+            this.ud_Averaging.DataBindings.Add(new System.Windows.Forms.Binding("Value", global::CANFI.Properties.Settings.Default, "Smoothing", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.ud_Averaging.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ud_Averaging.Location = new System.Drawing.Point(140, 126);
+            this.ud_Averaging.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.ud_Averaging.Name = "ud_Averaging";
+            this.ud_Averaging.Size = new System.Drawing.Size(83, 20);
+            this.ud_Averaging.TabIndex = 45;
+            this.ud_Averaging.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.ud_Averaging.Value = global::CANFI.Properties.Settings.Default.Smoothing;
+            // 
+            // ud_SampleCount
+            // 
+            this.ud_SampleCount.DataBindings.Add(new System.Windows.Forms.Binding("Value", global::CANFI.Properties.Settings.Default, "RTL_SampleCount", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.ud_SampleCount.DataBindings.Add(new System.Windows.Forms.Binding("Maximum", global::CANFI.Properties.Settings.Default, "RTL_SampleCount_Max", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.ud_SampleCount.DataBindings.Add(new System.Windows.Forms.Binding("Minimum", global::CANFI.Properties.Settings.Default, "RTL_SampleCount_Min", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.ud_SampleCount.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ud_SampleCount.Location = new System.Drawing.Point(140, 98);
+            this.ud_SampleCount.Maximum = global::CANFI.Properties.Settings.Default.RTL_SampleCount_Max;
+            this.ud_SampleCount.Minimum = global::CANFI.Properties.Settings.Default.RTL_SampleCount_Min;
+            this.ud_SampleCount.Name = "ud_SampleCount";
+            this.ud_SampleCount.Size = new System.Drawing.Size(83, 20);
+            this.ud_SampleCount.TabIndex = 43;
+            this.ud_SampleCount.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.ud_SampleCount.Value = global::CANFI.Properties.Settings.Default.RTL_SampleCount;
+            // 
+            // tb_Noise_FileName
+            // 
+            this.tb_Noise_FileName.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::CANFI.Properties.Settings.Default, "Noise_FileName", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.tb_Noise_FileName.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tb_Noise_FileName.Location = new System.Drawing.Point(20, 70);
+            this.tb_Noise_FileName.Name = "tb_Noise_FileName";
+            this.tb_Noise_FileName.ReadOnly = true;
+            this.tb_Noise_FileName.Size = new System.Drawing.Size(254, 20);
+            this.tb_Noise_FileName.TabIndex = 33;
+            this.tb_Noise_FileName.Text = global::CANFI.Properties.Settings.Default.Noise_FileName;
+            // 
+            // ud_COM_Delay
+            // 
+            this.ud_COM_Delay.DataBindings.Add(new System.Windows.Forms.Binding("Value", global::CANFI.Properties.Settings.Default, "COM_Delay", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.ud_COM_Delay.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ud_COM_Delay.Location = new System.Drawing.Point(143, 116);
+            this.ud_COM_Delay.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.ud_COM_Delay.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.ud_COM_Delay.Name = "ud_COM_Delay";
+            this.ud_COM_Delay.Size = new System.Drawing.Size(78, 20);
+            this.ud_COM_Delay.TabIndex = 56;
+            this.ud_COM_Delay.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.ud_COM_Delay.Value = global::CANFI.Properties.Settings.Default.COM_Delay;
+            // 
+            // cb_COM_DUT_Inverse
+            // 
+            this.cb_COM_DUT_Inverse.AutoSize = true;
+            this.cb_COM_DUT_Inverse.Checked = global::CANFI.Properties.Settings.Default.COM_DUT_Inverse;
+            this.cb_COM_DUT_Inverse.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::CANFI.Properties.Settings.Default, "COM_DUT_Inverse", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.cb_COM_DUT_Inverse.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cb_COM_DUT_Inverse.Location = new System.Drawing.Point(239, 88);
+            this.cb_COM_DUT_Inverse.Name = "cb_COM_DUT_Inverse";
+            this.cb_COM_DUT_Inverse.Size = new System.Drawing.Size(41, 17);
+            this.cb_COM_DUT_Inverse.TabIndex = 34;
+            this.cb_COM_DUT_Inverse.Text = "Inv";
+            this.cb_COM_DUT_Inverse.UseVisualStyleBackColor = true;
+            // 
+            // cb_COM_Noise_Inverse
+            // 
+            this.cb_COM_Noise_Inverse.AutoSize = true;
+            this.cb_COM_Noise_Inverse.Checked = global::CANFI.Properties.Settings.Default.COM_Noise_Inverse;
+            this.cb_COM_Noise_Inverse.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::CANFI.Properties.Settings.Default, "COM_Noise_Inverse", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.cb_COM_Noise_Inverse.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cb_COM_Noise_Inverse.Location = new System.Drawing.Point(239, 58);
+            this.cb_COM_Noise_Inverse.Name = "cb_COM_Noise_Inverse";
+            this.cb_COM_Noise_Inverse.Size = new System.Drawing.Size(41, 17);
+            this.cb_COM_Noise_Inverse.TabIndex = 33;
+            this.cb_COM_Noise_Inverse.Text = "Inv";
+            this.cb_COM_Noise_Inverse.UseVisualStyleBackColor = true;
+            // 
+            // cb_COM_DUT
+            // 
+            this.cb_COM_DUT.AutoSize = true;
+            this.cb_COM_DUT.Checked = global::CANFI.Properties.Settings.Default.COM_DUT_Use;
+            this.cb_COM_DUT.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::CANFI.Properties.Settings.Default, "COM_DUT_Use", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.cb_COM_DUT.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cb_COM_DUT.Location = new System.Drawing.Point(18, 86);
+            this.cb_COM_DUT.Name = "cb_COM_DUT";
+            this.cb_COM_DUT.Size = new System.Drawing.Size(87, 17);
+            this.cb_COM_DUT.TabIndex = 32;
+            this.cb_COM_DUT.Text = "DUT Switch:";
+            this.cb_COM_DUT.UseVisualStyleBackColor = true;
+            // 
+            // cb_COM_Noise
+            // 
+            this.cb_COM_Noise.AutoSize = true;
+            this.cb_COM_Noise.Checked = global::CANFI.Properties.Settings.Default.COM_Noise_Use;
+            this.cb_COM_Noise.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cb_COM_Noise.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::CANFI.Properties.Settings.Default, "COM_Noise_Use", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.cb_COM_Noise.Enabled = false;
+            this.cb_COM_Noise.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cb_COM_Noise.Location = new System.Drawing.Point(18, 56);
+            this.cb_COM_Noise.Name = "cb_COM_Noise";
+            this.cb_COM_Noise.Size = new System.Drawing.Size(93, 17);
+            this.cb_COM_Noise.TabIndex = 31;
+            this.cb_COM_Noise.Text = "Noise Source:";
+            this.cb_COM_Noise.UseVisualStyleBackColor = true;
+            // 
+            // cb_COM_Port
+            // 
+            this.cb_COM_Port.AutoSize = true;
+            this.cb_COM_Port.Checked = global::CANFI.Properties.Settings.Default.COM_Port_Use;
+            this.cb_COM_Port.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cb_COM_Port.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::CANFI.Properties.Settings.Default, "COM_Port_Use", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.cb_COM_Port.Enabled = false;
+            this.cb_COM_Port.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cb_COM_Port.Location = new System.Drawing.Point(18, 24);
+            this.cb_COM_Port.Name = "cb_COM_Port";
+            this.cb_COM_Port.Size = new System.Drawing.Size(75, 17);
+            this.cb_COM_Port.TabIndex = 30;
+            this.cb_COM_Port.Text = "COM Port:";
+            this.cb_COM_Port.UseVisualStyleBackColor = true;
             // 
             // SettingsDlg
             // 
@@ -860,18 +923,12 @@
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.ud_COM_Delay)).EndInit();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.ud_RTL_SampleRate)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ud_Averaging)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ud_SampleCount)).EndInit();
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.ud_Tone_Duration)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ud_Tone_Interval)).EndInit();
             this.groupBox7.ResumeLayout(false);
             this.groupBox7.PerformLayout();
             this.groupBox8.ResumeLayout(false);
@@ -881,8 +938,16 @@
             this.groupBox9.ResumeLayout(false);
             this.groupBox9.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ud_Tamb)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ud_Tone_NF_10kHz)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ud_Tone_G_0kHz)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ud_Tone_G_10kHz)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ud_Tone_NF_0kHz)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ud_Tone_NF_10kHz)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ud_Tone_Duration)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ud_Tone_Interval)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ud_RTL_SampleRate)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ud_Averaging)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ud_SampleCount)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ud_COM_Delay)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -941,9 +1006,14 @@
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.NumericUpDown ud_Tone_Interval;
         private System.Windows.Forms.NumericUpDown ud_Tone_Duration;
-        private System.Windows.Forms.CheckBox cb_Tone_Active;
         private System.Windows.Forms.NumericUpDown ud_Tone_NF_10kHz;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.NumericUpDown ud_Tone_NF_0kHz;
+        private System.Windows.Forms.NumericUpDown ud_Tone_G_0kHz;
+        private System.Windows.Forms.NumericUpDown ud_Tone_G_10kHz;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.ComboBox cbb_Tone_Output;
     }
 }
