@@ -273,7 +273,7 @@ namespace CANFI
                 Value = Value + (decimal)_increment;
                 e.Handled = true;
             }
-            if (e.KeyData == Keys.D0)
+            if (e.KeyData == Keys.D0 || e.KeyData == Keys.NumPad0)
             {
                 UpdateText(this.Text.Substring(0, this.SelectionStart) + "0" + this.Text.Substring(this.SelectionStart + this.SelectionLength));
                 decimal d = 0;
@@ -282,7 +282,7 @@ namespace CANFI
                 MoveSelectionRight();
                 e.Handled = true;
             }
-            if (e.KeyData == Keys.D1)
+            if (e.KeyData == Keys.D1 || e.KeyData == Keys.NumPad1)
             {
                 UpdateText(this.Text.Substring(0, this.SelectionStart) + "1" + this.Text.Substring(this.SelectionStart + this.SelectionLength));
                 decimal d = 0;
@@ -291,7 +291,7 @@ namespace CANFI
                 MoveSelectionRight();
                 e.Handled = true;
             }
-            if (e.KeyData == Keys.D2)
+            if (e.KeyData == Keys.D2 || e.KeyData == Keys.NumPad2)
             {
                 UpdateText(this.Text.Substring(0, this.SelectionStart) + "2" + this.Text.Substring(this.SelectionStart + this.SelectionLength));
                 decimal d = 0;
@@ -300,7 +300,7 @@ namespace CANFI
                 MoveSelectionRight();
                 e.Handled = true;
             }
-            if (e.KeyData == Keys.D3)
+            if (e.KeyData == Keys.D3 || e.KeyData == Keys.NumPad3)
             {
                 UpdateText(this.Text.Substring(0, this.SelectionStart) + "3" + this.Text.Substring(this.SelectionStart + this.SelectionLength));
                 decimal d = 0;
@@ -309,7 +309,7 @@ namespace CANFI
                 MoveSelectionRight();
                 e.Handled = true;
             }
-            if (e.KeyData == Keys.D4)
+            if (e.KeyData == Keys.D4 || e.KeyData == Keys.NumPad4)
             {
                 UpdateText(this.Text.Substring(0, this.SelectionStart) + "4" + this.Text.Substring(this.SelectionStart + this.SelectionLength));
                 decimal d = 0;
@@ -318,7 +318,7 @@ namespace CANFI
                 MoveSelectionRight();
                 e.Handled = true;
             }
-            if (e.KeyData == Keys.D5)
+            if (e.KeyData == Keys.D5 || e.KeyData == Keys.NumPad5)
             {
                 UpdateText(this.Text.Substring(0, this.SelectionStart) + "5" + this.Text.Substring(this.SelectionStart + this.SelectionLength));
                 decimal d = 0;
@@ -327,7 +327,7 @@ namespace CANFI
                 MoveSelectionRight();
                 e.Handled = true;
             }
-            if (e.KeyData == Keys.D6)
+            if (e.KeyData == Keys.D6 || e.KeyData == Keys.NumPad6)
             {
                 UpdateText(this.Text.Substring(0, this.SelectionStart) + "6" + this.Text.Substring(this.SelectionStart + this.SelectionLength));
                 decimal d = 0;
@@ -336,7 +336,7 @@ namespace CANFI
                 MoveSelectionRight();
                 e.Handled = true;
             }
-            if (e.KeyData == Keys.D7)
+            if (e.KeyData == Keys.D7 || e.KeyData == Keys.NumPad7)
             {
                 UpdateText(this.Text.Substring(0, this.SelectionStart) + "7" + this.Text.Substring(this.SelectionStart + this.SelectionLength));
                 decimal d = 0;
@@ -345,7 +345,7 @@ namespace CANFI
                 MoveSelectionRight();
                 e.Handled = true;
             }
-            if (e.KeyData == Keys.D8)
+            if (e.KeyData == Keys.D8 || e.KeyData == Keys.NumPad8)
             {
                 UpdateText(this.Text.Substring(0, this.SelectionStart) + "8" + this.Text.Substring(this.SelectionStart + this.SelectionLength));
                 decimal d = 0;
@@ -354,7 +354,7 @@ namespace CANFI
                 MoveSelectionRight();
                 e.Handled = true;
             }
-            if (e.KeyData == Keys.D9)
+            if (e.KeyData == Keys.D9 || e.KeyData == Keys.NumPad9)
             {
                 UpdateText(this.Text.Substring(0, this.SelectionStart) + "9" + this.Text.Substring(this.SelectionStart + this.SelectionLength));
                 decimal d = 0;
